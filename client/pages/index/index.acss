@@ -10,14 +10,14 @@ page {
   background-color: #ff00ff;
   flex-wrap: wrap;
   display: flex;
-  align-items: center;
+  align-items: center; 
   
 
 }
 .imageview1{
   width: 200rpx;
   height: 124rpx;
-  margin-left: 20rpx;
+  margin-left: 30rpx;
   
   
 }
