@@ -1,3 +1,23 @@
 page {
-  background: #f7f700;
+  background: #ffffff;
+  flex-direction: column;
+}
+
+.cardview{
+
+  width: 100%;
+  height: 400rpx;
+  background-color: #ff00ff;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  
+
+}
+.imageview1{
+  width: 200rpx;
+  height: 124rpx;
+  margin-left: 20rpx;
+  
+  
 }

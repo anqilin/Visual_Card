@@ -3,7 +3,9 @@
     "pages/index/index"
   ],
   "window": {
-    "defaultTitle": "My App",
+    "defaultTitle": "虚拟卡应用",
     "titleBarColor": "#ffbfc7"
+    
+   
   }
 }
