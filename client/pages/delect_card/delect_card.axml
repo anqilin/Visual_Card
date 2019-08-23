@@ -1,0 +1,46 @@
+<view class="atd-config-transparent-header">
+  <view class="content-top">
+    <!-- 手机状态栏,无法触发onTap -->
+    <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
+
+    <!-- 手机标题栏,在json中设置"titlePenetrate": "YES"即可触发onTap -->
+   <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
+     <image mode="aspectFit" src="/resource/back_green.png" style="width:30rpx;height:30rpx"/>
+     <view style="font-size:16px">返回</view>
+    </view>
+  </view>
+  <view class="top" >
+    <view class="view1">     
+      <image mode="scaleToFill" src="/resource/qianbao.png" class="imageview1"/>
+
+    </view>
+    <view class="text1">退卡成功后，卡内余额连同可退服务费</view>
+    <view class="text2">
+      <view>将退回到您的</view>
+      <view style="color:#F24724">支付宝</view>
+      <view>内</view>
+    </view>
+
+  </view>
+  
+</view>
+<view class="delete_info">
+  <view class="yuer">
+    <view>交通卡余额：</view>
+    <view>24.30元</view>
+  </view>
+  <view class="yuer" style="margin-top:40rpx">
+    <view>可退服务费：</view>
+    <view>20.00元</view>
+  </view>
+  <view class="yuer" style="margin-top:40rpx">
+    <view>退回金额：</view>
+    <view class="black_red">
+      <view style="color: #F24724">44.30</view>
+      <view>元</view>
+    </view>
+    
+  </view>
+</view>
+<button class="dele_btn" size="default" type="primary">退卡确认</button>
+

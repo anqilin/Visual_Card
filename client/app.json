@@ -1,11 +1,13 @@
 {
-  "pages": [
-    "pages/index/index"
+  "pages": [  
+    "pages/index/index",
+    "pages/card_info/card_info",
+    "pages/delect_card/delect_card",
+    "pages/test/test"
+    
+    
   ],
   "window": {
-    "defaultTitle": "虚拟卡应用",
-    "titleBarColor": "#ffbfc7"
-    
-   
+    "titleBarColor": "#5561B2"
   }
 }

@@ -6,18 +6,132 @@ page {
 .cardview{
 
   width: 100%;
-  height: 400rpx;
-  background-color: #ff00ff;
+
+  
+  background-color: #ffffff;
   flex-wrap: wrap;
   display: flex;
-  align-items: center; 
+  align-items: top; 
+  border-color: #ffffff
   
+}
+
+.imageview1{
+  width: 595rpx;
+  height: 377rpx;
+   
+}
+
+
+.view1{
+  margin-top: -200rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-color: #ffffff;
+}
+
+.top{
+  width: 100%;
+  height: 260rpx;
+  
+}
+.atd-config-transparent-header {
+   background-image:  linear-gradient(127deg, #5561B2 0%, #1FB6AD 100%);
+}
+
+.atd-config-transparent-header .content-top {
+    color: #ffffff;
+}
+
+.atd-config-transparent-header .content-top .statusBar {
+  
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.atd-config-transparent-header .content-top .titleBar {
+  
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  align-self: center;
+  padding-left: 25rpx;
+}
+.balance{
+  margin-top: 60rpx;
+  padding-left: 80rpx;
+  flex-direction: row;
+  font-family: PingFangSC-Medium;
+  font-size: 17px;
+  color: #333333;
 
 }
-.imageview1{
-  width: 200rpx;
-  height: 124rpx;
-  margin-left: 30rpx;
-  
-  
+.change_before{
+  display: flex;
+  flex-direction:row;
 }
+.info1{
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+  padding-top: 3rpx;
+  padding-bottom: 2rpx;
+  background: #FDFBEA;
+  border: 1px solid #F7E594;
+  font-family: PingFangSC-Regular;
+  font-size: 13px;
+  color: #FA883C;
+}
+.info2{
+  margin-top: 100rpx;
+  padding-left: 80rpx;
+  padding-right: 80rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.text1{
+  font-family: PingFangSC-Medium;
+ font-size: 17px;
+ color: #333333;
+
+}
+.text2{
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #18BB99;
+  letter-spacing: -0.29px;
+  text-align: center;
+
+}
+.button_group1{
+  margin-top: 30rpx;
+  padding-left: 80rpx;
+  padding-right: 80rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+.button1{
+  padding-top: 3rpx;
+  width: 180rpx;
+  height: 60rpx;
+  border: 2px solid #18BB99;
+  background-color: #ffffff;
+  color: #18BB99 ;
+  font-size: 15px;
+}
+.sure_button{
+  margin-top: 80rpx;
+  margin-left: 25rpx;
+  margin-right: 25rpx;
+  background-image: linear-gradient(133deg, #79CFB2 0%, #0DB896 100%);
+  border-style: none;
+  font-family: PingFangSC-Regular;
+  color: #FFFFFF;
+
+}
+
+

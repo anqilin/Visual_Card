@@ -1,0 +1,7 @@
+<view style="width:100%;height:100rpx">
+<button a:if="{{true}}" open-type="getAuthorize" 
+onGetAuthorize="onGetAuthorize" onError="onAuthError" 
+scope='userInfo'>
+    会员基础信息授权
+</button>
+</view>

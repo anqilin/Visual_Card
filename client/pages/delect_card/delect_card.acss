@@ -1,0 +1,111 @@
+page {
+  background: #ffffff;
+  flex-direction: column;
+}
+
+
+
+
+.view1{
+  margin-top: -200rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-color: #ffffff;
+}
+
+.top{
+  width: 100%;
+  padding-bottom: 80rpx;
+  
+}
+.atd-config-transparent-header {
+  opacity: 0.94;
+  background: #F4F4F4;
+}
+
+.atd-config-transparent-header .content-top {
+    font-family: PingFangSC-Regular;
+    color: #0F8EE9;
+    text-align: left;
+}
+
+.atd-config-transparent-header .content-top .statusBar {
+  
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.atd-config-transparent-header .content-top .titleBar {
+  
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  align-self: center;
+  padding-left: 25rpx;
+}
+.imageview1{
+  width: 194rpx;
+  height: 194rpx;
+   
+}
+
+
+.view1{
+  margin-top: 140rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-color: #ffffff;
+}
+.text1{
+  margin-top: 20rpx;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  font-size: 16px;
+  color: #333333;
+  text-align: center;
+
+}
+.text2{
+
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #333333;
+  text-align: center;
+
+}
+.delete_info{
+  margin-top: 100rpx;
+  padding-left: 120rpx;
+  padding-right: 120rpx;
+  display: flex;
+  flex-direction: column;
+}
+.yuer{
+  font-family: PingFangSC-Medium;
+  font-size: 17px;
+  color: #333333;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.black_red{
+  display: flex;
+  flex-direction: row;
+}
+.dele_btn{
+  border-style: none;
+  margin-top: 120rpx;
+  margin-left: 25rpx;
+  margin-right: 25rpx;
+  background-image: linear-gradient(133deg, #79CFB2 0%, #0DB896 100%);
+  font-size: 17px;
+}
