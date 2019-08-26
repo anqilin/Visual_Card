@@ -264,6 +264,7 @@ Page({
       },
       fail: (res) => {
         console.log(res.resultCode);
+        
 
       }
     });
