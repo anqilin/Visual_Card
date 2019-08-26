@@ -1,0 +1,29 @@
+<view class="atd-config-transparent-header">
+ <!-- <view class="content-top">
+
+    <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
+
+ 
+   <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
+     <image mode="aspectFit" src="/resource/back_blue.png" style="width:30rpx;height:30rpx"/>
+     <view style="font-size:16px;color: #108EE9;font-family: PingFangSC-Regular">返回</view>
+     <view class="title_center">结果页</view>
+    </view>
+  </view>
+  -->
+  <view class="top" >
+    <view class="view1">
+      <view class="around">
+        <image mode="scaleToFill" src="/resource/system-complete.png" style="width:100%;height:100%"/>
+      </view>
+      <view class="text1">重写卡成功</view>
+      <view class="text2">充值成功，请注意NFC交通卡余额变化</view>
+    </view>
+
+
+  </view>
+
+</view>
+<button class="success_button" size="default" type="primary" onTap="go_fail">完成</button>
+
+

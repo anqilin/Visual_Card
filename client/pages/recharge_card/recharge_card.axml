@@ -1,0 +1,60 @@
+<view class="atd-config-transparent-header">
+<!--  <view class="content-top">
+
+    <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
+
+ 
+   <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
+     <image mode="aspectFit" src="/resource/go.png" style="width:55rpx;height:55rpx"/>
+     <view style="font-size:15px;color: #108EE9;font-family: PingFangSC-Regular">返回</view>
+     <view class="title_center">充值</view>
+    </view>
+  </view>
+  -->
+  <view class="top" >
+    <view class="cardview">
+      <view class="view1">     
+        <image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>
+
+
+      </view>
+
+    </view>
+
+  </view>
+
+</view>
+
+
+<view class="balance">
+  <view class="change_before">
+      <view style="font-size: 14px">充值前余额：</view>
+      <view style="margin-left:10rpx;font-size:19px;color:#000000">30.00</view>
+      
+  </view>
+  <view class="change_before" style="margin-top:12rpx;font-size:14px;font-family: PingFangSC-Regular">
+      <view>充值后余额：</view>
+      <view style="margin-left:10rpx;font-size:19px;color:#000000">20.00</view>
+      <view class="info1" style="margin-left:20rpx">余额上限1000.00元</view>
+      
+  </view>
+
+</view>
+<view style="width:100%;height:16rpx;background: #F5F5F5;margin-top:35rpx"></view>
+
+<view class="info2">
+    <view class="text1">选择充值金额</view>
+</view>
+<view class="button_group1">
+    <button style="background-color: {{color1}};color:{{text_color1}}" data-money="10" class="button1" size="mini" type="primary" onTap="onsetmoney">10元</button>
+    <button style="background-color: {{color2}};color:{{text_color2}}" data-money="20" class="button1" size="mini" type="primary" onTap="onsetmoney">20元</button>
+    <button style="background-color: {{color3}};color:{{text_color3}}" data-money="30" class="button1" size="mini" type="primary" onTap="onsetmoney">30元</button>
+    
+</view>
+<view class="button_group1" style="margin-top:15rpx">
+    <button style="background-color: {{color4}};color:{{text_color4}}" data-money="100" class="button1" size="mini" type="primary" onTap="onsetmoney">100元</button>
+    <button style="background-color: {{color5}};color:{{text_color5}}" data-money="200" class="button1" size="mini" type="primary" onTap="onsetmoney">200元</button>
+    <button style="background-color: {{color6}};color:{{text_color6}}" data-money="500" class="button1" size="mini" type="primary" onTap="onsetmoney">500元</button>
+    
+</view>
+<button class="sure_button" size="default" type="primary">确认</button>
