@@ -58,6 +58,7 @@ page {
   justify-content: left;
   align-self: center;
   padding-left: 25rpx;
+  font-family: PingFangSC-Medium;
 }
 .balance{
   margin-top: 60rpx;
@@ -71,12 +72,14 @@ page {
 .change_before{
   display: flex;
   flex-direction:row;
+  align-items: baseline;
 }
 .info1{
   padding-left: 10rpx;
   padding-right: 10rpx;
   padding-top: 3rpx;
   padding-bottom: 2rpx;
+
   background: #FDFBEA;
   border: 1px solid #F7E594;
   font-family: PingFangSC-Regular;
@@ -127,11 +130,14 @@ page {
   margin-top: 80rpx;
   margin-left: 25rpx;
   margin-right: 25rpx;
-  background-image: linear-gradient(133deg, #79CFB2 0%, #0DB896 100%);
+  background: #06B794;
+  border-radius: 4px;
+  border-radius: 4px;
   border-style: none;
   font-family: PingFangSC-Regular;
   color: #FFFFFF;
 
 }
+
 
 

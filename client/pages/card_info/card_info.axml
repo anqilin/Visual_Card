@@ -1,20 +1,21 @@
 <view class="atd-config-transparent-header">
-  <view class="content-top">
-    <!-- 手机状态栏,无法触发onTap -->
+ <!-- <view class="content-top">
+
     <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
 
-    <!-- 手机标题栏,在json中设置"titlePenetrate": "YES"即可触发onTap -->
+
    <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
      <image mode="aspectFit" src="/resource/back_green.png" style="width:30rpx;height:30rpx"/>
      <view style="font-size:16px">返回</view>
-     <view class="title">上海NFC交通卡</view>
+     <view class="title_center">上海NFC交通卡</view>
     </view>
   </view>
+  -->
   <view class="top" >
     <view class="view1">     
       <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
       <view class="imageview1">
-        <button class="use_state" size="mini" type="primary">正常使用中</button>
+        <button class="use_state" size="mini" type="primary">默认卡片</button>
       </view>
 
     </view>
@@ -26,18 +27,19 @@
     <view>
       <view class="info2">
         <view class="info3">交通卡余额：</view>
-        <view class="info4">30</view>
+        <view class="info4">30元</view>
       </view>
-      <view class="info2">
+      <view class="info2" style="margin-top:9rpx">
         <view class="info5">可退服务费</view>
         <view class="info5">20.00</view>
 
       </view>
     </view>
 
-    <view class="rechange_button" >立刻充值</view>
+    
 
   </view>
+  <button class="rechange_button" size="default" type="primary">立刻充值</button>
 </view>
 <view class="bar"></view>
 <view class="info" style="padding-left: 40rpx;padding-right: 40rpx;margin-top: 0rpx;">
@@ -77,28 +79,29 @@
 
   </view>
 
-    <view class="info_message">
+    <view class="info_message" style=" border-style: none;">
     <view>
       <view class="info_left">
-        交易统计
+        交易记录
       </view>
 
     </view>
 
-    <view class="info_right" style="color: #18BB99" >查看详情</view>
+    <view class="info_right" style="color: #18BB99" >查看全部></view>
 
   </view>
 
-  <view class="info_message">
-    <view>
-      <view class="info_left">
-        退卡服务
-      </view>
 
+</view>
+<view class="down1">
+  <view class="down2">
+    <view style="width:80rpx;height:80rpx;margin-left:30rpx">
+      <image mode="scaleToFill" src="/resource/app.png" style="width:80rpx;height:80rpx"/>
+    </view>
+    <view class="text_down">
+      提前退还服务费及退卡请下载上海交通卡APP,注册实名后操作。
     </view>
 
-    <view class="info_right" style="color: #18BB99" >我要退卡</view>
-
+    <button class="button_down"  size="mini" type="primary">下载App</button>
   </view>
-  
 </view>

@@ -15,7 +15,7 @@ Page({
         content: 'onLoad 执行异常'
       });
     }
-    absolute.test();
+     my.hideFavoriteMenu();
 
   },
 });

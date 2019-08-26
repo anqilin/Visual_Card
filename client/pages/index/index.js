@@ -96,36 +96,36 @@ Page({
  
       if(money=="10"){
         this.setData({
-          color1:"#18BB99",
+          color1:"#06B794",
           text_color1:"#ffffff"
         });
       }else if(money=="20"){
         this.setData({
-          color2:"#18BB99",
+          color2:"#06B794",
           text_color2:"#ffffff"
         });
 
       }else if(money=="30"){
         this.setData({
-          color3:"#18BB99",
+          color3:"#06B794",
           text_color3:"#ffffff"
         });
 
       }else if(money=="100"){
         this.setData({
-          color4:"#18BB99",
+          color4:"#06B794",
           text_color4:"#ffffff"
         });
 
       }else if(money=="200"){
         this.setData({
-          color5:"#18BB99",
+          color5:"#06B794",
           text_color5:"#ffffff"
         });
 
-      }else if(money=="300"){
+      }else if(money=="500"){
         this.setData({
-          color6:"#18BB99",
+          color6:"#06B794",
           text_color6:"#ffffff"
         });
 
@@ -213,7 +213,7 @@ Page({
         app.userInfo.token="923002A8AA3744EB";
         var order_url=app.getOrder("","0008");
         console.log(order_url);
-        //this.getOrderData(order_url);
+        this.getOrderData(order_url);
         
       },
       fail: (err) => {
@@ -256,6 +256,10 @@ Page({
       tradeNO: app.orderResq.content,
       success: (res) => {
         console.log(res.resultCode);
+        var url=app.getCreatCardRequest();
+        //var url=app.getRechargeCardOrder();
+        console.log(url);
+        this.goCreatCard(url);
 
       },
       fail: (res) => {
@@ -264,5 +268,25 @@ Page({
       }
     });
   },
+  goCreatCard(url){
+      my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => {        
+        console.log('resp data', resp.data);
+
+
+        
+      },
+      fail: (err) => {
+        console.log('error', err);
+
+      },
+
+    });
+
+
+  }
 
 });

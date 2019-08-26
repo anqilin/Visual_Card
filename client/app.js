@@ -7,12 +7,12 @@ App({
   orderReq:{
     detail:"",// 商品详情：
 	  body:"",// 商品描述：
-	  total_fee:0,// 总金额：即实际金额（第三方支付需要支付的金额） 单位分
+	  total_fee:5000,// 总金额：即实际金额（第三方支付需要支付的金额） 单位分
 	  phone:"",// 手机号：
 	  Paytype:"0002",// 支付方式：0001:银联 0002：支付宝 0003：微信 0004：实名账户 0005：充值额
 
 	  PAYFLAG:"0004",// 支付用途： 0001:卡片圈存 0002:账户充值 0003:购买充值额 0004:远程开卡 ;
-	  TOTAMT:0,// 总金额： 即订单金额（total_fee+积分、抵用券等） 单位分
+	  TOTAMT:5000,// 总金额： 即订单金额（total_fee+积分、抵用券等） 单位分
 	  CardNo:"",// 卡号：
 
 	  CZNUM :0,// 充值额个数： 没有写0
@@ -85,7 +85,7 @@ App({
 			}
 			url=url+"&sMoney=" + str;// 待支付金额:测试环境统一支付1分钱
 													// PayOrderInfo.orderReq.getTotal_fee()
-			url=url+"&payType=" + "1000";// 0001：银联 0002：支付宝
+			url=url+"&payType=" + "0011";// 0001：银联 0002：支付宝
 														// 0003：微信 0004:apple
 														// pay
 			url=url+"&phone=" + this.userInfo.phone;
@@ -110,27 +110,33 @@ App({
       return url;
   },
   getCreatCardRequest(){
-    			var url = this.SERVER_URL
+    	var url = this.SERVER_URL
 					+ "handapp_app/AirCardServlet_Android?";
+
 
 			url=url+"cardType=" + "1";
 			url=url+"&Order=" + this.orderResq.orderId;
+
 			url=url+"&orderId=" + this.orderResq.qorderId;
 
-			url=url+"&payType=" + this.orderReq.Paytype;// 0001：银联 0002：支付宝
-														// 0003：微信 0004:apple
-														// pay
-			url=url+"&totleamt=" + this.orderReq.TOTAMT;
-			url=url+"&payMoney=" + this.orderReq.total_fee;// 即订单金额（total_fee+积分、抵用券等）
-			url=url+"&money=" + this.orderReq.TOTAMT - this.orderReq.virtual;
-			url=url+"&payresult=" + "00";
-			//dataBuilder.append("&seAuth=" + "123456");
-			url=url+"&commToken=" + MyApp.userInfo.userToken;
-			url=url+"&cplc=" + VirtualAidlApi.getInstance().cplc;
-			url=url+"&accountHash=" + "01700001";
-			url=url+"&phone="+MyApp.userInfo.getPhone();
 
-			url=url+"&SEID=" + VirtualAidlApi.getInstance().getSeid();
+			url=url+"&payType=" + "0011";
+			url=url+"&totleamt=" + this.orderReq.TOTAMT;
+
+			url=url+"&payMoney=" + this.orderReq.total_fee;// 即订单金额（total_fee+积分、抵用券等）
+
+      var money=this.orderReq.TOTAMT - this.orderReq.virtual
+			url=url+"&money=" + money;
+
+			url=url+"&payresult=" + "00";
+
+			//dataBuilder.append("&seAuth=" + "123456");
+			url=url+"&commToken=" + this.userInfo.token;
+			url=url+"&cplc=" + "1123344";
+			url=url+"&accountHash=" + "01700001";
+			url=url+"&phone="+this.userInfo.phone;
+
+			url=url+"&SEID=" +"123456";
       
 
       return url;
@@ -144,17 +150,17 @@ App({
 			url=url+"&Order=" + this.orderResq.orderId;
 			url=url+"&orderId=" + this.orderResq.qorderId;
 
-			url=url+"&payType=" + this.orderReq.Paytype;// 0001：银联 0002：支付宝
+			url=url+"&payType=" + "0011";// 0001：银联 0002：支付宝
 														// 0003：微信 0004:apple
 														// pay
 			url=url+"&totleamt=" + this.orderReq.TOTAMT;// 即订单金额（total_fee+积分、抵用券等）
 			url=url+"&payMoney=" + this.orderReq.total_fee;// 即订单金额（total_fee+积分、抵用券等）
 			url=url+"&money=" + this.orderReq.TOTAMT;// 即订单金额（total_fee+积分、抵用券等）
-			url=url+"&commToken=" + MyApp.userInfo.userToken;
+			url=url+"&commToken=" + this.userInfo.token;
 			url=url+"&payresult=" + "00";
-			url=url+"&appNo=" + VirtualAidlApi.getInstance().logicCardNo;//逻辑卡号
+			url=url+"&appNo=" + "123456";//逻辑卡号
 			url=url+"&accountHash=" + "01700001";//03000007:华为 03000004:小米
-			url=url+"&phone="+MyApp.userInfo.getPhone();
+			url=url+"&phone="+this.userInfo.phone;
       return url;
 
 
