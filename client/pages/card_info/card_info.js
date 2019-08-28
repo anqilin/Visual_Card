@@ -1,7 +1,8 @@
 import absolute from '/util/huawei';
 Page({
   data: {
-    systemInfo: {}
+    systemInfo: {},
+    keyi:true
   },
     onLoad(options) {
     try {

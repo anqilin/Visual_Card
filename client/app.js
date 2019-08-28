@@ -47,6 +47,11 @@ App({
     phone:"",
     token:"",
   },
+  cplc:"",
+  seid:"",
+  model:"",
+  cardno:"",
+  logiccardno:"",
 
   onLaunch(options) {
     // 第一次打开
@@ -114,7 +119,7 @@ App({
 					+ "handapp_app/AirCardServlet_Android?";
 
 
-			url=url+"cardType=" + "1";
+			url=url+"cardType=" + "4";
 			url=url+"&Order=" + this.orderResq.orderId;
 
 			url=url+"&orderId=" + this.orderResq.qorderId;
@@ -132,11 +137,12 @@ App({
 
 			//dataBuilder.append("&seAuth=" + "123456");
 			url=url+"&commToken=" + this.userInfo.token;
-			url=url+"&cplc=" + "1123344";
+			url=url+"&cplc=" + this.cplc;
 			url=url+"&accountHash=" + "01700001";
 			url=url+"&phone="+this.userInfo.phone;
 
-			url=url+"&SEID=" +"123456";
+			url=url+"&SEID=" +this.seid;
+      url=url+"&Model="+"FRD-AL10";
       
 
       return url;
@@ -146,7 +152,7 @@ App({
     			var url = this.SERVER_URL
 					+ "handapp_app/RechargeServlet_Android?";
 
-			url=url+"cardType=" + "1";
+			url=url+"cardType=" + "4";
 			url=url+"&Order=" + this.orderResq.orderId;
 			url=url+"&orderId=" + this.orderResq.qorderId;
 
@@ -158,9 +164,10 @@ App({
 			url=url+"&money=" + this.orderReq.TOTAMT;// 即订单金额（total_fee+积分、抵用券等）
 			url=url+"&commToken=" + this.userInfo.token;
 			url=url+"&payresult=" + "00";
-			url=url+"&appNo=" + "123456";//逻辑卡号
+			url=url+"&appNo=" + this.logiccardno;//逻辑卡号
 			url=url+"&accountHash=" + "01700001";//03000007:华为 03000004:小米
 			url=url+"&phone="+this.userInfo.phone;
+      url=url+"&Model="+"FRD-AL10";
       return url;
 
 

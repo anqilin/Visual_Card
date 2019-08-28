@@ -26,6 +26,8 @@ Page({
       // 获取手机基础信息(头状态栏和标题栏高度)
       let systemInfo = my.getSystemInfoSync();
       this.setData({ systemInfo });
+      app.model=systemInfo.model;
+      console.log(systemInfo.model);
     } catch (e) {
       console.log(e);
       my.alert({
@@ -42,6 +44,7 @@ Page({
           ueerNotLogin:false,
 
       });
+      
     }else{
       this.getUserInfo();
 
@@ -237,6 +240,10 @@ Page({
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
           app.orderResq.partnerid=resp.data.return_msg.partnerid;
           app.orderResq.content=resp.data.return_msg.content;
+          app.cplc="478044204700E7530100625305530593928448100"+
+          "00000515000041741B3854C80010000000000484654";
+          app.seid="47806253055305939284";
+          app.logiccardno="BEC2BDBBCC0E94B8";
           this.goPay();
 
         } 
@@ -256,15 +263,19 @@ Page({
       tradeNO: app.orderResq.content,
       success: (res) => {
         console.log(res.resultCode);
-        var url=app.getCreatCardRequest();
-        //var url=app.getRechargeCardOrder();
-        console.log(url);
-        this.goCreatCard(url);
+        if(res.resultCode=="9000"){
+          var url=app.getCreatCardRequest();
+         // var url=app.getRechargeCardOrder();
+          console.log(url);
+          this.goCreatCard(url);
+
+        }
+
 
       },
       fail: (res) => {
         console.log(res.resultCode);
-        
+
 
 
       }
@@ -277,6 +288,11 @@ Page({
       dataType: 'json',
       success: (resp) => {        
         console.log('resp data', resp.data);
+        if(resp.data.resCode=="9000"){
+          console.log("充值成功");
+        }else{
+          console.log("充值失败");
+        }
 
 
         
@@ -289,6 +305,9 @@ Page({
     });
 
 
+  },
+  go_bind(){
+     my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
   }
 
 });

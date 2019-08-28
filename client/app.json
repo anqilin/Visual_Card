@@ -1,13 +1,15 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/fail_result/fail_result",
+    "record_list/records_list/records_list",
+    "record_list/keyi_list/keyi_list",
+    "pages/creat_card/bind_fail/bind_fail",
+    "pages/card_not_use/card_not_use",
     "pages/card_info/card_info",
-    "pages/recharge_card/recharge_card",
+    "pages/creat_card/bind_card/bind_card",
+    "pages/index/index",
     "pages/success_result/success_result",
-    
-    
-    
+    "pages/fail_result/fail_result",
+    "pages/recharge_card/recharge_card",
     "pages/delect_card/delect_card",
     "pages/test/test"
     

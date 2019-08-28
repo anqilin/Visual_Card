@@ -5,8 +5,9 @@
 
     <!-- 手机标题栏,在json中设置"titlePenetrate": "YES"即可触发onTap -->
    <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
-     <image mode="aspectFit" src="/resource/go.png" style="width:55rpx;height:55rpx"/>
+    <!-- <image mode="aspectFit" src="/resource/go.png" style="width:55rpx;height:55rpx"/>
      <view style="font-size:17px">开通NFC交通卡</view>
+     -->
     </view>
   </view>
     <view class="top" >
@@ -51,7 +52,7 @@
     <button style="background-color: {{color6}};color:{{text_color6}}" data-money="500" class="button1" size="mini" type="primary" onTap="onsetmoney">500元</button>
     
 </view>
-<button class="sure_button" size="default" type="primary">确认</button>
+<button onTap="go_bind" class="sure_button" size="default" type="primary">确认</button>
 
 
 

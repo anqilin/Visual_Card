@@ -76,7 +76,7 @@ page {
   margin-left: 60rpx;
 
 }
-.success_button{
+.re_write{
   margin-top: 60rpx;
   margin-left: 32rpx;
   margin-right: 32rpx;
@@ -86,4 +86,16 @@ page {
   border-style: none;
   font-family: PingFangSC-Regular;
   color: #FFFFFF;
+}
+.return_cardinfo{
+    margin-top: 30rpx;
+  margin-left: 32rpx;
+  margin-right: 32rpx;
+  background: #ffffff;
+  border-radius: 4px;
+  border-radius: 4px;
+  border-style: none;
+  font-family: PingFangSC-Regular;
+  color: #000000;
+
 }

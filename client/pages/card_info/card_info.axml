@@ -15,7 +15,7 @@
     <view class="view1">     
       <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
       <view class="imageview1">
-        <button class="use_state" size="mini" type="primary">默认卡片</button>
+        <button class="use_state" size="mini" type="primary">设置默认卡片</button>
       </view>
 
     </view>
@@ -25,6 +25,10 @@
 <view class="info">
   <view class="info1">
     <view>
+      <view a:if="{{keyi}}" class="keyi">
+        你有1笔可疑充值记录
+        <image mode="scaleToFill" src="/resource/red_arrow.png" style="width:12rpx;height:20rpx;margin-left:10rpx"/>
+        </view>
       <view class="info2">
         <view class="info3">交通卡余额：</view>
         <view class="info4">30元</view>
@@ -87,7 +91,9 @@
 
     </view>
 
-    <view class="info_right" style="color: #18BB99" >查看全部></view>
+    <view class="info_right"  >查看全部
+      <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
+    </view>
 
   </view>
 
