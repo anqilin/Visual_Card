@@ -1,0 +1,84 @@
+<view class="atd-config-transparent-header">
+ <!-- <view class="content-top">
+
+    <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
+
+
+   <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
+     <image mode="aspectFit" src="/resource/back_green.png" style="width:30rpx;height:30rpx"/>
+     <view style="font-size:16px">返回</view>
+     <view class="title_center">上海NFC交通卡</view>
+    </view>
+  </view>
+  -->
+  <view class="top" >
+    <view class="view1">     
+      <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
+      <view class="imageview1">
+        <button class="use_state" size="mini" type="primary">非当前设备</button>
+      </view>
+
+    </view>
+
+  </view>  
+</view>
+<view class="info">
+
+    <view class="text1">无法使用NFC交通卡</view>
+  <view class="text2">请更换成已绑定的设备，手机丢失的方案</view>
+</view>
+<view class="bar"></view>
+<view class="info" style="padding-left: 40rpx;padding-right: 40rpx;margin-top: 0rpx;">
+  <view class="info_message">
+    <view>
+      <view class="info_left">
+        NFC交通卡卡号
+      </view>
+
+    </view>
+
+    <view class="info_right" >3023012931923103</view>
+
+  </view>
+
+  <view class="info_message">
+    <view>
+      <view class="info_left">
+        已绑定设备
+      </view>
+
+    </view>
+
+    <view class="info_right" >某某某手机型号</view>
+
+  </view>
+
+  <view class="info_message">
+    <view>
+      <view class="info_left">
+        有效期
+      </view>
+
+    </view>
+
+    <view class="info_right" >2024/3/22</view>
+
+  </view>
+
+    <view class="info_message" style=" border-style: none;">
+    <view>
+      <view class="info_left">
+        交易记录
+      </view>
+
+    </view>
+
+    <view class="info_right"  >查看全部
+      <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
+    </view>
+
+
+  </view>
+
+
+</view>

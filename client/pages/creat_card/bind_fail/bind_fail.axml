@@ -1,0 +1,30 @@
+<view class="atd-config-transparent-header">
+ <!-- <view class="content-top">
+
+    <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
+
+
+   <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
+     <image mode="aspectFit" src="/resource/back_green.png" style="width:30rpx;height:30rpx"/>
+     <view style="font-size:16px">返回</view>
+     <view class="title_center">上海NFC交通卡</view>
+    </view>
+  </view>
+  -->
+  <view class="top" >
+    <view class="view1">     
+      <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
+      <view class="imageview1">
+        <button class="use_state" size="mini" type="primary">待绑定</button>
+      </view>
+
+    </view>
+
+  </view>  
+</view>
+<view class="info">
+
+  <view class="text1">该卡还未绑定设备</view>
+  <view class="text2">绑定截止时间：{{time}}</view>
+  <button class="rechange_button" size="default" type="primary">重新绑定</button>
+</view>

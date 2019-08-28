@@ -1,0 +1,19 @@
+<view class="warn_message">
+  <image mode="scaleToFill" src="/resource/warn.png" style="width:29rpx;height:29rpx"/>
+  <view class="text1">数据存在延误，部分数据需要隔天显示</view>
+
+  <image mode="scaleToFill" src="/resource/warn.png" style="width:29rpx;height:29rpx"/>
+  
+</view>
+<view a:for="{{record_list}}" class="record">
+  <view class="text_left">
+    <view class="type">{{item.type}}</view>
+    <view class="time1">{{item.time}}</view>
+  </view>
+  <view class="text_right">
+    <view class="money">{{item.amount}}</view>
+    
+    
+  </view>
+  
+</view>
