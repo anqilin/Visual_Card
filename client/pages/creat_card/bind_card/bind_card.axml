@@ -15,7 +15,7 @@
   -->
 
 </view>
-<view class="text1">设备绑定中</view>
-<view class="text2">正在加载中</view>
-<progress class="progress1" activeColor="#06B794" stroke-width="5" percent="40" active/>
-<view class="text3">请不要退出运用，且保持网络正常，否则会导致绑定失败</view>
+<view class="text1">{{text1}}</view>
+<view class="text2">{{text2}}</view>
+<progress class="progress1" activeColor="#06B794" stroke-width="5" percent={{percent}} active/>
+<view class="text3">{{text3}}</view>

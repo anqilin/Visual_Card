@@ -46,12 +46,16 @@ App({
   userInfo:{
     phone:"",
     token:"",
+    buyId:"",
   },
   cplc:"",
   seid:"",
   model:"",
   cardno:"",
   logiccardno:"",
+  cardInfo:{},
+  issuer_Id:'t_fdw_sh_mot',
+  spId:'au1909039500095000013622',
 
   onLaunch(options) {
     // 第一次打开
@@ -110,7 +114,7 @@ App({
 			url=url+"&commToken=" + this.userInfo.token;
       url=url+"&note=" + "00"+";";
       url=url+"&Model="+"alipay";
-      url=url+"&buyId="+"2088602120934342";
+      url=url+"&buyId="+this.userInfo.buyId;
 
       return url;
   },
@@ -216,25 +220,37 @@ App({
     var cplc=this.getCplc();
     return cplc.substring(0, 4)+ cplc.substring(20, 36);
   },
-  getHttpData(url){
-    return my.request({
-      url: url,
-      method: 'GET',
-      dataType: 'json',
-      success: (resp) => {        
-        console.log('resp data', resp.data);
-        return resp.data; 
-        
-      },
-      fail: (err) => {
-        console.log('error', err);
-        return err;
-        
-      },
-
+  setAgreement(agree){
+    my.setStorageSync({
+      key: 'isagree', // 缓存数据的key
+      data: agree, // 要缓存的数据
     });
+  },
+  getAgreement(){
+    var data= my.getStorageSync({
+      key: 'isagree', // 缓存数据的key
+    }).data;
+    return data;
+
+  },
+  getKeyiList(){
+    var url = this.SERVER_URL
+					+ "handapp_app/AccountSuspiciousServlet?";
+    url=url+"cardNo=" + "";
+    url=url+"&note=" + "";
+    url=url+"&startNo=1";
+    url=url+"&commToken=" + this.userInfo.token;
+    url=url+"&phone="+this.userInfo.phone;
+    return url;
+
+  },
+  log(data){
+    if (this.SERVER_URL.includes("8445")) {
+				console.log(data);
+			}
 
   }
+
 
 
 

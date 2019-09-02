@@ -6,6 +6,11 @@ Page({
     userLogin:false,
     ueerNotLogin:true,
     cardInfo:{},
+    text1:"设备绑定中",
+    text2:"正在加载中",
+    text3:"请不要退出运用，且保持网络正常，否则会导致绑定失败",
+    percent:"0",
+    num:0,
 
 
   },
@@ -23,6 +28,10 @@ Page({
     }
 
     my.hideFavoriteMenu();
+    
+    //this.changeBar();
+    this.creat_card();
+    
 
 
   },
@@ -37,6 +46,50 @@ Page({
       content: '您点击了"我是手机标题栏"'
     });*/
   },
+  changeBar(){
+    var that = this;
+    var num=that.data.percent;    
+    var interval = setInterval(function () {
+    that.setData({
+          percent: num
+      })
+      num++;
+    if (that.data.percent>=50) {
+        clearInterval(interval);
+        that.setData({
+          text1:"绑定成功",
+          text2:"已完成开卡和绑定",
+          text3:"你的上海NFC交通卡已开通成功！",
+          percent: "100"
+        });
+        my.navigateTo({
+          url:'../../card_info/card_info'
+        });
+
+    }
+    }, 1000)
+
+    
+  },
+  creat_card(){
+    var pa={
+      issuerID:app.issuer_Id,
+      spID:app.spId,
+      orderNo:'111'
+    }
+    var params= JSON.stringify(pa);
+    console.log(params);
+    my.call('seNFCService',
+    {
+      method: 'issueCard',
+      param:params
+    },
+      function (result) {
+  //TODO
+  
+      });
+  }
+
 
 
   

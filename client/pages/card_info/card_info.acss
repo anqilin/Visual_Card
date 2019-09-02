@@ -116,6 +116,7 @@ page {
   align-items: baseline;
   align-content: center;
   justify-content: center;
+  
 }
 .info3{
   font-family: PingFangSC-Medium;

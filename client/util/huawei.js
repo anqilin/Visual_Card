@@ -6,9 +6,27 @@ function test(str) {
 function mytest(str){
   console.log(str);
 }
+function testPromise(){
+  var result=0;
+ 
+  var example=new Promise((resolve, reject)=>{
+    let i = 4;
+    result=i;
+    //return resolve(onFulfilled(result));
+    });
+
+  return result;
+
+}
+ function get_return(){
+  var x= testPromise();
+  console.log(x);
+  return x;
+}
+
 function callAPI (method, param = {}) {
   return new Promise((resolve, reject) => {
-    my.call('virtualServiceH5Plugin', {
+    my.call('seNFCService', {
       method,
       param: JSON.stringify(param)
     }, function (res) {
@@ -164,7 +182,7 @@ function startDefault(){
 
 function checkIssueCondition(){
   callAPI('checkIssueCondition', {
-    issuerID: 'issueID_12345'
+    issuerID: '123'
   })
   .then(() => {
   // 走到这里即代表成功，无返回
@@ -192,6 +210,15 @@ function checkRechargeCondition(){
   callAPI('checkRechargeCondition', {
     issuerID: 'issueID_12345',
   })
+  .then(() => {
+    return 0;
+  }).catch(() =>{
+    return -1;
+  });
+
+}
+function showAuthenticDialog(){
+  callAPI('showAuthenticDialog')
   .then(() => {
     return 0;
   }).catch(() =>{
@@ -232,6 +259,8 @@ function getHttpData(url){
   issueCard:issueCard,
   checkRechargeCondition:checkRechargeCondition,
   getHttpData:getHttpData,
+  testPromise:testPromise,
+  get_return:get_return,
 
 }
   

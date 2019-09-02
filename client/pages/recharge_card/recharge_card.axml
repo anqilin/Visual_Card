@@ -57,4 +57,4 @@
     <button style="background-color: {{color6}};color:{{text_color6}}" data-money="500" class="button1" size="mini" type="primary" onTap="onsetmoney">500元</button>
     
 </view>
-<button class="sure_button" size="default" type="primary">确认</button>
+<button onTap="recharge" class="sure_button" size="default" type="primary">确认</button>

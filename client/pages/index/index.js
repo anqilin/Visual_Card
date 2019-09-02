@@ -36,17 +36,13 @@ Page({
       });
     }
 
-    var userInfo= app.getGlobalUserInfo();
-    if(userInfo!=null&&userInfo!=undefined){
-      this.setData({
-          userInfo:userInfo,
-          userLogin:true,
-          ueerNotLogin:false,
-
-      });
+    var token=app.userInfo.token;
+    if(token!=""){
+        console.log("以获取用户信息")
       
     }else{
       this.getUserInfo();
+    
 
     }
 
@@ -178,28 +174,7 @@ Page({
   },
 
 
-  showCardInfo(){
-    try{
-      if(cardInfo.resultCode===0){
-      var isDefault=cardInfo.data.isDefault;
-      var cardNo=cardInfo.data.cardNo;
-      var balance=cardInfo.data.balance;
-      var validity=cardInfo.data.validity;
-      var logicCardNo=cardInfo.data.logicCardNo;
-      console.log(isDefault);
-      console.log(cardNo);
-      console.log(validity);
-      console.log(balance);
-      console.log(logicCardNo);
 
-    }
-
-    }catch(e){
-      console.log(e);
-    }
-
-
-  },
   getHttpUserInfo(code){
     var url = app.SERVER_URL
 					+ "handapp_app/AlipayCommRegisterServlet?";
@@ -210,13 +185,16 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {
+        if(resp.data.result_code=="success"){
+          app.userInfo.phone=resp.data.phone;
+          app.userInfo.token=resp.data.note;
+          app.userInfo.buyId=resp.data.buyId;
+
+        }
         
         console.log('resp data', resp.data); 
-        app.userInfo.phone="13917679112";
-        app.userInfo.token="923002A8AA3744EB";
-        var order_url=app.getOrder("","0008");
-        console.log(order_url);
-        this.getOrderData(order_url);
+
+
         
       },
       fail: (err) => {
@@ -240,10 +218,9 @@ Page({
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
           app.orderResq.partnerid=resp.data.return_msg.partnerid;
           app.orderResq.content=resp.data.return_msg.content;
-          app.cplc="478044204700E7530100625305530593928448100"+
-          "00000515000041741B3854C80010000000000484654";
-          app.seid="47806253055305939284";
-          app.logiccardno="BEC2BDBBCC0E94B8";
+          app.cplc="479044204700E753010062530553059392844810000000510000041741B3853C80010000000000484554";
+          app.seid="47906253055305939284";
+          app.logiccardno="B2D736CA254ED1B7";
           this.goPay();
 
         } 
@@ -264,8 +241,8 @@ Page({
       success: (res) => {
         console.log(res.resultCode);
         if(res.resultCode=="9000"){
-          var url=app.getCreatCardRequest();
-         // var url=app.getRechargeCardOrder();
+          //var url=app.getCreatCardRequest();
+          var url=app.getRechargeCardOrder();
           console.log(url);
           this.goCreatCard(url);
 
@@ -288,8 +265,14 @@ Page({
       dataType: 'json',
       success: (resp) => {        
         console.log('resp data', resp.data);
+        
+        my.alert({
+          title: resp.data.resCode,
+          content: resp.data.resDesc, 
+        });
         if(resp.data.resCode=="9000"){
           console.log("充值成功");
+          my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
           console.log("充值失败");
         }
@@ -307,7 +290,11 @@ Page({
 
   },
   go_bind(){
-     my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
+      var order_url=app.getOrder("88724922506","0009");
+      //var order_url=app.getOrder("","0009");
+      console.log(order_url);
+      this.getOrderData(order_url);
+     
   }
 
 });
