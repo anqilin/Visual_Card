@@ -1,0 +1,56 @@
+page {
+  background: #F5F5F5;
+  flex-direction: column;
+}
+.atd-config-transparent-header {
+   background-color: #F5F5F5;
+   padding-top: 30rpx;
+}
+.record{
+  margin-top: 28rpx;
+  margin-left: 33rpx;
+  margin-right: 33rpx;
+  background: #FFFFFF;
+  border-radius: 8px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.text1{
+  margin-top: 27rpx;
+  margin-left: 32rpx;
+  margin-right: 32rpx;
+  font-family: PingFangSC-Medium;
+  font-size: 17px;
+  color: #333333;
+  letter-spacing: 0.58px;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.text2{
+  font-family: PingFangSC-Regular;
+font-size: 14px;
+color: #999999;
+letter-spacing: 0.58px;
+text-align: left;
+margin-left: 32rpx;
+}
+.bar{
+  margin-top: 26rpx;
+  margin-left: 24rpx;
+  margin-right: 24rpx;
+  background-color: #EEEEEE;
+  height: 1rpx;
+  
+}
+.text3{
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #06B794;
+  display: flex;
+  justify-content: center;
+}

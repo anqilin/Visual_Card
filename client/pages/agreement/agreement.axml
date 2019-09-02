@@ -1,0 +1,77 @@
+<view class="atd-config-transparent-header">
+  <view class="content-top">
+    <!-- 手机状态栏,无法触发onTap -->
+    <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
+
+    <!-- 手机标题栏,在json中设置"titlePenetrate": "YES"即可触发onTap -->
+   <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
+    <!-- <image mode="aspectFit" src="/resource/go.png" style="width:55rpx;height:55rpx"/>
+     <view style="font-size:17px">开通NFC交通卡</view>
+     -->
+    </view>
+  </view>
+    <view class="top" >
+  </view>
+
+</view>
+
+<view class="cardview">
+    <view class="view1">     
+      <image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>
+
+
+    </view>
+
+</view>
+<view class="view2">
+  <view class="item">
+    <image class="image_item" mode="scaleToFill" src="/resource/yuan.png"/>
+    <view class="textbottom">先乘车后付</view>
+
+  </view>
+  <view class="item">
+     <image class="image_item" mode="scaleToFill" src="/resource/green_tree.png"/>
+    <view class="textbottom">获得绿色能量</view> 
+
+  </view>
+  <view class="item">
+     <image class="image_item" mode="scaleToFill" src="/resource/screen.png"/>
+     <view class="textbottom">熄屏秒刷</view>
+
+  </view>
+
+</view>
+<view class="strategy">
+  <image mode="scaleToFill" src="/resource/use_phone.png" style="width:138rpx;height:140rpx"/>
+  <view class="text1">
+    <view class="text2">手机就是交通卡</view>
+    <view class="text3">打开App 熄屏秒刷</view>
+
+  </view>
+  <view onTap="go_method" class="go_info">
+    <view>使用攻略</view>
+    <image class="image_arrow" mode="scaleToFill" src="/resource/green_arrow.png" />
+
+  </view>
+
+</view>
+<view class="text_info">
+  <view>使用范围：</view>
+  <view style="margin-top:8rpx">公交车、地铁、轮渡、磁浮列车</view>
+  <view style="margin-top:35rpx">优惠范围：</view>
+  <view style="margin-top:8rpx">当月累计消费满70后即可享受9折优惠，120分钟内享受换乘优惠。</view>
+
+</view>
+<view class="bottom">
+  <view class="text_show">
+    <text>查看</text>
+    <text style="color: #06B794">《虚拟交通卡条款》</text>
+    <text>，授权上海公共交通卡公司获取你的</text>
+ 
+    <text>姓名、手机号、证件类型、证件号用于实名领取交通卡。</text>
+    
+
+  </view>
+  <button onTap="agree_on" onTap="go_bind" class="sure_button" size="default" type="primary">授权并开通NFC交通卡</button>
+  
+</view>
