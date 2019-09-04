@@ -32,7 +32,7 @@
       <view style="margin-left:10rpx;font-size:19px;color:#000000">30.00</view>
       
   </view>
-  <view class="change_before" style="margin-top:12rpx;font-size:14px;font-family: PingFangSC-Regular">
+  <view class="change_before" style="margin-top:12rpx;font-size:14px">
       <view>充值后余额：</view>
       <view style="margin-left:10rpx;font-size:19px;color:#000000">20.00</view>
       <view class="info1" style="margin-left:20rpx">余额上限1000.00元</view>

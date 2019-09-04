@@ -29,8 +29,8 @@
        <view class="item_botom">
          <image class="image2" mode="scaleToFill" src="/resource/03.png"/>
          <view style="margin-left:8rpx;align-self:center">
-           <view>开卡成功，根据提示</view>
-           <view>设置默认卡片</view>
+           <view>开卡成功，根据</view>
+           <view>提示设置默认卡片</view>
 
           </view>         
        </view>            
@@ -59,19 +59,19 @@
     <view class="bar1"></view>
   </view>
   <view class="text_show" style="margin-top:25rpx">
-    <view class="text_title">乘车范围：</view>
-    <view class="text_info">Huawei Pay 上海公共交通卡可在上海</view>
+    <view class="text_title">乘车范围：Huawei Pay 上海公共交通卡可在上海市内公交、地铁等公共交通使用</view>
+    
   </view>
-  <view class="text_info">市内公交、地铁等公共交通使用</view>
+  
   <view style="margin-top:20rpx" class="text_title">刷卡优惠：</view>
   <view class="text_info">地铁：当月累计消费满70元后，即可享受9折优惠</view>
   <view class="text_info">公交：120分钟内换乘第2辆优惠范围内的空调车可优惠1元</view>
 
     <view class="text_show" style="margin-top:20rpx">
-    <view class="text_title">换乘优惠：</view>
-    <view class="text_info">120分钟内乘客由公交换乘地铁或者由</view>
+    <view class="text_title">换乘优惠：120分钟内乘客由公交换乘地铁或者由地铁换乘公交均可优惠1元</view>
+    
   </view>
-  <view class="text_info">地铁换乘公交均可优惠1元</view>
+  
   <view style="margin-top:20rpx" class="info1">*可用范围与实体卡一致，并享受实体卡一样的刷卡优惠。</view>
 
 </view>
@@ -112,18 +112,18 @@
     <view class="bar1"></view>
   </view>
   <view class="text_show" style="margin-top:20rpx">
-    <view class="text_title">华为：</view>
-    <view class="text_info">华为P30 系列、Mate20 系列、P20 系列、</view>
+    <view class="text_title">华为：华为P30 系列、Mate20 系列、P20 系列、P10 系列、Mate RS、Mate10 系列、Mate9 系列、nova 2s、nova5 PRO</view>
+    <view class="text_info"></view>
   </view>
-  <view class="text_info">P10 系列、Mate RS、Mate10 系列、Mate9 系列、nova 2s、nova5 PRO</view>
+  <view class="text_info"></view>
 
 
   <view class="text_show" style="margin-top:20rpx">
-    <view class="text_title">荣耀：</view>
+    <view class="text_title">荣耀：荣耀 V20、荣耀 Magic2、荣耀 Note 10、荣耀 10/荣耀 9/荣耀 8（均不含青春版）、荣耀 V10、荣耀 V9、荣耀 V8全网通版</view>
     
-    <view class="text_info">荣耀 V20、荣耀 Magic2、荣耀 Note 10、</view>
+    <view class="text_info"></view>
   </view>
-  <view class="text_info">荣耀 10/荣耀 9/荣耀 8（均不含青春版）、荣耀 V10、荣耀 V9、荣耀 V8全网通版</view>
+  <view class="text_info"></view>
   <view style="margin-top:20rpx" class="info1">*目前仅支持中国大陆正式发货渠道购买的设备。</view>
   <view  class="info1">*请将手机系统升至最新版本，华为钱包升级至最新版本。</view>
 

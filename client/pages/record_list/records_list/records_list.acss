@@ -12,7 +12,7 @@ page {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family: PingFangSC-Regular;
+
   font-size: 14px;
   color: #F96A0E;
   text-align: left;
@@ -41,7 +41,7 @@ page {
 }
 .type{
   margin-top: 27rpx;
-  font-family: PingFangSC-Regular;
+
 font-size: 17px;
 color: #333333;
 letter-spacing: 0.58px;
@@ -49,14 +49,14 @@ text-align: left;
 }
 .time1{
   margin-bottom: 27rpx;
-    font-family: PingFangSC-Regular;
+  
 font-size: 14px;
 color: #999999;
 letter-spacing: 0.58px;
 text-align: left;
 }
 .text_right{
-  font-family: PingFangSC-Regular;
+  
 font-size: 16px;
 color: #999999;
 letter-spacing: 0.58px;

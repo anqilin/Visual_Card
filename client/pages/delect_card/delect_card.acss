@@ -26,7 +26,7 @@ page {
 }
 
 .atd-config-transparent-header .content-top {
-    font-family: PingFangSC-Regular;
+
     color: #0F8EE9;
     text-align: left;
 }
@@ -90,7 +90,7 @@ page {
   flex-direction: column;
 }
 .yuer{
-  font-family: PingFangSC-Medium;
+
   font-size: 17px;
   color: #333333;
   display: flex;

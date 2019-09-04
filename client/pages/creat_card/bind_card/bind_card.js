@@ -11,13 +11,15 @@ Page({
     text3:"请不要退出运用，且保持网络正常，否则会导致绑定失败",
     percent:"0",
     num:0,
+    bind_card:false,
 
 
   },
   onLoad(options) {
     try {
       // 获取手机基础信息(头状态栏和标题栏高度)
-      let systemInfo = my.getSystemInfoSync();
+      //let systemInfo = my.getSystemInfoSync();
+      let systemInfo=app.systemInfo;
       this.setData({ systemInfo });
     } catch (e) {
       console.log(e);
@@ -29,7 +31,7 @@ Page({
 
     my.hideFavoriteMenu();
     
-    //this.changeBar();
+    this.changeBar();
     this.creat_card();
     
 
@@ -54,7 +56,10 @@ Page({
           percent: num
       })
       num++;
-    if (that.data.percent>=50) {
+      if(num==100){
+        that.data.percent=0;
+      }
+    if (that.data.bind_card==true) {
         clearInterval(interval);
         that.setData({
           text1:"绑定成功",
@@ -72,6 +77,8 @@ Page({
     
   },
   creat_card(){
+    var that = this;
+
     var pa={
       issuerID:app.issuer_Id,
       spID:app.spId,
@@ -79,15 +86,31 @@ Page({
     }
     var params= JSON.stringify(pa);
     console.log(params);
+    try{
     my.call('seNFCService',
-    {
-      method: 'issueCard',
-      param:params
-    },
+      {
+        method: 'issueCard',
+        param:params
+      },
       function (result) {
-  //TODO
+        if(result.resultCode==0){
+
+          app.setCreatCardFlag(true);
+          that.data.bind_card=true;
+
+        }else{
+           clearInterval(that.data.interval);
+           //app.setCreatCardFlag(false);
+
+        }
+  
   
       });
+
+    }catch(e){
+
+    }
+
   }
 
 

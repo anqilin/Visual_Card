@@ -59,7 +59,7 @@ page {
   justify-content: left;
   align-self: center;
   padding-left: 25rpx;
-  font-family: PingFangSC-Medium;
+ 
 }
 .view2{
   margin-top: 50rpx;
@@ -68,7 +68,7 @@ page {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family: PingFangSC-Medium;
+  
 font-size: 14px;
 color: #333333;
 }
@@ -107,20 +107,20 @@ color: #333333;
   text-align: left;
 }
 .text2{
-  font-family: PingFangSC-Medium;
+  
 font-size: 15px;
 color: #333333;
 
 }
 .text3{
-  font-family: PingFangSC-Regular;
+  
 font-size: 13px;
 color: #999999;
 
 }
 .go_info{
   align-self: center;
-  font-family: PingFangSC-Regular;
+  
   font-size: 14px;
   color: #06B794;
   display: flex;
@@ -136,7 +136,7 @@ color: #999999;
   margin-top: 50rpx;
   margin-left: 80rpx;
   margin-right: 80rpx;
-  font-family: PingFangSC-Regular;
+  
   font-size: 15px;
   color: #999999;
   display: flex;
@@ -146,7 +146,7 @@ color: #999999;
   margin-top: 65rpx;
   background: #FFFFFF;
   box-shadow: 5px -10px 10px 0 rgba(6,183,148,0.10);
-  font-family: PingFangSC-Regular;
+  
   font-size: 13px;
   color: #999999; 
   display: flex;
@@ -168,7 +168,8 @@ color: #999999;
   border-radius: 4px;
   border-radius: 4px;
   border-style: none;
-  font-family: PingFangSC-Regular;
+  margin-bottom: 20rpx;
+  
   color: #FFFFFF;
 
 }

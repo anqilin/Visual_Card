@@ -14,7 +14,7 @@ page {
   width: 100%;
   justify-content: center;
   text-align: center;
-  font-family: PingFangSC-Medium;
+  
   font-size: 17px;
   color: #06B794;
   display: flex;
@@ -53,7 +53,7 @@ align-content: center;
 }
 .item_botom{
   margin-top: 19rpx;
-  font-family: PingFangSC-Regular;
+ 
   font-size: 13px;
   color: #333333;
   display: flex;
@@ -62,12 +62,12 @@ align-content: center;
   
 }
 .text_title{
-  font-family: PingFangSC-Medium;
+  
   font-size: 15px;
   color: #333333;
 }
 .text_info{
-  font-family: PingFangSC-Regular;
+  
   font-size: 15px;
   color: #333333; 
 }
@@ -76,7 +76,7 @@ align-content: center;
   flex-direction: row;
 }
 .info1{
-  font-family: PingFangSC-Regular;
+ 
 font-size: 13px;
 color: #999999;
 }

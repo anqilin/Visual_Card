@@ -14,7 +14,8 @@ Page({
   onLoad(options) {
     try {
       // 获取手机基础信息(头状态栏和标题栏高度)
-      let systemInfo = my.getSystemInfoSync();
+      //let systemInfo = my.getSystemInfoSync();
+      let systemInfo=app.systemInfo;
       this.setData({ systemInfo });
     } catch (e) {
       console.log(e);
@@ -32,6 +33,15 @@ Page({
         url: '../index/index'
       });
     }*/
+    var flag=app.getCreatCardFlag();
+    if(flag!=null&&flag==false){
+      app.log("存在未完成开卡任务");
+      my.navigateTo({ url: '../creat_card/bind_card/bind_card' });
+    }else{
+      this.get_cplc();
+
+    }
+ 
 
 
   },
@@ -65,17 +75,31 @@ Page({
 
 
   get_cplc(){
+    my.alert({
+      title: '开始调试',
+      content:'cplc' +app.plugin
+    });
     var that=this;
     var cplc=app.getCplc();
     if(cplc==null||cplc==undefined){
-      my.call('seNFCService',
+      my.call(app.plugin,
       {
         method: 'getCplc'
       },
       function (result) {
+        
+        app.log(result);
+        my.alert({
+          title: 'cplc返回结果',
+          content:result
+        });
+
         if(result.resultCode==0){
+          app.setCplc(result.data.cplc);
           that.read_cardInfo();
 
+        }else if(result.resultCode==-9000){
+          that.get_cplc();
         }
       });
     }else{
@@ -85,6 +109,10 @@ Page({
 
   },
   read_cardInfo(){
+    my.alert({
+      title: '读取卡信息',
+      content:'cplc' +app.plugin
+    });
     var that=this;
     var pa={
       issuerID:app.issuer_Id,
@@ -98,12 +126,18 @@ Page({
       param:params
     },
     function (result) {
+      app.log(result);
+              
+        my.alert({
+          title: '读卡返回结果',
+          content:result
+        });
       if(result.resultCode==0){
         app.cardInfo=result.data;
-        my.navigateTo({ url: '../card_info/card_info' });
+        //my.navigateTo({ url: '../card_info/card_info' });
 
       }else{
-        that.get_creat_status();
+        //that.get_creat_status();
 
       }
     });
@@ -123,7 +157,13 @@ Page({
         param:params
       },
       function (result) {
-        console.log(result.resultCode);
+        app.log(result);
+                
+        my.alert({
+          title: '开卡状态返回结果',
+          content:result
+        });
+        
         if(result.resultCode==0){
             that.get_charge_status();
 
@@ -146,6 +186,11 @@ Page({
       param:params
     },
     function (result) {
+      app.log(result);
+        my.alert({
+          title: '读卡状态返回结果',
+          content:result
+        });
       if(result.resultCode==0){
         that.data.card_staus=true;
 

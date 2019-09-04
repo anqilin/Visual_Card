@@ -14,7 +14,6 @@ page {
 }
 
 .atd-config-transparent-header .content-top {
-    font-family: PingFangSC-Regular;
     color: #0F8EE9;
     text-align: left;
 }
@@ -37,7 +36,6 @@ page {
   padding-left: 100rpx;
   padding-right: 5rpx;
   text-align: center;
-  font-family: PingFangSC-Medium;
   font-size: 16px;
   color: #333333;
 
@@ -70,8 +68,6 @@ page {
   box-shadow: 4px 4px 4px 0 rgba(217,217,217,0.29);
   border-radius: 2px;
 
-
-  font-family: PingFangSC-Regular;
  font-size: 13px;
  color: #108EE9;
  letter-spacing: 0.58px;
@@ -106,7 +102,7 @@ page {
   border-radius: 4px;
   border-radius: 4px;
   border-style: none;
-  font-family: PingFangSC-Regular;
+
   color: #FFFFFF;
 
 }
@@ -119,17 +115,17 @@ page {
   
 }
 .info3{
-  font-family: PingFangSC-Medium;
+
   font-size: 14px;
   color: #333333;
 }
 .info4{
-  font-family: PingFangSC-Medium;
+
   font-size: 20px;
   color: #333333;
 }
 .info5{
-  font-family: PingFangSC-Regular;
+
   font-size: 14px;
   color: #999999;
 }
@@ -152,12 +148,12 @@ page {
  
 }
 .info_left{
-  font-family: PingFangSC-Regular;
+
   font-size: 30rpx;
   color: #333333;
 }
 .info_right{
-  font-family: PingFangSC-Regular;
+
 font-size: 30rpx;
 color: #999999;
 text-align: right;
@@ -165,7 +161,7 @@ text-align: right;
 .title_center{
   width: 390rpx;
   text-align: center;
-  font-family: PingFangSC-Medium;
+
   font-size: 18px;
   color: #333333;
   margin-left: 40rpx;
@@ -192,7 +188,7 @@ text-align: right;
 .text_down{
   margin-right: 20rpx;
   margin-left: 18rpx;
-  font-family: PingFangSC-Regular;
+
   font-size: 13px;
   color: #ffffff;
   line-height: 18px;
@@ -207,14 +203,14 @@ text-align: right;
   background: #56ADEB;
   border-radius: 2px;
   border-radius: 2px;
-  font-family: PingFangSC-Medium;
+
  font-size: 13px;
  color: #FFFFFF;
  margin-right: 20rpx
 }
 .keyi{
   margin-bottom: 28rpx;
-  font-family: PingFangSC-Regular;
+
   font-size: 14px;
   color: #FF3B30;
   letter-spacing: 0;

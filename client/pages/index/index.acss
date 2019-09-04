@@ -58,13 +58,13 @@ page {
   justify-content: left;
   align-self: center;
   padding-left: 25rpx;
-  font-family: PingFangSC-Medium;
+
 }
 .balance{
   margin-top: 60rpx;
   padding-left: 80rpx;
   flex-direction: row;
-  font-family: PingFangSC-Medium;
+
   font-size: 17px;
   color: #333333;
 
@@ -82,7 +82,7 @@ page {
 
   background: #FDFBEA;
   border: 1px solid #F7E594;
-  font-family: PingFangSC-Regular;
+
   font-size: 13px;
   color: #FA883C;
 }
@@ -95,13 +95,13 @@ page {
   justify-content: space-between;
 }
 .text1{
-  font-family: PingFangSC-Medium;
+
  font-size: 17px;
  color: #333333;
 
 }
 .text2{
-  font-family: PingFangSC-Regular;
+
   font-size: 14px;
   color: #18BB99;
   letter-spacing: -0.29px;
@@ -134,7 +134,7 @@ page {
   border-radius: 4px;
   border-radius: 4px;
   border-style: none;
-  font-family: PingFangSC-Regular;
+
   color: #FFFFFF;
 
 }

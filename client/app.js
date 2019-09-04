@@ -56,11 +56,25 @@ App({
   cardInfo:{},
   issuer_Id:'t_fdw_sh_mot',
   spId:'au1909039500095000013622',
+  systemInfo: {} ,// 手机基础信息
+  plugin:'virtualServiceH5Plugin',
+  
 
   onLaunch(options) {
     // 第一次打开
     // options.query == {number:1}
     console.info('App onLaunch');
+        try {
+      // 获取手机基础信息(头状态栏和标题栏高度)
+       
+      this.systemInfo=my.getSystemInfoSync();
+    } catch (e) {
+      console.log(e);
+      my.alert({
+        title: '温馨提示',
+        content: 'onLoad 执行异常'
+      });
+    }
   },
   onShow(options) {
     // 从后台被 scheme 重新打开
@@ -216,6 +230,19 @@ App({
     });
 
   },
+  getCreatCardFlag(){
+     var data= my.getStorageSync({
+      key: 'creatflag', // 缓存数据的key
+    }).data;
+    return data;
+  },
+  setCreatCardFlag(flag){
+    my.setStorageSync({
+      key: 'creatflag', // 缓存数据的key
+      data: flag, // 要缓存的数据
+    });
+
+  },
   getHuaWeiSeid(){
     var cplc=this.getCplc();
     return cplc.substring(0, 4)+ cplc.substring(20, 36);
@@ -239,6 +266,16 @@ App({
     url=url+"cardNo=" + "";
     url=url+"&note=" + "";
     url=url+"&startNo=1";
+    url=url+"&commToken=" + this.userInfo.token;
+    url=url+"&phone="+this.userInfo.phone;
+    return url;
+
+  },
+  searchCardStatus(){
+    var url = this.SERVER_URL
+					+ "handapp_app/SearchOrderStateServlet_Android?";
+    url=url+"cardType=" + "1";
+    url=url+"&orderId="
     url=url+"&commToken=" + this.userInfo.token;
     url=url+"&phone="+this.userInfo.phone;
     return url;

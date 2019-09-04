@@ -1,10 +1,13 @@
 {
   "pages": [
-    "pages/card_info/card_info",
     "pages/agreement/agreement",
+    "pages/creat_card/bind_card/bind_card",
+    
+    "pages/card_info/card_info",
+    
     
     "pages/record_list/keyi_list/keyi_list",    
-    "pages/creat_card/bind_card/bind_card",
+    
     "pages/index/index",
             
      "pages/use_method/use_method",

@@ -29,7 +29,7 @@
       <view style="margin-left:10rpx;font-size:19px;color:#FA883C">30.00</view>
       <view class="info1" style="margin-left:20rpx">余额上限1000.00元</view>
   </view>
-  <view class="change_before" style="margin-top:12rpx;color: #999999;font-size:14px;font-family: PingFangSC-Regular">
+  <view class="change_before" style="margin-top:12rpx;color: #999999;font-size:14px">
       <view>可退服务费</view>
       <view >20.00</view>
       

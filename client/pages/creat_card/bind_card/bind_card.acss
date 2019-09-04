@@ -60,10 +60,10 @@ page {
   justify-content: left;
   align-self: center;
   padding-left: 25rpx;
-  font-family: PingFangSC-Medium;
+
 }
 .text1{
-  font-family: PingFangSC-Medium;
+
   font-size: 20px;
   color: #333333;
   margin-top: 100rpx;
@@ -72,7 +72,7 @@ page {
 }
 .text2{
   margin-top: 22rpx;
-  font-family: PingFangSC-Regular;
+
   font-size: 13px;
   color: #999999;
   width: 100%;
@@ -90,7 +90,7 @@ page {
   margin-left: 110rpx;
   margin-right: 110rpx;
   margin-top: 40rpx;
-  font-family: PingFangSC-Regular;
+
   font-size: 14px;
   color: #333333;
   text-align: center;
