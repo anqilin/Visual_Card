@@ -15,7 +15,7 @@
     <view class="view1">     
       <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
       <view class="imageview1">
-        <button class="use_state" size="mini" type="primary">设置默认卡片</button>
+        <button onTap="setDefault" class="use_state" size="mini" type="primary">{{cardstatus}}</button>
       </view>
 
     </view>
@@ -31,7 +31,7 @@
         </view>
       <view class="info2">
         <view class="info3">交通卡余额：</view>
-        <view class="info4">30元</view>
+        <view class="info4">{{balance}}元</view>
       </view>
       <view onTap="show_fee" class="info2" style="margin-top:9rpx">
         <view class="info5" >可退服务费</view>
@@ -56,35 +56,11 @@
 
     </view>
 
-    <view class="info_right" >3023012931923103</view>
+    <view class="info_right" >{{cardno}}</view>
 
   </view>
 
-  <view class="info_message">
-    <view>
-      <view class="info_left">
-        已绑定设备
-      </view>
-
-    </view>
-
-    <view class="info_right" >某某某手机型号</view>
-
-  </view>
-
-  <view class="info_message">
-    <view>
-      <view class="info_left">
-        有效期
-      </view>
-
-    </view>
-
-    <view class="info_right" >2024/3/22</view>
-
-  </view>
-
-    <view class="info_message" style=" border-style: none;">
+  <view class="info_message" >
     <view>
       <view class="info_left">
         交易记录
@@ -97,6 +73,46 @@
     </view>
 
   </view>
+
+  <view class="info_message" >
+    <view>
+      <view class="info_left">
+        可疑记录
+      </view>
+
+    </view>
+    <view a:if="{{!keyi}}" class="info_right">暂无</view>
+    <view a:if="{{keyi}}" onTap="go_keyi" class="info_right"  >1笔可疑记录
+      <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
+    </view>
+
+  </view>
+
+  <view class="info_message">
+    <view>
+      <view class="info_left">
+        已绑定设备
+      </view>
+
+    </view>
+
+    <view class="info_right" >{{deviceModel}}</view>
+
+  </view>
+
+  <view class="info_message" >
+    <view>
+      <view class="info_left">
+        有效期
+      </view>
+
+    </view>
+
+    <view class="info_right" >{{validity}}</view>
+
+  </view>
+
+
 
 
 </view>

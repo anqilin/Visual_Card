@@ -7,11 +7,11 @@
 </view>
 <view a:for="{{record_list}}" class="record">
   <view class="text_left">
-    <view class="type">{{item.type}}</view>
-    <view class="time1">{{item.time}}</view>
+    <view  class="type">{{item.transType=="10"?"充值":"消费"}}</view>
+    <view class="time1">{{item.transDate}}</view>
   </view>
   <view class="text_right">
-    <view class="money">{{item.amount}}</view>
+    <view class="money">{{item.transAmount}}</view>
     
     
   </view>

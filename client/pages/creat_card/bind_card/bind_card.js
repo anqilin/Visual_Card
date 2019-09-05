@@ -87,18 +87,29 @@ Page({
     var params= JSON.stringify(pa);
     console.log(params);
     try{
-    my.call('seNFCService',
+    my.call(app.plugin,
       {
         method: 'issueCard',
         param:params
       },
       function (result) {
         if(result.resultCode==0){
+          app.setCreatKeyi(5);
+           my.alert({
+            title: result.resultCode,
+            content: '开卡成功', 
+           });
 
           app.setCreatCardFlag(true);
           that.data.bind_card=true;
 
+        }else if(result.resultCode==-9000){
+          clearInterval(that.data.interval);
+          that.creat_card();
+
+
         }else{
+          app.setCreatKeyi(4);
            clearInterval(that.data.interval);
            //app.setCreatCardFlag(false);
 

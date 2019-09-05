@@ -3,7 +3,13 @@ const app= getApp();
 Page({
   data: {
     systemInfo: {},
-    keyi:true
+    keyi:true,
+    cardno:"1234",
+    balance:0,
+    validity:"2024/3/22",
+    deviceModel:"HUAWEI",
+    isDefault:false,
+    cardstatus:'设置默认卡片',
   },
     onLoad(options) {
     try {
@@ -19,7 +25,7 @@ Page({
       });
     }
      my.hideFavoriteMenu();
-    this.show_confirm()
+
     var token=app.userInfo.token;
     if(token!=""){
         console.log("已获取用户信息")
@@ -29,6 +35,67 @@ Page({
     
 
     }
+
+  },
+  onShow(){
+    var that=this;
+    that.read_cardInfo();
+    var keyiflag=app.getChargeKeyi();
+    if(keyiflag==null||keyiflag==undefined){
+      that.data.keyi=false;
+    }else if(keyiflag==2||keyiflag==5){
+      that.data.keyi=false;
+    }else if(keyiflag==1||keyiflag==3||keyiflag==4){
+       that.data.keyi=true;
+    }
+
+  },
+  read_cardInfo(){
+
+    var that=this;
+    var pa={
+      issuerID:app.issuer_Id,
+      dataItems:15
+    }
+    var params= JSON.stringify(pa);
+    console.log(params);
+    my.call(app.plugin,
+    {
+      method: 'readCardInfo',
+      param:params
+    },
+    function (result) {
+      app.log(result);
+
+      if(result.resultCode==0){
+        app.cardInfo=result.data;
+        app.cardno=result.data.cardNo;
+        app.logiccardno=result.data.logicCardNo;
+        app.balance=result.data.balance;
+        app.isDefault=result.data.isDefault;
+        that.data.cardno=result.data.cardNo;
+        that.data.balance=result.data.balance;
+        that.data.validity=result.data.validity;
+        that.data.isDefault=result.data.isDefault;
+        if(that.data.isDefault){
+          that.data.cardstatus="正常使用中";
+        }else{
+          that.data.cardstatus="设置默认卡片";
+          var flag=app.getDefaultFlag();
+          if(flag==null||flag==undefined){
+            app.setDefaultFlag(true);
+            that.show_confirm();
+
+          }
+        }
+        
+
+      }else if(result.resultCode==-9000){
+          that.read_cardInfo();
+      }else{
+        
+      }
+    });
 
   },
   go_record(){
@@ -43,6 +110,11 @@ Page({
 
   },
   getUserInfo(){
+    var that = this;
+    console.log('getAuth--start');
+      my.showLoading({
+        content: '查询中',
+      });
     my.getAuthCode({
       scopes: 'auth_user',
       success: (res) => {
@@ -56,9 +128,31 @@ Page({
         }
 
       },
+      fail: (res) => {
+          console.log('getAuth--failed:' +  JSON.stringify(res));
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.getUserInfo();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
+      },
     });
   },
-    getHttpUserInfo(code){
+  getHttpUserInfo(code){
+       var that = this;
     var url = app.SERVER_URL
 					+ "handapp_app/AlipayCommRegisterServlet?";
     url=url+"code="+code;
@@ -68,6 +162,9 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
         if(resp.data.result_code=="success"){
           app.userInfo.phone=resp.data.phone;
           app.userInfo.token=resp.data.note;
@@ -80,8 +177,26 @@ Page({
 
         
       },
-      fail: (err) => {
-        console.log('error', err);
+      fail: (res) => {
+          console.log('HttpUserInfo--failed:' +  JSON.stringify(res));
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.getUserInfo();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
       },
 
     });
@@ -91,6 +206,14 @@ Page({
   },
 
   go_recharge(){
+    var that=this;
+    if(that.data.keyi==true){
+      my.alert({
+        title: '提示',
+        content: '请处理可疑交易'
+      });
+      return;
+    }
     my.navigateTo({
       url:'../recharge_card/recharge_card'
     });
@@ -105,12 +228,85 @@ Page({
     });
   },
   show_confirm(){
+    var that=this;
     my.confirm({
       title: '开卡成功',
       content: '将卡片设置为手机默认支付，才可正常乘车',
       confirmButtonText: '前往设定',
       cancelButtonText: '下次再说',
+      complete: (e) => {
+        if(e.confirm){
+          that.setDefaulfCard();    
+          return;
+        }else{
+          
+          return;
+        }
+      },
 
     });
-  }
+  },
+  getPhoneInfo(){
+    var that=this;
+    var device_model=app.getDeviceModel();
+    if(device_model==null||device_model==undefined){
+      my.call('seNFCService',
+        {
+          method: 'getDeviceInfo'
+        },
+        function (result) {
+          if(result!=null&&result.resultCode==0){
+            var model=result.data.deviceModel;
+            app.setDeviceModel(model);
+            that.data.deviceModel=model;
+
+          }else if(result.resultCode==0){
+            that.getPhoneInfo();
+          }
+
+        });
+
+    }else{
+      that.data.deviceModel=device_model;
+    }
+
+
+  },
+  setDefault(){
+    var that=this;
+    if(that.data.isDefault!=true){
+      that.setDefaulfCard();
+
+    }
+  },
+  setDefaulfCard(){
+    var that=this;
+    var pa={
+      issuerID:app.issuer_Id,
+      spID:app.spId
+    }
+    var params= JSON.stringify(pa);
+    console.log(params);
+    my.call(app.plugin,
+      {
+        method: 'startDefault',
+        param:params
+      },
+      function (result) {
+        if(result.resultCode==0){
+           that.read_cardInfo()
+
+        }else if(result.resultCode==-9000){
+          that.setDefaulfCard();
+        }else{
+          my.alert({
+            title: '提示',
+            content:'设置默认卡失败'
+        });
+
+        }
+
+      });
+
+  },
 });

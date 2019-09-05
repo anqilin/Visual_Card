@@ -75,10 +75,7 @@ Page({
 
 
   get_cplc(){
-    my.alert({
-      title: '开始调试',
-      content:'cplc' +app.plugin
-    });
+
     var that=this;
     var cplc=app.getCplc();
     if(cplc==null||cplc==undefined){
@@ -109,10 +106,7 @@ Page({
 
   },
   read_cardInfo(){
-    my.alert({
-      title: '读取卡信息',
-      content:'cplc' +app.plugin
-    });
+
     var that=this;
     var pa={
       issuerID:app.issuer_Id,
@@ -120,7 +114,7 @@ Page({
     }
     var params= JSON.stringify(pa);
     console.log(params);
-    my.call('seNFCService',
+    my.call(app.plugin,
     {
       method: 'readCardInfo',
       param:params
@@ -134,11 +128,15 @@ Page({
         });
       if(result.resultCode==0){
         app.cardInfo=result.data;
-        //my.navigateTo({ url: '../card_info/card_info' });
+        app.cardno=result.data.cardNo;
+        app.logiccardno=result.data.logicCardNo;
+        app.balance=result.data.balance; 
+        my.navigateTo({ url: '../card_info/card_info' });
 
+      }else if(result.resultCode==-9000){
+          that.read_cardInfo();
       }else{
-        //that.get_creat_status();
-
+        that.get_creat_status();
       }
     });
 
@@ -151,7 +149,7 @@ Page({
     }
     var params= JSON.stringify(pa);
     console.log(params);
-    my.call('seNFCService',
+    my.call(app.plugin,
       {
         method: 'checkIssueCondition',
         param:params
@@ -167,6 +165,8 @@ Page({
         if(result.resultCode==0){
             that.get_charge_status();
 
+          }else if(result.resultCode==-9000){
+            that.get_creat_status();
           }else{
             that.data.error_message="开卡服务不支持"
           }
@@ -180,7 +180,7 @@ Page({
     }
     var params= JSON.stringify(pa);
     console.log(params);
-    my.call('seNFCService',
+    my.call(app.plugin,
     {
       method: 'checkRechargeCondition',
       param:params
@@ -193,6 +193,9 @@ Page({
         });
       if(result.resultCode==0){
         that.data.card_staus=true;
+
+      }else if(result.resultCode==-9000){
+        that.get_charge_status();
 
       }else{
         that.data.error_message="充值服务不支持"

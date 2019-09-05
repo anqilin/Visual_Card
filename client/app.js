@@ -53,9 +53,11 @@ App({
   model:"",
   cardno:"",
   logiccardno:"",
+  balance:0,
   cardInfo:{},
   issuer_Id:'t_fdw_sh_mot',
-  spId:'au1909039500095000013622',
+  spId:'APP-SH-SPTC',
+  isDefault:false,
   systemInfo: {} ,// 手机基础信息
   plugin:'virtualServiceH5Plugin',
   
@@ -260,10 +262,62 @@ App({
     return data;
 
   },
+
+  setDeviceModel(model){
+    my.setStorageSync({
+      key: 'model', // 缓存数据的key
+      data: model, // 要缓存的数据
+    });
+  },
+  getDeviceModel(){
+    var data= my.getStorageSync({
+      key: 'model', // 缓存数据的key
+    }).data;
+    return data;
+  },
+
+  setDefaultFlag(flag){
+    my.setStorageSync({
+      key: 'flag', // 缓存数据的key
+      data: flag, // 要缓存的数据
+    });
+  },
+  getDefaultFlag(){
+    var data= my.getStorageSync({
+      key: 'flag', // 缓存数据的key
+    }).data;
+    return data;
+  },
+
+  setChargeKeyi(flag){
+    my.setStorageSync({
+      key: 'chargekeyi', // 缓存数据的key
+      data: flag, // 要缓存的数据
+    });
+  },
+  getChargeKeyi(){
+    var data= my.getStorageSync({
+      key: 'chargekeyi', // 缓存数据的key
+    }).data;
+    return data;
+  },
+
+  setCreatKeyi(flag){
+    my.setStorageSync({
+      key: 'creatkeyi', // 缓存数据的key
+      data: flag, // 要缓存的数据
+    });
+  },
+  getCreatKeyi(){
+    var data= my.getStorageSync({
+      key: 'creatkeyi', // 缓存数据的key
+    }).data;
+    return data;
+  },
   getKeyiList(){
     var url = this.SERVER_URL
 					+ "handapp_app/AccountSuspiciousServlet?";
-    url=url+"cardNo=" + "";
+    url=url+"cardNo=" + this.cardno;
     url=url+"&note=" + "";
     url=url+"&startNo=1";
     url=url+"&commToken=" + this.userInfo.token;

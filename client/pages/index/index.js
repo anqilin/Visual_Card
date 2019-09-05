@@ -50,6 +50,11 @@ Page({
 
   },
   getUserInfo(){
+    var that = this;
+    console.log('getAuth--start');
+      my.showLoading({
+        content: '查询中',
+      });
     my.getAuthCode({
       scopes: 'auth_user',
       success: (res) => {
@@ -61,6 +66,27 @@ Page({
 
         }
 
+      },
+      fail: (res) => {
+          console.log('getAuth--failed:' +  JSON.stringify(res));
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.getUserInfo();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
       },
     });
   },
@@ -76,7 +102,9 @@ Page({
   },
   onsetmoney(e){
       console.log(e.target.dataset.money);
-      var money=e.target.dataset.money;
+      var money=e.target.dataset.money;            
+      app.orderReq.total_fee=money*100+2000;
+      app.orderReq.TOTAMT=money*100+2000;
 
       this.setData({
           color1:"#ffffff",
@@ -177,6 +205,9 @@ Page({
 
 
   getHttpUserInfo(code){
+    var that = this;
+
+
     var url = app.SERVER_URL
 					+ "handapp_app/AlipayCommRegisterServlet?";
     url=url+"code="+code;
@@ -186,6 +217,9 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {
+        my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
         if(resp.data.result_code=="success"){
           app.userInfo.phone=resp.data.phone;
           app.userInfo.token=resp.data.note;
@@ -198,8 +232,26 @@ Page({
 
         
       },
-      fail: (err) => {
-        console.log('error', err);
+      fail: (res) => {
+          console.log('HttpUserInfo--failed:' +  JSON.stringify(res));
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.getUserInfo();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
       },
 
     });
@@ -219,9 +271,9 @@ Page({
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
           app.orderResq.partnerid=resp.data.return_msg.partnerid;
           app.orderResq.content=resp.data.return_msg.content;
-          app.cplc="479044204700E753010062530553059392844810000000510000041741B3853C80010000000000484554";
-          app.seid="47906253055305939284";
-          app.logiccardno="B2D736CA254ED1B7";
+          app.cplc=app.getCplc();
+          app.seid=app.getHuaWeiSeid();
+          
           this.goPay();
 
         } 
@@ -242,9 +294,10 @@ Page({
       success: (res) => {
         console.log(res.resultCode);
         if(res.resultCode=="9000"){
-          //var url=app.getCreatCardRequest();
-          var url=app.getRechargeCardOrder();
+          var url=app.getCreatCardRequest();
+          //var url=app.getRechargeCardOrder();
           console.log(url);
+          app.setCreatKeyi(1);
           this.goCreatCard(url);
 
         }
@@ -273,9 +326,11 @@ Page({
         });
         if(resp.data.resCode=="9000"){
           console.log("充值成功");
+           app.setCreatKeyi(3);
           my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
           console.log("充值失败");
+          app.setCreatKeyi(2);
         }
 
 
@@ -291,8 +346,8 @@ Page({
 
   },
   go_bind(){
-      var order_url=app.getOrder("88724922506","0009");
-      //var order_url=app.getOrder("","0009");
+      //var order_url=app.getOrder("88724922506","0009");
+      var order_url=app.getOrder("","0008");
       console.log(order_url);
       this.getOrderData(order_url);
      

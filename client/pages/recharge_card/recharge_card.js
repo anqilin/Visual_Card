@@ -19,6 +19,8 @@ Page({
     text_color4:"#18BB99",
     text_color5:"#18BB99",
     text_color6:"#18BB99",
+    mybalance:0,
+    afterbalance:0,
   },
   onLoad(options) {
     try {
@@ -37,6 +39,12 @@ Page({
     my.hideFavoriteMenu();
 
 
+
+  },
+  onShow(){
+    this.data.mybalance=app.balance;
+    this.data.afterbalance=app.balance;
+
   },
 
   /**
@@ -54,6 +62,7 @@ Page({
       var money=e.target.dataset.money;
       app.orderReq.total_fee=money*100;
       app.orderReq.TOTAMT=money*100;
+      this.data.afterbalance=app.balance+money;
 
       this.setData({
           color1:"#ffffff",
@@ -123,9 +132,9 @@ Page({
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
           app.orderResq.partnerid=resp.data.return_msg.partnerid;
           app.orderResq.content=resp.data.return_msg.content;
-          app.cplc="479044204700E753010062530553059392844810000000510000041741B3853C80010000000000484554";
-          app.seid="47906253055305939284";
-          app.logiccardno="B2D736CA254ED1B7";
+          app.cplc=app.getCplc();
+          app.seid=app.getHuaWeiSeid();
+          
           this.goPay();
 
         } 
@@ -149,6 +158,7 @@ Page({
           //var url=app.getCreatCardRequest();
           var url=app.getRechargeCardOrder();
           console.log(url);
+          app.setChargeKeyi(1);
           this.goChargeCard(url);
 
         }
@@ -177,8 +187,10 @@ Page({
         });
         if(resp.data.resCode=="9000"){
           console.log("充值成功");
+          app.setChargeKeyi(3);
           this.recharge_card();
         }else{
+          app.setChargeKeyi(2);
           console.log("充值失败");
         }
 
@@ -195,6 +207,8 @@ Page({
 
   },
   recharge_card(){
+    app.setChargeKeyi(true);
+    var that=this;
     var pa={
       issuerID:app.issuer_Id,
       spID:app.spId,
@@ -202,20 +216,36 @@ Page({
     }
     var params= JSON.stringify(pa);
     console.log(params);
-    my.call('seNFCService',
+    my.call(app.plugin,
     {
       method: 'rechargeCard',
       param:params
   },
-function (result) {
+  function (result) {
   //TODO
-  alert(JSON.stringify(obj, null, 2));
-});
+     if(result.resultCode==0){
+        app.setChargeKeyi(5);
+        my.navigateBack({
+          delta: 1
+        });
+
+
+      }else if(result.resultCode==-9000){
+        that.recharge_card();
+
+      }else{
+        app.setChargeKeyi(4);
+        my.alert({
+          title: result.resultCode,
+          content: '充值失败', 
+          });
+      }
+  });
 
   },     
   recharge(){
-     var order_url=app.getOrder("88724922506","0009");
-      //var order_url=app.getOrder("","0009");
+     var order_url=app.getOrder(app.cardno,"0009");
+      
       console.log(order_url);
       this.getOrderData(order_url);
 
