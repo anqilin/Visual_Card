@@ -33,17 +33,18 @@ Page({
         url: '../index/index'
       });
     }*/
-    var flag=app.getCreatCardFlag();
-    if(flag!=null&&flag==false){
+    var keyiflag=app.getCreatKeyi();
+    if(keyiflag==null||keyiflag==undefined){
+      this.get_cplc();
+    }else if(keyiflag==1||keyiflag==3||keyiflag==4){
       app.log("存在未完成开卡任务");
-      my.navigateTo({ url: '../creat_card/bind_card/bind_card' });
+      my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
+
     }else{
       this.get_cplc();
 
     }
  
-
-
   },
 
   /**
@@ -86,10 +87,7 @@ Page({
       function (result) {
         
         app.log(result);
-        my.alert({
-          title: 'cplc返回结果',
-          content:result
-        });
+
 
         if(result.resultCode==0){
           app.setCplc(result.data.cplc);
@@ -122,10 +120,7 @@ Page({
     function (result) {
       app.log(result);
               
-        my.alert({
-          title: '读卡返回结果',
-          content:result
-        });
+
       if(result.resultCode==0){
         app.cardInfo=result.data;
         app.cardno=result.data.cardNo;
@@ -156,11 +151,7 @@ Page({
       },
       function (result) {
         app.log(result);
-                
-        my.alert({
-          title: '开卡状态返回结果',
-          content:result
-        });
+
         
         if(result.resultCode==0){
             that.get_charge_status();
@@ -187,10 +178,7 @@ Page({
     },
     function (result) {
       app.log(result);
-        my.alert({
-          title: '读卡状态返回结果',
-          content:result
-        });
+
       if(result.resultCode==0){
         that.data.card_staus=true;
 

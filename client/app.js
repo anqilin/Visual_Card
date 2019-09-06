@@ -53,7 +53,7 @@ App({
   model:"",
   cardno:"",
   logiccardno:"",
-  balance:0,
+  balance:"0",
   cardInfo:{},
   issuer_Id:'t_fdw_sh_mot',
   spId:'APP-SH-SPTC',
@@ -325,11 +325,11 @@ App({
     return url;
 
   },
-  searchCardStatus(){
+  searchCardStatus(orderid){
     var url = this.SERVER_URL
 					+ "handapp_app/SearchOrderStateServlet_Android?";
     url=url+"cardType=" + "1";
-    url=url+"&orderId="
+    url=url+"&orderId="+orderid;
     url=url+"&commToken=" + this.userInfo.token;
     url=url+"&phone="+this.userInfo.phone;
     return url;

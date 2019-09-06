@@ -1,11 +1,11 @@
-import absolute from '/util/huawei';
+//import absolute from '/util/huawei';
 const app= getApp();
 Page({
   data: {
     systemInfo: {},
     keyi:true,
     cardno:"1234",
-    balance:0,
+    balance:"",
     validity:"2024/3/22",
     deviceModel:"HUAWEI",
     isDefault:false,
@@ -35,18 +35,31 @@ Page({
     
 
     }
+    //this.read_cardInfo();
 
   },
   onShow(){
     var that=this;
     that.read_cardInfo();
+    that.getPhoneInfo();
     var keyiflag=app.getChargeKeyi();
+    app.log("keyi"+keyiflag);
     if(keyiflag==null||keyiflag==undefined){
-      that.data.keyi=false;
-    }else if(keyiflag==2||keyiflag==5){
-      that.data.keyi=false;
+
+      that.setData({
+        keyi:false
+      })
+    }else if(keyiflag==0||keyiflag==2||keyiflag==5){
+      app.log(that.data.keyi);
+      that.setData({
+        keyi:false
+      })
+      app.log(that.data.keyi);
     }else if(keyiflag==1||keyiflag==3||keyiflag==4){
-       that.data.keyi=true;
+
+       that.setData({
+        keyi:true
+      })
     }
 
   },
@@ -59,6 +72,7 @@ Page({
     }
     var params= JSON.stringify(pa);
     console.log(params);
+
     my.call(app.plugin,
     {
       method: 'readCardInfo',
@@ -67,20 +81,45 @@ Page({
     function (result) {
       app.log(result);
 
+
       if(result.resultCode==0){
         app.cardInfo=result.data;
-        app.cardno=result.data.cardNo;
-        app.logiccardno=result.data.logicCardNo;
-        app.balance=result.data.balance;
-        app.isDefault=result.data.isDefault;
-        that.data.cardno=result.data.cardNo;
-        that.data.balance=result.data.balance;
-        that.data.validity=result.data.validity;
-        that.data.isDefault=result.data.isDefault;
+        my.alert({
+          title: '提示',
+          content:result.data 
+        });
+
+        var cardno=result.data.cardNo
+        app.cardno=cardno;
+        var logicno=result.data.logicCardNo;
+        var balance=result.data.balance;
+        var isDefault=result.data.isDefault;
+
+        app.logiccardno=logicno;
+        app.balance=balance;
+        app.isDefault=isDefault;
+        
+        my.showToast({
+          content:that.data.cardno,
+   
+        });
+
+        that.setData({
+          balance:balance,
+          validity:result.data.validateDate,
+          isDefault:isDefault,
+          cardno: cardno,
+
+        })
         if(that.data.isDefault){
-          that.data.cardstatus="正常使用中";
+          that.setData({
+            cardstatus:"正常使用中"
+          })
         }else{
-          that.data.cardstatus="设置默认卡片";
+
+          that.setData({
+            cardstatus:"设置默认卡片"
+          })
           var flag=app.getDefaultFlag();
           if(flag==null||flag==undefined){
             app.setDefaultFlag(true);
@@ -249,16 +288,23 @@ Page({
   getPhoneInfo(){
     var that=this;
     var device_model=app.getDeviceModel();
+
     if(device_model==null||device_model==undefined){
-      my.call('seNFCService',
+      my.call(app.plugin,
         {
           method: 'getDeviceInfo'
         },
         function (result) {
+
           if(result!=null&&result.resultCode==0){
-            var model=result.data.deviceModel;
+            var data=JSON.parse(result.data);
+            var model=data.deviceModel;
+
             app.setDeviceModel(model);
-            that.data.deviceModel=model;
+            that.setData({
+              deviceModel:model
+            })
+
 
           }else if(result.resultCode==0){
             that.getPhoneInfo();
@@ -267,7 +313,9 @@ Page({
         });
 
     }else{
-      that.data.deviceModel=device_model;
+          that.setData({
+              deviceModel:device_model
+            })
     }
 
 

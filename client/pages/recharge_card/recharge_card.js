@@ -62,7 +62,12 @@ Page({
       var money=e.target.dataset.money;
       app.orderReq.total_fee=money*100;
       app.orderReq.TOTAMT=money*100;
-      this.data.afterbalance=app.balance+money;
+      var num= parseFloat(app.balance)  +parseInt(money);
+      num=num.toFixed(2); 
+
+      this.setData({
+        afterbalance:num
+      })
 
       this.setData({
           color1:"#ffffff",
@@ -121,12 +126,20 @@ Page({
       
   },
   getOrderData(url){
+    var that = this;
+    my.showLoading({
+        content: '正在申请',
+      });
+
     my.request({
       url: url,
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
         console.log('resp data', resp.data);
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
         if(resp.data.return_code=="success"){
           app.orderResq.orderId=resp.data.return_msg.orderId;
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
@@ -135,13 +148,26 @@ Page({
           app.cplc=app.getCplc();
           app.seid=app.getHuaWeiSeid();
           
-          this.goPay();
+          that.goPay();
 
+        }else{
+          my.alert({
+            title: '提示',
+            content:resp.data.return_msg
+
+          });
         } 
         
       },
       fail: (err) => {
         console.log('error', err);
+        my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+        my.alert({
+          title: '提示' ,
+          content:'订单申请失败'
+        });
 
       },
 
@@ -161,12 +187,21 @@ Page({
           app.setChargeKeyi(1);
           this.goChargeCard(url);
 
+        }else{
+          my.alert({
+          title: '提示' ,
+          content:'支付失败'
+        });
         }
 
 
       },
       fail: (res) => {
         console.log(res.resultCode);
+        my.alert({
+          title: '提示' ,
+          content:'支付申请失败'
+        });
 
 
 
@@ -174,12 +209,21 @@ Page({
     });
   },
   goChargeCard(url){
+    var that = this;
+    my.showLoading({
+        content: '正在充值',
+      });
+
       my.request({
       url: url,
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
         console.log('resp data', resp.data);
+        my.hideLoading({
+            page: that,  
+          });
+
         
         my.alert({
           title: resp.data.resCode,
@@ -189,16 +233,35 @@ Page({
           console.log("充值成功");
           app.setChargeKeyi(3);
           this.recharge_card();
+
         }else{
           app.setChargeKeyi(2);
           console.log("充值失败");
+          my.alert({
+            title: '提示',
+            content:'充值失败' 
+          });
+
         }
 
 
         
       },
       fail: (err) => {
+
         console.log('error', err);
+        my.hideLoading({
+            page: that,  
+          });
+        my.alert({
+          title: '提示' ,
+          content:'申请开卡失败',
+          success: () => {
+            my.navigateBack();
+
+          }
+        });
+
 
       },
 
@@ -207,7 +270,7 @@ Page({
 
   },
   recharge_card(){
-    app.setChargeKeyi(true);
+
     var that=this;
     var pa={
       issuerID:app.issuer_Id,

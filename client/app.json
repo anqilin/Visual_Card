@@ -1,7 +1,10 @@
 {
   "pages": [
+     "pages/agreement/agreement",
     "pages/card_info/card_info",
-    "pages/agreement/agreement",
+
+    
+
     "pages/record_list/records_list/records_list",
     
     "pages/creat_card/bind_card/bind_card",

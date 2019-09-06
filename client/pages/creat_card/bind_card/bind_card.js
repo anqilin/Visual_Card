@@ -100,7 +100,6 @@ Page({
             content: '开卡成功', 
            });
 
-          app.setCreatCardFlag(true);
           that.data.bind_card=true;
 
         }else if(result.resultCode==-9000){
@@ -112,6 +111,10 @@ Page({
           app.setCreatKeyi(4);
            clearInterval(that.data.interval);
            //app.setCreatCardFlag(false);
+            my.alert({
+              title: result.resultCode,
+              content: '开卡失败', 
+           });
 
         }
   

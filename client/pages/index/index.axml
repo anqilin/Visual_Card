@@ -26,7 +26,7 @@
 <view class="balance">
   <view class="change_before">
       <view style="font-size: 14px">充值金额：</view>
-      <view style="margin-left:10rpx;font-size:19px;color:#FA883C">30.00</view>
+      <view style="margin-left:10rpx;font-size:19px;color:#FA883C">{{amount}}</view>
       <view class="info1" style="margin-left:20rpx">余额上限1000.00元</view>
   </view>
   <view class="change_before" style="margin-top:12rpx;color: #999999;font-size:14px">

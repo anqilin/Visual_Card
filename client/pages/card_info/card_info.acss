@@ -71,6 +71,7 @@ page {
  font-size: 13px;
  color: #108EE9;
  letter-spacing: 0.58px;
+ padding-top: 3rpx;
  text-align: center;
  border-style: none;
 
@@ -214,5 +215,6 @@ text-align: right;
   font-size: 14px;
   color: #FF3B30;
   letter-spacing: 0;
+  
 }
 

@@ -20,6 +20,7 @@ Page({
     text_color4:"#18BB99",
     text_color5:"#18BB99",
     text_color6:"#18BB99",
+    amount:"0.00"
   },
   onLoad(options) {
     try {
@@ -105,6 +106,10 @@ Page({
       var money=e.target.dataset.money;            
       app.orderReq.total_fee=money*100+2000;
       app.orderReq.TOTAMT=money*100+2000;
+      var amount=parseFloat(money).toFixed(2);
+      this.setData({
+        amount:amount
+      })
 
       this.setData({
           color1:"#ffffff",
@@ -163,44 +168,7 @@ Page({
       
   },
 
-  getCardInfo(){
-    try{
-        var issue_flag=util.checkIssueCondition();
-        var cplc=app.getCplc();
-        if(cplc==null||cplc==undefined){
-          var json=util.getCplc();
-          if(json.resultCode === 0){
-            cplc=json.data.cplc;
-            app.setCplc(cplc);
-          }else{
-            return "queryCplc";
-          }         
-        }
-        var jsoncard=util.readCardInfo();
-        if(jsoncard.resultCode===0){
-          this.setData({
-             cardInfo:jsoncard,
 
-          });
-          
-          return "ok";
-        }
-        if(issue_flag!==0){
-          return "虚拟卡功能不支持:"+issue_flag;
-
-        }
-
-        var read_flag=util.checkRechargeCondition();
-        if(read_flag!==0){
-          return "checkServiceStatus-rechargeService"
-        }
-
-    }catch(e){
-        console.log(e);
-        return "虚拟卡服务繁忙,请稍后再试";
-    }
-
-  },
 
 
 
@@ -260,12 +228,14 @@ Page({
 
   },
   getOrderData(url){
+
     my.request({
       url: url,
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
         console.log('resp data', resp.data);
+
         if(resp.data.return_code=="success"){
           app.orderResq.orderId=resp.data.return_msg.orderId;
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
@@ -280,6 +250,13 @@ Page({
         
       },
       fail: (err) => {
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.alert({
+            title: '提示',
+            content:'订单申请失败' 
+          });
         console.log('error', err);
 
       },
@@ -330,6 +307,10 @@ Page({
           my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
           console.log("充值失败");
+          my.alert({
+            title: '提示',
+            content:'开卡失败' 
+          });
           app.setCreatKeyi(2);
         }
 
@@ -338,6 +319,12 @@ Page({
       },
       fail: (err) => {
         console.log('error', err);
+        my.alert({
+            title: '提示',
+            content:'开卡失败',
+
+          });
+
 
       },
 

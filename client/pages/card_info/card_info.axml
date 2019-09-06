@@ -82,8 +82,8 @@
 
     </view>
     <view a:if="{{!keyi}}" class="info_right">暂无</view>
-    <view a:if="{{keyi}}" onTap="go_keyi" class="info_right"  >1笔可疑记录
-      <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
+    <view a:if="{{keyi}}" onTap="go_keyi" class="info_right" style="color: #FF3B30"  >1笔可疑记录
+      <image mode="scaleToFill" src="/resource/red_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
     </view>
 
   </view>
@@ -100,7 +100,7 @@
 
   </view>
 
-  <view class="info_message" >
+  <view class="info_message" style="border-style: none">
     <view>
       <view class="info_left">
         有效期

@@ -1,25 +1,139 @@
 const app= getApp();
 Page({
-  data: {},
+  data: {
+    keyidata:{
+
+    },
+    showkeyi:false,
+    Transdt:'',
+    TransType:'',
+    TransAmt:'',
+    type:'',
+    orderId:''
+  },
   onLoad() {
     this.get_keyi();
 
   },
   get_keyi(){
+    var that=this;
+    my.showLoading({
+        content: '查询中',
+      });
     var url=app.getKeyiList();
     app.log(url);
     my.request({
       url: url,
       method: 'GET',
       dataType: 'json',
-      success: (resp) => {        
+      success: (resp) => { 
+        my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });       
         console.log('resp data', resp.data);
         
         if(resp.data.return_code=="success"){
-          console.log("查询成功");
+          console.log("可疑查询成功");
+          var return_msg=resp.data.return_msg;
+
+          app.log(return_msg);
+          var msg=JSON.parse(return_msg);
+          app.log("msg.TotNum----" + msg.TotNum);
+
+          if(msg.TotNum==0){
+            that.setData({
+              showkeyi:false
+            })
+            my.alert({
+              title: '提示',
+              content:'没有可疑交易' ,
+              success: () => {
+                that.change_flag();
+
+              }
+            });
+          }else{
+
+            var data=msg.data;
+         
+
+            app.log("data0------"+data[0]);
+            app.log("datalength"+data.length);
+            for(var i=0;i< data.length;i++){
+              app.log("data---"+data[i]);
+              
+              if(data[i].TransType=='00000012'||data[i].TransType=='00000013'){
+
+                  
+                var amt=parseInt(data[i].TransAmt)/100;
+                var year=data[i].Transdt.substring(0,4);
+                var month=data[i].Transdt.substring(4,6);
+                var day=data[i].Transdt.substring(6,8);
+                var h=data[i].Transdt.substring(8,10);
+                var min=data[i].Transdt.substring(10,12);
+                var sec=data[i].Transdt.substring(12,14);
+                var time=year+"-"+month+"-"+day+" "+h+":"+min+":"+sec;
+                var note=data[i].Note.split(",");
+
+                app.log(note[3])
+
+                that.setData({
+                  keyidata:data[i],
+                  showkeyi:true,
+                  Transdt:time,
+                  TransAmt:amt,
+                  orderId:note[3]
+
+                })
+                if(data[i].TransType=='00000013'){
+
+                  that.setData({
+                    TransType:"充值可疑",
+                    type:'00000013'
+                  })
+                }else if(data[i].TransType=='00000012'){
+
+                  that.setData({
+                    TransType:"开卡可疑",
+                    type:'00000012'
+                  })
+
+                }
+                break;
+
+              }
+            }
+            if(that.data.showkeyi==false){
+              my.alert({
+                title: '提示',
+                content:'没有可疑交易' ,
+                success: () => {
+                  that.change_flag();
+
+                }
+              });
+
+            }
+          }
          
         }else{
           console.log("查询失败");
+          var return_msg=resp.data.return_msg;
+          if(return_msg=='交易未处理'){
+
+            that.setData({
+               showkeyi:false
+            })
+            my.alert({
+              title: '提示',
+              content:'没有可疑交易' ,
+              success: () => {
+                that.change_flag();
+
+              }
+            });
+
+          }
         }
 
 
@@ -27,6 +141,24 @@ Page({
       },
       fail: (err) => {
         console.log('error', err);
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.get_keyi();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
 
       },
 
@@ -35,7 +167,7 @@ Page({
   },
   re_writecard(){
     var that=this;
-    var url=app.searchCardStatus();
+    var url=app.searchCardStatus(this.data.orderId);
     var taskStatusMsg="";
     var flag;
     app.log(url);
@@ -48,6 +180,7 @@ Page({
         
         if(resp.data!=null&&resp.data.resCode=="9000"){
           if(resp.data.taskStatus){
+            app.log(resp.data);
             var taskStatus=resp.data.taskStatus;
             if (taskStatus=="0") {
 								/*0：受理
@@ -63,13 +196,16 @@ Page({
 								that.doRetry();
 							}else if (taskStatus=="2") {
 								taskStatusMsg = "订单已完成";
+                that.get_keyi()
 							}else if (taskStatus=="3") {
 								taskStatusMsg = "订单已失败";
+                that.get_keyi()
 							}else if (taskStatus=="4") {
 								taskStatusMsg = "订单取消中";
 								that.doRetry();
 							}else if (taskStatus=="5") {
 								taskStatusMsg = "订单已取消";
+                that.get_keyi()
 							}else{
 								taskStatusMsg = "状态["+taskStatus+"]";
 								that.doRetry();
@@ -118,6 +254,10 @@ Page({
           console.log("查询成功");
          
         }else{
+          my.alert({
+            title: '提示',
+            content:'可疑交易处理失败' 
+          });
           console.log("查询失败");
         }
 
@@ -137,8 +277,100 @@ Page({
 
   },
   doRetry(){
+    var that=this;
+    if(that.data.type="00000013"){
+      that.recharge_card();
+    }else if(that.data.type="00000012"){
+      that.creat_card();
+
+    }
 
 
-  }
+  },
+  change_flag(){
+    app.setCreatKeyi(0);
+    app.setChargeKeyi(0);
+  },
+  creat_card(){
+    var that = this;
+
+    var pa={
+      issuerID:app.issuer_Id,
+      spID:app.spId,
+      orderNo:'111'
+    }
+    var params= JSON.stringify(pa);
+    console.log(params);
+    try{
+    my.call(app.plugin,
+      {
+        method: 'issueCard',
+        param:params
+      },
+      function (result) {
+        if(result.resultCode==0){
+          app.setCreatKeyi(5);
+           my.alert({
+            title: result.resultCode,
+            content: '开卡成功', 
+           });
+           that.get_keyi();  
+
+
+        }else if(result.resultCode==-9000){
+
+          that.creat_card();
+
+
+        }else{
+          app.setCreatKeyi(4);
+
+           //app.setCreatCardFlag(false);
+
+        }
+  
+  
+      });
+
+    }catch(e){
+
+    }
+
+  },
+  recharge_card(){
+
+    var that=this;
+    var pa={
+      issuerID:app.issuer_Id,
+      spID:app.spId,
+      orderNo:'111'
+    }
+    var params= JSON.stringify(pa);
+    console.log(params);
+    my.call(app.plugin,
+    {
+      method: 'rechargeCard',
+      param:params
+  },
+  function (result) {
+  
+     if(result.resultCode==0){
+        app.setChargeKeyi(5);
+        that.get_keyi();
+
+
+      }else if(result.resultCode==-9000){
+        that.recharge_card();
+
+      }else{
+        app.setChargeKeyi(4);
+        my.alert({
+          title: result.resultCode,
+          content: '充值失败', 
+          });
+      }
+  });
+
+  },  
 
 });

@@ -1,12 +1,12 @@
 <view class="atd-config-transparent-header">
-  <view class="record">
+  <view a:if="{{showkeyi}}" class="record">
     <view class="text1">
-      <view>充值可疑（当前设备）</view>
-      <view>+30.00</view>
+      <view>{{TransType}}</view>
+      <view>{{TransAmt}}</view>
     </view>
-    <view class="text2">2019-08-02 07:42:55</view>
+    <view class="text2">{{Transdt}}</view>
     <view class="bar"></view>
-    <view class="text3">重写卡片
+    <view onTap="re_writecard" class="text3">重写卡片
       <image style="width:14rpx;height:24rpx;margin-left:10rpx;margin-top:2rpx" mode="scaleToFill" src="/resource/green_arrow.png"/>
     </view>
   </view>
