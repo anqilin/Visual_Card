@@ -281,7 +281,6 @@ Page({
       param:params
   },
   function (result) {
-  //TODO
      if(result.resultCode==0){
         app.setChargeKeyi(5);
         my.redirectTo({
