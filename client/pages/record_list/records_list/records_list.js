@@ -7,12 +7,16 @@ Page({
         transDate:"2019-08-02 07:42:55",
         transAmount:"-3.00元"
       }
-    ]
+    ],
+    show_warn:true,
   },
   onLoad() {},
   onShow(){
+    this.setData({
+      show_warn:true
+    })
 
-    this.data.record_list=app.cardInfo.transRecords;
+    this.data.record_list=app.cardInfo.transRecords;    
     
     app.log(this.data.record_list);
     for(var i=0;i<this.data.record_list.length;i++){
@@ -29,4 +33,9 @@ Page({
 
 
   },
+  close_warn(){
+    this.setData({
+      show_warn:false
+    })
+  }
 });
