@@ -95,10 +95,10 @@ Page({
       function (result) {
         if(result.resultCode==0){
           app.setCreatKeyi(5);
-           my.alert({
+           /*my.alert({
             title: result.resultCode,
             content: '开卡成功', 
-           });
+           });*/
 
           that.data.bind_card=true;
 
@@ -115,6 +115,7 @@ Page({
               title: result.resultCode,
               content: '开卡失败', 
            });
+           my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
 
         }
   

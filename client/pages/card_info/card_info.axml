@@ -15,7 +15,7 @@
     <view class="view1">     
       <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
       <view class="imageview1">
-        <button onTap="setDefault" class="use_state" size="mini" type="primary">{{cardstatus}}</button>
+        <button style="background:{{cardstatusback}};color:{{cardstatuscolor}}" onTap="setDefault" class="use_state" size="mini" type="primary">{{cardstatus}}</button>
       </view>
 
     </view>
@@ -31,7 +31,8 @@
         </view>
       <view class="info2">
         <view class="info3">交通卡余额：</view>
-        <view class="info4">{{balance}}元</view>
+        <view style="color:{{balance_color}}" class="info4">{{balance}}</view>
+        <view class="info4">元</view>
       </view>
       <view onTap="show_fee" class="info2" style="margin-top:9rpx">
         <view class="info5" >可退服务费</view>

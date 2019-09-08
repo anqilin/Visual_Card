@@ -40,7 +40,7 @@ Page({
 
     var token=app.userInfo.token;
     if(token!=""){
-        console.log("以获取用户信息")
+        console.log("已获取用户信息")
       
     }else{
       this.getUserInfo();
@@ -52,7 +52,7 @@ Page({
   },
   getUserInfo(){
     var that = this;
-    console.log('getAuth--start');
+    app.log('getAuth--start');
       my.showLoading({
         content: '查询中',
       });
@@ -60,7 +60,7 @@ Page({
       scopes: 'auth_user',
       success: (res) => {
         if(res.authCode){
-          console.log(res.authCode);
+          app.log(res.authCode);
           var code=res.authCode;         
           this.getHttpUserInfo(code);
           
@@ -69,7 +69,7 @@ Page({
 
       },
       fail: (res) => {
-          console.log('getAuth--failed:' +  JSON.stringify(res));
+          app.log('getAuth--failed:' +  JSON.stringify(res));
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -179,7 +179,7 @@ Page({
     var url = app.SERVER_URL
 					+ "handapp_app/AlipayCommRegisterServlet?";
     url=url+"code="+code;
-    console.log(url);
+    app.log(url);
     my.request({
       url: url,
       method: 'GET',
@@ -195,13 +195,13 @@ Page({
 
         }
         
-        console.log('resp data', resp.data); 
+        app.log('resp data'+resp.data); 
 
 
         
       },
       fail: (res) => {
-          console.log('HttpUserInfo--failed:' +  JSON.stringify(res));
+          app.log('HttpUserInfo--failed:' +  JSON.stringify(res));
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -234,7 +234,7 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
-        console.log('resp data', resp.data);
+        app.log('resp data:'+resp.data);
 
         if(resp.data.return_code=="success"){
           app.orderResq.orderId=resp.data.return_msg.orderId;
@@ -257,7 +257,7 @@ Page({
             title: '提示',
             content:'订单申请失败' 
           });
-        console.log('error', err);
+        app.log(err);
 
       },
 
@@ -269,11 +269,11 @@ Page({
   
       tradeNO: app.orderResq.content,
       success: (res) => {
-        console.log(res.resultCode);
+        app.log("付款返回"+res.resultCode);
         if(res.resultCode=="9000"){
           var url=app.getCreatCardRequest();
           //var url=app.getRechargeCardOrder();
-          console.log(url);
+          app.log(url);
           app.setCreatKeyi(1);
           this.goCreatCard(url);
 
@@ -282,7 +282,7 @@ Page({
 
       },
       fail: (res) => {
-        console.log(res.resultCode);
+        app.log("付款失败"+res.resultCode);
 
 
 
@@ -297,13 +297,13 @@ Page({
       success: (resp) => {        
         console.log('resp data', resp.data);
         
-        my.alert({
+        /*my.alert({
           title: resp.data.resCode,
           content: resp.data.resDesc, 
-        });
+        });*/
         if(resp.data.resCode=="9000"){
-          console.log("充值成功");
-           app.setCreatKeyi(3);
+          console.log("开卡接口成功");
+          app.setCreatKeyi(3);
           my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
           console.log("充值失败");

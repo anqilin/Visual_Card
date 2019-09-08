@@ -7,7 +7,7 @@ Page({
     ueerNotLogin:true,
     cardInfo:{},
     card_staus:false,
-    error_message:"暂不支持开卡",
+    error_message:"手机不支持开卡",
 
 
   },
@@ -33,6 +33,10 @@ Page({
         url: '../index/index'
       });
     }*/
+
+ 
+  },
+  onShow(){
     var keyiflag=app.getCreatKeyi();
     if(keyiflag==null||keyiflag==undefined){
       this.get_cplc();
@@ -44,7 +48,7 @@ Page({
       this.get_cplc();
 
     }
- 
+
   },
 
   /**
@@ -127,6 +131,10 @@ Page({
         app.logiccardno=result.data.logicCardNo;
         app.balance=result.data.balance; 
         my.navigateTo({ url: '../card_info/card_info' });
+        /*my.redirectTo({
+          url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+
+        });*/
 
       }else if(result.resultCode==-9000){
           that.read_cardInfo();

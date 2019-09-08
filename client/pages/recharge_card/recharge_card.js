@@ -225,18 +225,14 @@ Page({
           });
 
         
-        my.alert({
-          title: resp.data.resCode,
-          content: resp.data.resDesc, 
-        });
         if(resp.data.resCode=="9000"){
-          console.log("充值成功");
+          app.log("充值成功");
           app.setChargeKeyi(3);
           this.recharge_card();
 
         }else{
           app.setChargeKeyi(2);
-          console.log("充值失败");
+          app.log("充值失败");
           my.alert({
             title: '提示',
             content:'充值失败' 
@@ -288,9 +284,11 @@ Page({
   //TODO
      if(result.resultCode==0){
         app.setChargeKeyi(5);
-        my.navigateBack({
-          delta: 1
+        my.redirectTo({
+          url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+
         });
+
 
 
       }else if(result.resultCode==-9000){

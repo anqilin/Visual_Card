@@ -9,9 +9,15 @@ Page({
     TransType:'',
     TransAmt:'',
     type:'',
-    orderId:''
+    orderId:'',
+    is_search:false
   },
   onLoad() {
+    
+
+  },
+  onShow(){
+    this.data.is_search=false;
     this.get_keyi();
 
   },
@@ -132,6 +138,13 @@ Page({
 
               }
             });
+            if(is_search){
+              my.navigateTo({
+                url:'../../success_result/success_result'
+              });
+
+            }
+
 
           }
         }
@@ -176,7 +189,8 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
-        console.log('resp data', resp.data);
+        app.log('resp data:'+ resp.data);
+        that.data.is_search=true;
         
         if(resp.data!=null&&resp.data.resCode=="9000"){
           if(resp.data.taskStatus){
@@ -244,21 +258,21 @@ Page({
 			        }else{
 
         
-                my.alert({
+              my.alert({
                   title: '提示' ,
                   content:taskStatusMsg,
               });
 
 			        }
 					}
-          console.log("查询成功");
+          app.log("查询成功");
          
         }else{
           my.alert({
             title: '提示',
             content:'可疑交易处理失败' 
           });
-          console.log("查询失败");
+          app.log("查询失败");
         }
 
 

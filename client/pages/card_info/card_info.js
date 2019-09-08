@@ -10,6 +10,9 @@ Page({
     deviceModel:"HUAWEI",
     isDefault:false,
     cardstatus:'设置默认卡片',
+    cardstatuscolor:'#108EE9',
+    cardstatusback:'#FDFDFD',
+    balance_color:'#333333'
   },
     onLoad(options) {
     try {
@@ -24,7 +27,7 @@ Page({
         content: 'onLoad 执行异常'
       });
     }
-     my.hideFavoriteMenu();
+    // my.hideFavoriteMenu();
 
     var token=app.userInfo.token;
     if(token!=""){
@@ -40,6 +43,11 @@ Page({
   },
   onShow(){
     var that=this;
+    that.setData({
+      cardstatuscolor:'#108EE9',
+      cardstatusback:'#FDFDFD',
+      balance_color:'#333333'
+    })
     that.read_cardInfo();
     that.getPhoneInfo();
     var keyiflag=app.getChargeKeyi();
@@ -84,10 +92,10 @@ Page({
 
       if(result.resultCode==0){
         app.cardInfo=result.data;
-        my.alert({
+        /*my.alert({
           title: '提示',
           content:result.data 
-        });
+        });*/
 
         var cardno=result.data.cardNo
         app.cardno=cardno;
@@ -99,10 +107,6 @@ Page({
         app.balance=balance;
         app.isDefault=isDefault;
         
-        my.showToast({
-          content:that.data.cardno,
-   
-        });
 
         that.setData({
           balance:balance,
@@ -115,6 +119,17 @@ Page({
           that.setData({
             cardstatus:"正常使用中"
           })
+          if(parseFloat(result.data.balance)<0){
+
+            that.setData({
+              cardstatus:"无法使用",
+              cardstatuscolor:'#FFFFFF',
+              cardstatusback:'#F24724',
+              balance_color:'#F24724'
+            })
+
+
+          }
         }else{
 
           that.setData({
@@ -334,7 +349,7 @@ Page({
       spID:app.spId
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     my.call(app.plugin,
       {
         method: 'startDefault',
