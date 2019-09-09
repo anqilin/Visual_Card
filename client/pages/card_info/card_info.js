@@ -27,11 +27,13 @@ Page({
         content: 'onLoad 执行异常'
       });
     }
-    // my.hideFavoriteMenu();
+    my.hideFavoriteMenu();
 
     var token=app.userInfo.token;
-    if(token!=""){
-        console.log("已获取用户信息")
+    var phonenumber=app.userInfo.phone;
+    var buyId=app.userInfo.buyId;
+    if(token!=""&&phonenumber!=""&&buyId!=""){
+        app.log("已获取用户信息")
       
     }else{
       this.getUserInfo();
@@ -49,6 +51,11 @@ Page({
       balance_color:'#333333'
     })
     that.read_cardInfo();
+    setTimeout(function(){
+
+      that.read_cardInfo();
+
+    },5000);
     that.getPhoneInfo();
     var keyiflag=app.getChargeKeyi();
     app.log("keyi"+keyiflag);
@@ -79,7 +86,7 @@ Page({
       dataItems:15
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
 
     my.call(app.plugin,
     {
@@ -165,7 +172,7 @@ Page({
   },
   getUserInfo(){
     var that = this;
-    console.log('getAuth--start');
+    app.log('getAuth--start');
       my.showLoading({
         content: '查询中',
       });
@@ -183,7 +190,7 @@ Page({
 
       },
       fail: (res) => {
-          console.log('getAuth--failed:' +  JSON.stringify(res));
+          app.log('getAuth--failed:' +  JSON.stringify(res));
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -210,7 +217,7 @@ Page({
     var url = app.SERVER_URL
 					+ "handapp_app/AlipayCommRegisterServlet?";
     url=url+"code="+code;
-    console.log(url);
+    app.log(url);
     my.request({
       url: url,
       method: 'GET',
@@ -220,19 +227,20 @@ Page({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
         if(resp.data.result_code=="success"){
+          app.log("data:"+resp.data);
           app.userInfo.phone=resp.data.phone;
           app.userInfo.token=resp.data.note;
           app.userInfo.buyId=resp.data.buyId;
 
         }
         
-        console.log('resp data', resp.data); 
+        app.log('resp data:'+ resp.data); 
 
 
         
       },
       fail: (res) => {
-          console.log('HttpUserInfo--failed:' +  JSON.stringify(res));
+          app.log('HttpUserInfo--failed:' +  JSON.stringify(res));
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -371,5 +379,8 @@ Page({
 
       });
 
+  },
+  go_method(){
+     my.navigateTo({ url: '../use_method/use_method' })
   },
 });

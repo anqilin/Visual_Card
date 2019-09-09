@@ -39,8 +39,10 @@ Page({
     }
 
     var token=app.userInfo.token;
-    if(token!=""){
-        console.log("已获取用户信息")
+    var phonenumber=app.userInfo.phone;
+    var buyId=app.userInfo.buyId;
+    if(token!=""&&phonenumber!=""&&buyId!=""){
+        app.log("已获取用户信息")
       
     }else{
       this.getUserInfo();
@@ -102,7 +104,7 @@ Page({
     });*/
   },
   onsetmoney(e){
-      console.log(e.target.dataset.money);
+      app.log(e.target.dataset.money);
       var money=e.target.dataset.money;            
       app.orderReq.total_fee=money*100+2000;
       app.orderReq.TOTAMT=money*100+2000;
@@ -295,18 +297,18 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
-        console.log('resp data', resp.data);
+        app.log('resp data:'+ resp.data);
         
         /*my.alert({
           title: resp.data.resCode,
           content: resp.data.resDesc, 
         });*/
         if(resp.data.resCode=="9000"){
-          console.log("开卡接口成功");
+          app.log("开卡接口成功");
           app.setCreatKeyi(3);
           my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
-          console.log("充值失败");
+          app.log("充值失败");
           my.alert({
             title: '提示',
             content:'开卡失败' 
@@ -335,7 +337,7 @@ Page({
   go_bind(){
       //var order_url=app.getOrder("88724922506","0009");
       var order_url=app.getOrder("","0008");
-      console.log(order_url);
+      app.log(order_url);
       this.getOrderData(order_url);
      
   }

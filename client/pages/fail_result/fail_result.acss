@@ -60,6 +60,8 @@ page {
 .text2{
   margin-top: 16rpx;
   margin-bottom: 60rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
 
   font-size: 14px;
   color: #999999;

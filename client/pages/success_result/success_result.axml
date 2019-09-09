@@ -16,8 +16,8 @@
       <view class="around">
         <image mode="scaleToFill" src="/resource/system-complete.png" style="width:100%;height:100%"/>
       </view>
-      <view class="text1">重写卡成功</view>
-      <view class="text2">处理成功，请注意NFC交通卡余额变化</view>
+      <view class="text1">{{text1}}</view>
+      <view class="text2">{{text2}}</view>
     </view>
 
 

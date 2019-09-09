@@ -9,7 +9,7 @@ Page({
       let systemInfo=app.systemInfo;
       this.setData({ systemInfo });
     } catch (e) {
-      console.log(e);
+      app.log(e);
       my.alert({
         title: '温馨提示',
         content: 'onLoad 执行异常'

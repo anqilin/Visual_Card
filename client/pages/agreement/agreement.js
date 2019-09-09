@@ -18,7 +18,7 @@ Page({
       let systemInfo=app.systemInfo;
       this.setData({ systemInfo });
     } catch (e) {
-      console.log(e);
+        app.log(e);
       my.alert({
         title: '温馨提示',
         content: 'onLoad 执行异常'
@@ -115,7 +115,7 @@ Page({
       dataItems:15
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     my.call(app.plugin,
     {
       method: 'readCardInfo',
@@ -151,7 +151,7 @@ Page({
 
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     my.call(app.plugin,
       {
         method: 'checkIssueCondition',
@@ -163,6 +163,7 @@ Page({
         
         if(result.resultCode==0){
             that.get_charge_status();
+            app.log("虚拟卡开卡状态正常")
 
           }else if(result.resultCode==-9000){
             that.get_creat_status();
@@ -178,7 +179,7 @@ Page({
 
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     my.call(app.plugin,
     {
       method: 'checkRechargeCondition',
@@ -189,6 +190,7 @@ Page({
 
       if(result.resultCode==0){
         that.data.card_staus=true;
+        app.log("虚拟卡充值状态正常")
 
       }else if(result.resultCode==-9000){
         that.get_charge_status();
@@ -199,6 +201,11 @@ Page({
     });
 
   },
+  go_message(){
+    my.navigateTo({
+      url:'../contract/contract'
+    });
+  }
 
 
 

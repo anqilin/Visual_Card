@@ -6,6 +6,9 @@ Page({
     userLogin:false,
     ueerNotLogin:true,
     cardInfo:{},
+    text1:'充值成功',
+    text2:'充值成功，请注意NFC交通卡余额变化',
+    from:1
 
 
   },
@@ -24,6 +27,14 @@ Page({
     }
 
     my.hideFavoriteMenu();
+    this.data.from=options.from;
+    if(this.data.from==0){
+      this.setData({
+        text1:'开卡成功',
+        text2:'你的上海NFC交通卡已开卡成功'
+      })
+    }
+
 
 
   },

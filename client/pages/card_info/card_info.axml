@@ -82,7 +82,7 @@
       </view>
 
     </view>
-    <view a:if="{{!keyi}}" class="info_right">暂无</view>
+    <view a:if="{{!keyi}}"  class="info_right">暂无</view>
     <view a:if="{{keyi}}" onTap="go_keyi" class="info_right" style="color: #FF3B30"  >1笔可疑记录
       <image mode="scaleToFill" src="/resource/red_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
     </view>
@@ -101,7 +101,7 @@
 
   </view>
 
-  <view class="info_message" style="border-style: none">
+  <view class="info_message" >
     <view>
       <view class="info_left">
         有效期
@@ -110,6 +110,19 @@
     </view>
 
     <view class="info_right" >{{validity}}</view>
+
+  </view>
+  <view class="info_message" style="border-style: none">
+    <view>
+      <view class="info_left">
+        使用攻略
+      </view>
+
+    </view>
+
+    <view onTap="go_method" class="info_right"  >查看
+      <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
+    </view>
 
   </view>
 
@@ -123,9 +136,9 @@
       <image mode="scaleToFill" src="/resource/app.png" style="width:80rpx;height:80rpx"/>
     </view>
     <view class="text_down">
-      提前退还服务费及退卡请下载上海交通卡APP,注册实名后操作。
+      如需退卡，请下载上海交通卡App，开卡30天后可进行退卡操作。
     </view>
 
-    <button class="button_down"  size="mini" type="primary">下载App</button>
+    <button a:if="{{false}}" class="button_down"  size="mini" type="primary">下载App</button>
   </view>
 </view>

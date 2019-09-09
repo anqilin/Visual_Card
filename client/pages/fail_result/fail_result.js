@@ -6,7 +6,7 @@ Page({
     userLogin:false,
     ueerNotLogin:true,
     cardInfo:{},
-
+    from:0,
 
   },
   onLoad(options) {
@@ -16,7 +16,7 @@ Page({
       let systemInfo=app.systemInfo;
       this.setData({ systemInfo });
     } catch (e) {
-      console.log(e);
+      app.log(e);
       my.alert({
         title: '温馨提示',
         content: 'onLoad 执行异常'
@@ -24,6 +24,12 @@ Page({
     }
 
     my.hideFavoriteMenu();
+    this.data.from=options.from;
+
+
+  },
+  onShow(){
+    
 
 
   },
@@ -38,6 +44,19 @@ Page({
       content: '您点击了"我是手机标题栏"'
     });*/
   },
+  go_back(){
+    if(this.data.from==0){
+      my.redirectTo({
+        url: '../agreement/agreement', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+
+      });
+    }else{
+      my.redirectTo({
+        url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+
+      });
+    }
+  }
 
   
 });

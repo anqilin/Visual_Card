@@ -6,7 +6,7 @@
     </view>
     <view class="text2">{{Transdt}}</view>
     <view class="bar"></view>
-    <view onTap="re_writecard" class="text3">重写卡片
+    <view onTap="re_writecard" class="text3">去验证
       <image style="width:14rpx;height:24rpx;margin-left:10rpx;margin-top:2rpx" mode="scaleToFill" src="/resource/green_arrow.png"/>
     </view>
   </view>

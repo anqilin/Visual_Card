@@ -58,7 +58,7 @@ Page({
     });*/
   },
   onsetmoney(e){
-      console.log(e.target.dataset.money);
+      app.log(e.target.dataset.money);
       var money=e.target.dataset.money;
       app.orderReq.total_fee=money*100;
       app.orderReq.TOTAMT=money*100;
@@ -136,7 +136,7 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
-        console.log('resp data', resp.data);
+        app.log('resp data:'+resp.data);
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -179,11 +179,11 @@ Page({
   
       tradeNO: app.orderResq.content,
       success: (res) => {
-        console.log(res.resultCode);
+        app.log(res.resultCode);
         if(res.resultCode=="9000"){
           //var url=app.getCreatCardRequest();
           var url=app.getRechargeCardOrder();
-          console.log(url);
+          app.log(url);
           app.setChargeKeyi(1);
           this.goChargeCard(url);
 
@@ -197,7 +197,7 @@ Page({
 
       },
       fail: (res) => {
-        console.log(res.resultCode);
+        app.log(res.resultCode);
         my.alert({
           title: '提示' ,
           content:'支付申请失败'
@@ -219,7 +219,7 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
-        console.log('resp data', resp.data);
+        app.log('resp data:'+ resp.data);
         my.hideLoading({
             page: that,  
           });
@@ -274,7 +274,7 @@ Page({
       orderNo:'111'
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     my.call(app.plugin,
     {
       method: 'rechargeCard',
@@ -299,6 +299,10 @@ Page({
           title: result.resultCode,
           content: '充值失败', 
           });
+        my.redirectTo({
+          url: '../card_info/card_info', 
+
+        });
       }
   });
 
@@ -306,7 +310,7 @@ Page({
   recharge(){
      var order_url=app.getOrder(app.cardno,"0009");
       
-      console.log(order_url);
+      app.log(order_url);
       this.getOrderData(order_url);
 
   },

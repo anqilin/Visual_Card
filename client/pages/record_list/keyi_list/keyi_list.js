@@ -36,10 +36,10 @@ Page({
         my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });       
-        console.log('resp data', resp.data);
+          app.log('resp data:'+resp.data);
         
         if(resp.data.return_code=="success"){
-          console.log("可疑查询成功");
+          app.log("可疑查询成功");
           var return_msg=resp.data.return_msg;
 
           app.log(return_msg);
@@ -50,14 +50,7 @@ Page({
             that.setData({
               showkeyi:false
             })
-            my.alert({
-              title: '提示',
-              content:'没有可疑交易' ,
-              success: () => {
-                that.change_flag();
 
-              }
-            });
           }else{
 
             var data=msg.data;
@@ -123,13 +116,14 @@ Page({
           }
          
         }else{
-          console.log("查询失败");
+          app.log("查询失败");
           var return_msg=resp.data.return_msg;
           if(return_msg=='交易未处理'){
 
             that.setData({
                showkeyi:false
             })
+            that.change_flag();
             my.alert({
               title: '提示',
               content:'没有可疑交易' ,
@@ -138,9 +132,25 @@ Page({
 
               }
             });
-            if(is_search){
-              my.navigateTo({
-                url:'../../success_result/success_result'
+            if(that.data.is_search){
+
+              if(this.data.type=="00000012"){
+                  my.redirectTo({
+                    url:'../../success_result/success_result?from=0'
+                  });
+
+              }else if(this.data.type=="00000013"){
+                my.redirectTo({
+                  url: '../../success_result/success_result?from=1', 
+
+                });
+
+              }
+
+
+            }else{
+              my.redirectTo({
+                url:'../../agreement/agreement'
               });
 
             }
@@ -153,7 +163,7 @@ Page({
         
       },
       fail: (err) => {
-        console.log('error', err);
+        app.log('error:'+err);
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -228,27 +238,35 @@ Page({
           }
           if(resp.data.flag){
 						flag=resp.data.flag;
-            if ("00".equals(flag)) {
+            app.log("flag:"+flag)
+            my.alert({
+              title: '提示' ,
+              content:resp.data
+            });
+            if ("00"==flag) {
 			/*	00: 我们已帮你进行了退款，请关于钱包余额变化
 				01: 退款发生错误，请联系我们的客服
 				02: 请耐心等待*/
 
-              my.alert({
+             /* my.alert({
                 title: '提示' ,
                 content:'您的资金将在7个工作日内退还支付账户，退款到账时间以各银行实际到账时间为准',
-              });
-			      } else if("01".equals(flag)) {
+              });*/
+              that.show_fail();
+			      } else if("01"==flag) {
 
-                my.alert({
+               /* my.alert({
                   title: '提示' ,
                   content:'退款发生错误，请联系我们的客服',
-                });
-		        	}else if ("02".equals(flag)) {
+                });*/
+                that.show_fail();
+		        	}else if ("02"==flag) {
 
                   my.alert({
                     title: '提示' ,
                     content:'请耐心等待',
                   });
+                  that.show_fail();
 
 			        }else if(flag==null){
 				
@@ -279,7 +297,7 @@ Page({
         
       },
       fail: (err) => {
-        console.log('error', err);
+        app.log('error:'+err);
         my.alert({
           title: '' ,
           content:'获取数据失败'
@@ -314,7 +332,7 @@ Page({
       orderNo:'111'
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     try{
     my.call(app.plugin,
       {
@@ -360,7 +378,7 @@ Page({
       orderNo:'111'
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     my.call(app.plugin,
     {
       method: 'rechargeCard',
@@ -385,6 +403,20 @@ Page({
       }
   });
 
-  },  
+  }, 
+  show_fail(){
+    if(this.data.type=="00000012"){
+      my.redirectTo({
+        url: '../../fail_result/fail_result?from=0', 
+      });
+
+    }else if(this.data.type=="00000013"){
+      my.redirectTo({
+        url: '../../fail_result/fail_result?from=1', 
+      });
+
+    }
+
+  } 
 
 });

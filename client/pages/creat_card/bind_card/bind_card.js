@@ -57,7 +57,10 @@ Page({
       })
       num++;
       if(num==100){
-        that.data.percent=0;
+
+        that.setData({
+          percent:0
+        })
       }
     if (that.data.bind_card==true) {
         clearInterval(interval);
@@ -85,7 +88,7 @@ Page({
       orderNo:'111'
     }
     var params= JSON.stringify(pa);
-    console.log(params);
+    app.log(params);
     try{
     my.call(app.plugin,
       {
@@ -115,7 +118,7 @@ Page({
               title: result.resultCode,
               content: '开卡失败', 
            });
-           my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
+           my.navigateTo({ url: '../../record_list/keyi_list/keyi_list' });
 
         }
   

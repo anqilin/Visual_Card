@@ -187,7 +187,7 @@ text-align: right;
   align-items: center;
 }
 .text_down{
-  margin-right: 20rpx;
+  margin-right: 40rpx;
   margin-left: 18rpx;
 
   font-size: 13px;
