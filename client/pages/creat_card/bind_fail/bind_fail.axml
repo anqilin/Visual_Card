@@ -26,5 +26,5 @@
 
   <view class="text1">该卡还未绑定设备</view>
   <view class="text2">绑定截止时间：{{time}}</view>
-  <button class="rechange_button" size="default" type="primary">重新绑定</button>
+  <button class="rechange_button" hover-class="button_hover" size="default" type="primary">重新绑定</button>
 </view>

@@ -230,12 +230,19 @@ Page({
 
   },
   getOrderData(url){
+    var that=this;
+      my.showLoading({
+        content: '订单申请中',
+      });
 
     my.request({
       url: url,
       method: 'GET',
       dataType: 'json',
-      success: (resp) => {        
+      success: (resp) => { 
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });       
         app.log('resp data:'+resp.data);
 
         if(resp.data.return_code=="success"){
@@ -292,11 +299,18 @@ Page({
     });
   },
   goCreatCard(url){
+    var that=this;
+      my.showLoading({
+        content: '开卡申请中',
+      });
       my.request({
       url: url,
       method: 'GET',
       dataType: 'json',
-      success: (resp) => {        
+      success: (resp) => {
+        my.hideLoading({
+          page:that,
+        });        
         app.log('resp data:'+ resp.data);
         
         /*my.alert({
@@ -308,11 +322,12 @@ Page({
           app.setCreatKeyi(3);
           my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
-          app.log("充值失败");
+          app.log("开卡失败");
           my.alert({
             title: '提示',
             content:'开卡失败' 
           });
+
           app.setCreatKeyi(2);
         }
 
@@ -320,6 +335,9 @@ Page({
         
       },
       fail: (err) => {
+        my.hideLoading({
+          page:that,
+        }); 
         console.log('error', err);
         my.alert({
             title: '提示',
@@ -335,6 +353,14 @@ Page({
 
   },
   go_bind(){
+    var that=this
+    if(that.data.amount=="0.00"){
+      my.showToast({
+        content:'请选择开卡金额'
+
+      });
+      return;
+    }
       //var order_url=app.getOrder("88724922506","0009");
       var order_url=app.getOrder("","0008");
       app.log(order_url);

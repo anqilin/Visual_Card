@@ -4,6 +4,7 @@ Page({
   data: {
     systemInfo: {},
     keyi:true,
+    cannext:true,
     cardno:"1234",
     balance:"",
     validity:"2024/3/22",
@@ -42,6 +43,7 @@ Page({
     }
     //this.read_cardInfo();
 
+
   },
   onShow(){
     var that=this;
@@ -62,18 +64,21 @@ Page({
     if(keyiflag==null||keyiflag==undefined){
 
       that.setData({
-        keyi:false
+        keyi:false,
+        cannext:true
       })
     }else if(keyiflag==0||keyiflag==2||keyiflag==5){
       app.log(that.data.keyi);
       that.setData({
-        keyi:false
+        keyi:false,
+        cannext:true
       })
       app.log(that.data.keyi);
-    }else if(keyiflag==1||keyiflag==3||keyiflag==4){
+    }else if(keyiflag==3||keyiflag==4){
 
        that.setData({
-        keyi:true
+        keyi:true,
+        cannext:false
       })
     }
 
@@ -113,6 +118,7 @@ Page({
         app.logiccardno=logicno;
         app.balance=balance;
         app.isDefault=isDefault;
+        app.isHasCard=true;
         
 
         that.setData({
@@ -232,6 +238,9 @@ Page({
           app.userInfo.token=resp.data.note;
           app.userInfo.buyId=resp.data.buyId;
 
+          that.search_keyi()
+
+
         }
         
         app.log('resp data:'+ resp.data); 
@@ -269,7 +278,7 @@ Page({
 
   go_recharge(){
     var that=this;
-    if(that.data.keyi==true){
+    if(that.data.cannext==false){
       my.alert({
         title: '提示',
         content: '请处理可疑交易'
@@ -358,12 +367,18 @@ Page({
     }
     var params= JSON.stringify(pa);
     app.log(params);
+    my.showLoading({
+        content: '正在设置',
+    });
     my.call(app.plugin,
       {
         method: 'startDefault',
         param:params
       },
       function (result) {
+        my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+        });  
         if(result.resultCode==0){
            that.read_cardInfo()
 
@@ -383,4 +398,113 @@ Page({
   go_method(){
      my.navigateTo({ url: '../use_method/use_method' })
   },
+  change_flag(){
+    app.setCreatKeyi(0);
+    app.setChargeKeyi(0);
+  },
+  search_keyi(){
+    var that=this;
+    my.showLoading({
+        content: '查询中',
+      });
+    var url=app.getKeyiList();
+    app.log(url);
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => { 
+        my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });       
+          app.log('resp data:'+resp.data);
+        
+        if(resp.data.return_code=="success"){
+          app.log("可疑查询成功");
+          var return_msg=resp.data.return_msg;
+
+          app.log(return_msg);
+          var msg=JSON.parse(return_msg);
+          app.log("msg.TotNum----" + msg.TotNum);
+
+          if(msg.TotNum==0){
+            that.setData({
+              keyi:false,
+              cannext:true
+            });
+            that.change_flag();
+
+          }else{
+
+            var data=msg.data;
+         
+
+            app.log("datalength"+data.length);
+
+            for(var i=0;i< data.length;i++){
+              app.log("data---"+data[i]);
+              
+              if(data[i].TransType=='00000012'||data[i].TransType=='00000013'){
+                that.setData({
+                  keyi:true,
+                  cannext:false
+                })
+                return;
+              }else if(data[i].TransType=='00000015'){
+                that.setData({
+                  keyi:true,
+                  cannext:true
+                })
+              
+
+              }
+            }
+
+
+          }
+         
+        }else{
+          app.log("查询失败");
+          var return_msg=resp.data.return_msg;
+          app.log(return_msg);
+          if(return_msg=='交易未处理'){
+
+            that.setData({
+               keyi:false,
+               cannext:true
+            })
+            that.change_flag();
+
+          }
+        }
+
+
+        
+      },
+      fail: (err) => {
+        app.log('error:'+err);
+          my.hideLoading({
+            page: that,  
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.search_keyi();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
+
+      },
+
+    });
+
+  }
 });

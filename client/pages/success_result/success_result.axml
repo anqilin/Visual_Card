@@ -24,6 +24,6 @@
   </view>
 
 </view>
-<button class="success_button" size="default" type="primary" onTap="go_fail">完成</button>
+<button class="success_button" hover-class="button_hover" size="default" type="primary" onTap="go_fail">完成</button>
 
 

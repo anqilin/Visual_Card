@@ -47,12 +47,12 @@ Page({
   go_back(){
     if(this.data.from==0){
       my.redirectTo({
-        url: '../agreement/agreement', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+        url: '../record_list/keyi_list/keyi_list', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
 
       });
     }else{
       my.redirectTo({
-        url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+        url: '../record_list/keyi_list/keyi_list', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
 
       });
     }

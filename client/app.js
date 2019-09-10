@@ -60,6 +60,7 @@ App({
   isDefault:false,
   systemInfo: {} ,// 手机基础信息
   plugin:'virtualServiceH5Plugin',
+  isHasCard:false,
   
 
   onLaunch(options) {
@@ -330,6 +331,18 @@ App({
 					+ "handapp_app/SearchOrderStateServlet_Android?";
     url=url+"cardType=" + "1";
     url=url+"&orderId="+orderid;
+    url=url+"&commToken=" + this.userInfo.token;
+    url=url+"&phone="+this.userInfo.phone;
+    return url;
+
+  },
+  creditRefund(orderid,money){
+    var url = this.SERVER_URL
+					+ "handapp_app/CancelCreditOrder?";
+
+    url=url+"orderId="+orderid;
+    url=url+"paytype="+"0011";
+    url=url+"money="+money;
     url=url+"&commToken=" + this.userInfo.token;
     url=url+"&phone="+this.userInfo.phone;
     return url;

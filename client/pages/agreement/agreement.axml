@@ -72,6 +72,6 @@
     
 
   </view>
-  <button onTap="agree_on" onTap="go_bind" class="sure_button" size="default" type="primary">授权并开通NFC交通卡</button>
+  <button onTap="agree_on"  class="sure_button" hover-class="button_hover" size="default" type="primary">授权并开通NFC交通卡</button>
   
 </view>

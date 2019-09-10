@@ -275,12 +275,19 @@ Page({
     }
     var params= JSON.stringify(pa);
     app.log(params);
+    my.showLoading({
+        content: '充值中',
+    });
     my.call(app.plugin,
     {
       method: 'rechargeCard',
       param:params
   },
   function (result) {
+      my.hideLoading({
+        page:that,
+      });  
+    app.log(result);
      if(result.resultCode==0){
         app.setChargeKeyi(5);
         my.redirectTo({
@@ -296,7 +303,7 @@ Page({
       }else{
         app.setChargeKeyi(4);
         my.alert({
-          title: result.resultCode,
+          title: '提示',
           content: '充值失败', 
           });
         my.redirectTo({
@@ -308,6 +315,22 @@ Page({
 
   },     
   recharge(){
+    var that=this;
+    if(that.data.afterbalance==that.data.mybalance){
+      my.showToast({
+        content:'请选择充值金额'
+
+      });
+      return;
+    }
+    if(that.data.afterbalance>1000){
+      my.showToast({
+        content:'卡内总金额不得大于1000元'
+
+      });
+      return;
+
+    }
      var order_url=app.getOrder(app.cardno,"0009");
       
       app.log(order_url);

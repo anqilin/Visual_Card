@@ -40,7 +40,7 @@ Page({
     var keyiflag=app.getCreatKeyi();
     if(keyiflag==null||keyiflag==undefined){
       this.get_cplc();
-    }else if(keyiflag==1||keyiflag==3||keyiflag==4){
+    }else if(keyiflag==3||keyiflag==4){
       app.log("存在未完成开卡任务");
       my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
 
@@ -130,6 +130,7 @@ Page({
         app.cardno=result.data.cardNo;
         app.logiccardno=result.data.logicCardNo;
         app.balance=result.data.balance; 
+        app.isHasCard=true;
         my.navigateTo({ url: '../card_info/card_info' });
         /*my.redirectTo({
           url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用

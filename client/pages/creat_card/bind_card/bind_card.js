@@ -96,6 +96,7 @@ Page({
         param:params
       },
       function (result) {
+        app.log(result)
         if(result.resultCode==0){
           app.setCreatKeyi(5);
            /*my.alert({
@@ -115,7 +116,7 @@ Page({
            clearInterval(that.data.interval);
            //app.setCreatCardFlag(false);
             my.alert({
-              title: result.resultCode,
+              title: '提示',
               content: '开卡失败', 
            });
            my.navigateTo({ url: '../../record_list/keyi_list/keyi_list' });

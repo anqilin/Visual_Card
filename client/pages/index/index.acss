@@ -118,9 +118,9 @@ page {
 
 }
 .button1{
-  padding-top: 3rpx;
+  padding-top: 5rpx;
   width: 180rpx;
-  height: 60rpx;
+  height: 65rpx;
   border: 2px solid #18BB99;
   background-color: #ffffff;
   color: #18BB99 ;

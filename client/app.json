@@ -15,7 +15,8 @@
     "pages/recharge_card/recharge_card",
     "pages/delect_card/delect_card",
     "pages/test/test",
-    "pages/contract/contract"
+    "pages/contract/contract",
+    "pages/refund_result/refund_result"
   ],
   "window": {
     "titleBarColor": "#ffffff"

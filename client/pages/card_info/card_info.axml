@@ -45,7 +45,7 @@
     
 
   </view>
-  <button onTap="go_recharge" class="rechange_button" size="default" type="primary">立刻充值</button>
+  <button onTap="go_recharge" class="rechange_button" hover-class="button_hover" size="default" type="primary">立刻充值</button>
 </view>
 <view class="bar"></view>
 <view class="info" style="padding-left: 40rpx;padding-right: 40rpx;margin-top: 0rpx;">

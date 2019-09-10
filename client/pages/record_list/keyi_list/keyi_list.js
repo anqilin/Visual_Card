@@ -1,16 +1,15 @@
 const app= getApp();
 Page({
   data: {
-    keyidata:{
-
-    },
+    keyidata:[],
     showkeyi:false,
     Transdt:'',
     TransType:'',
     TransAmt:'',
     type:'',
     orderId:'',
-    is_search:false
+    is_search:false,
+    flag:'10'
   },
   onLoad() {
     
@@ -18,6 +17,7 @@ Page({
   },
   onShow(){
     this.data.is_search=false;
+    this.data.flag='10';
     this.get_keyi();
 
   },
@@ -58,13 +58,16 @@ Page({
 
             app.log("data0------"+data[0]);
             app.log("datalength"+data.length);
+            var jsonarray=new Array();
             for(var i=0;i< data.length;i++){
               app.log("data---"+data[i]);
               
-              if(data[i].TransType=='00000012'||data[i].TransType=='00000013'){
+              if(data[i].TransType=='00000012'||data[i].TransType=='00000013'||data[i].TransType=='00000015'){
+                var json={};
 
                   
-                var amt=parseInt(data[i].TransAmt)/100;
+                var amt=(parseFloat(data[i].TransAmt)/100).toFixed(2);
+                var fen=parseInt(data[i].TransAmt);
                 var year=data[i].Transdt.substring(0,4);
                 var month=data[i].Transdt.substring(4,6);
                 var day=data[i].Transdt.substring(6,8);
@@ -75,44 +78,38 @@ Page({
                 var note=data[i].Note.split(",");
 
                 app.log(note[3])
+                json.orderId=note[3],
+                json.Transdt=time;
+                json.TransAmt=amt;
+                json.fen=fen;
 
-                that.setData({
-                  keyidata:data[i],
-                  showkeyi:true,
-                  Transdt:time,
-                  TransAmt:amt,
-                  orderId:note[3]
 
-                })
                 if(data[i].TransType=='00000013'){
 
-                  that.setData({
-                    TransType:"充值可疑",
-                    type:'00000013'
-                  })
-                }else if(data[i].TransType=='00000012'){
+                  json.TransType="充值可疑"
+                  json.type='00000013';
+                  json.text="去验证"
 
-                  that.setData({
-                    TransType:"开卡可疑",
-                    type:'00000012'
-                  })
+                }else if(data[i].TransType=='00000012'){
+                  
+                  json.TransType="开卡可疑"
+                  json.type='00000012';
+                  json.text="去验证"
+
+                }else if(data[i].TransType=='00000015'){
+                  json.TransType="异常交易"
+                  json.type='00000015';
+                  json.text="去退款"
 
                 }
-                break;
+                jsonarray.push(json)
 
               }
             }
-            if(that.data.showkeyi==false){
-              my.alert({
-                title: '提示',
-                content:'没有可疑交易' ,
-                success: () => {
-                  that.change_flag();
+            that.setData({
+              keyidata:jsonarray
+            })
 
-                }
-              });
-
-            }
           }
          
         }else{
@@ -124,14 +121,7 @@ Page({
                showkeyi:false
             })
             that.change_flag();
-            my.alert({
-              title: '提示',
-              content:'没有可疑交易' ,
-              success: () => {
-                that.change_flag();
 
-              }
-            });
             if(that.data.is_search){
 
               if(this.data.type=="00000012"){
@@ -145,13 +135,27 @@ Page({
 
                 });
 
+              }else if(this.data.type=="00000015"){
+                my.redirectTo({
+                  url: '../../refund_result/refund_result', 
+
+                });
+
               }
 
 
             }else{
-              my.redirectTo({
-                url:'../../agreement/agreement'
-              });
+              if(app.isHasCard){
+                my.redirectTo({
+                  url:'../../card_info/card_info'
+                });
+
+              }else{
+                my.redirectTo({
+                  url:'../../agreement/agreement'
+                });
+
+              }
 
             }
 
@@ -188,21 +192,83 @@ Page({
     });
 
   },
-  re_writecard(){
+  creditRefund(orderId,money){
+
     var that=this;
-    var url=app.searchCardStatus(this.data.orderId);
+    var url=app.creditRefund(orderId,money)
+    app.log(url);
+    my.showLoading({
+        content: '退款中',
+    });
+    my.request({
+      url: url,
+      success: (resp) => {
+        my.hideLoading({
+          page:that,
+        });
+        app.log(resp.data);
+         that.data.is_search=true;
+        if(resp.data.return_code="success"){
+          
+          that.get_keyi();
+
+        }else{
+          my.alert({
+            title: '提示' ,
+            content:'退款发生错误'+resp.data.return_msg
+          });
+        }
+        
+      },
+      fail:(resp) => {
+        app.log(resp.data);
+        my.hideLoading({
+          page:that,
+        });
+        my.alert({
+          title: '提示' ,
+          content:'请求数据失败'
+        });
+
+      }
+    });
+
+  },
+  re_writecard(e){
+    var that=this;
+    app.log(e.target.dataset.type);
+    app.log(e.target.dataset.id);
+    app.log(e.target.dataset.money);
+    var type=e.target.dataset.type;
+    var orderId=e.target.dataset.id;
+    var money=e.target.dataset.money;
+    that.data.type=type;
+    if(type=='00000015'){
+      that.creditRefund(orderId,money);
+      return;
+
+    }
+    
+    var url=app.searchCardStatus(orderId);
     var taskStatusMsg="";
     var flag;
+    my.showLoading({
+        content: '查询中',
+    });
     app.log(url);
     my.request({
       url: url,
       method: 'GET',
       dataType: 'json',
-      success: (resp) => {        
+      success: (resp) => { 
+          my.hideLoading({
+            page:that,
+          });       
         app.log('resp data:'+ resp.data);
         that.data.is_search=true;
         
         if(resp.data!=null&&resp.data.resCode=="9000"){
+
           if(resp.data.taskStatus){
             app.log(resp.data);
             var taskStatus=resp.data.taskStatus;
@@ -220,16 +286,20 @@ Page({
 								that.doRetry();
 							}else if (taskStatus=="2") {
 								taskStatusMsg = "订单已完成";
-                that.get_keyi()
+                that.get_keyi();
+                return;
+
 							}else if (taskStatus=="3") {
 								taskStatusMsg = "订单已失败";
                 that.get_keyi()
+                return;
 							}else if (taskStatus=="4") {
 								taskStatusMsg = "订单取消中";
 								that.doRetry();
 							}else if (taskStatus=="5") {
 								taskStatusMsg = "订单已取消";
-                that.get_keyi()
+                that.get_keyi();
+                return;
 							}else{
 								taskStatusMsg = "状态["+taskStatus+"]";
 								that.doRetry();
@@ -239,21 +309,14 @@ Page({
           if(resp.data.flag){
 						flag=resp.data.flag;
             app.log("flag:"+flag)
-            my.alert({
-              title: '提示' ,
-              content:resp.data
-            });
-            if ("00"==flag) {
-			/*	00: 我们已帮你进行了退款，请关于钱包余额变化
-				01: 退款发生错误，请联系我们的客服
-				02: 请耐心等待*/
+            that.setData({
+              flag:flag
+            })
+            if(taskStatus=="5"||taskStatus=="3"||taskStatus=="2"){
+              if ("00"==flag) {
 
-             /* my.alert({
-                title: '提示' ,
-                content:'您的资金将在7个工作日内退还支付账户，退款到账时间以各银行实际到账时间为准',
-              });*/
-              that.show_fail();
-			      } else if("01"==flag) {
+                that.show_fail();
+			        } else if("01"==flag) {
 
                /* my.alert({
                   title: '提示' ,
@@ -262,10 +325,7 @@ Page({
                 that.show_fail();
 		        	}else if ("02"==flag) {
 
-                  my.alert({
-                    title: '提示' ,
-                    content:'请耐心等待',
-                  });
+
                   that.show_fail();
 
 			        }else if(flag==null){
@@ -276,16 +336,22 @@ Page({
 			        }else{
 
         
-              my.alert({
+               my.alert({
                   title: '提示' ,
                   content:taskStatusMsg,
-              });
+               });
 
 			        }
+
+            }
+
+
+
 					}
           app.log("查询成功");
          
         }else{
+
           my.alert({
             title: '提示',
             content:'可疑交易处理失败' 
@@ -297,6 +363,9 @@ Page({
         
       },
       fail: (err) => {
+          my.hideLoading({
+            page:that,
+          });
         app.log('error:'+err);
         my.alert({
           title: '' ,
@@ -332,7 +401,11 @@ Page({
       orderNo:'111'
     }
     var params= JSON.stringify(pa);
+    my.showLoading({
+        content: '开卡中',
+    });
     app.log(params);
+
     try{
     my.call(app.plugin,
       {
@@ -340,13 +413,17 @@ Page({
         param:params
       },
       function (result) {
+          my.hideLoading({
+            page:that,
+          });
         if(result.resultCode==0){
           app.setCreatKeyi(5);
-           my.alert({
-            title: result.resultCode,
-            content: '开卡成功', 
-           });
-           that.get_keyi();  
+          app.log('开卡成功');
+
+           that.get_keyi();
+           if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+            that.show_fail();
+          }  
 
 
         }else if(result.resultCode==-9000){
@@ -357,7 +434,9 @@ Page({
         }else{
           app.setCreatKeyi(4);
 
-           //app.setCreatCardFlag(false);
+          if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+            that.show_fail();
+          } 
 
         }
   
@@ -365,6 +444,9 @@ Page({
       });
 
     }catch(e){
+       my.hideLoading({
+        page:that,
+      });
 
     }
 
@@ -379,16 +461,26 @@ Page({
     }
     var params= JSON.stringify(pa);
     app.log(params);
+    my.showLoading({
+        content: '充值中',
+    });
     my.call(app.plugin,
     {
       method: 'rechargeCard',
       param:params
   },
   function (result) {
+      my.hideLoading({
+        page:that,
+      });
   
      if(result.resultCode==0){
         app.setChargeKeyi(5);
         that.get_keyi();
+        if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+           that.show_fail();
+
+        }
 
 
       }else if(result.resultCode==-9000){
@@ -397,21 +489,26 @@ Page({
       }else{
         app.setChargeKeyi(4);
         my.alert({
-          title: result.resultCode,
+          title: '提示',
           content: '充值失败', 
           });
+        if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+           that.show_fail();
+
+        }
       }
   });
 
   }, 
   show_fail(){
     if(this.data.type=="00000012"){
-      my.redirectTo({
+      my.navigateTo({
         url: '../../fail_result/fail_result?from=0', 
       });
 
+
     }else if(this.data.type=="00000013"){
-      my.redirectTo({
+      my.navigateTo({
         url: '../../fail_result/fail_result?from=1', 
       });
 
