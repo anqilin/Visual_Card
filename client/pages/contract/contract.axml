@@ -1,0 +1,3 @@
+<view>
+  <web-view src="https://online.sptcc.com:8445/handapp_zx/user_agreement_huawei.html"></web-view>
+</view>
