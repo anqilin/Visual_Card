@@ -1,0 +1,106 @@
+page {
+  background: #f5f5f5;
+  flex-direction: column;
+}
+
+
+
+.atd-config-transparent-header {
+   background-color: #FFFFFF;
+}
+
+.atd-config-transparent-header .content-top {
+    color: #ffffff;
+}
+
+.atd-config-transparent-header .content-top .statusBar {
+  
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.atd-config-transparent-header .content-top .titleBar {
+  
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  align-self: center;
+  padding-left: 25rpx;
+
+}
+.top{
+  width: 100%;
+  background-color: #ffffff;
+  
+  
+}
+.view1{
+  margin-top: 60rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-color: #ffffff;
+  justify-content: center;
+}
+.around{
+  height: 130rpx;
+  width: 130rpx;
+  
+  
+}
+.text1{
+  margin-top: 30rpx;
+
+  font-size: 20px;
+  color: #333333;
+  letter-spacing: 0;
+  text-align: center;
+}
+.text2{
+  margin-top: 16rpx;
+  margin-bottom: 60rpx;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+
+  font-size: 14px;
+  color: #999999;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.title_center{
+  width: 390rpx;
+  text-align: center;
+
+  font-size: 18px;
+  color: #333333;
+  margin-left: 60rpx;
+
+}
+.re_write{
+  margin-top: 60rpx;
+  margin-left: 32rpx;
+  margin-right: 32rpx;
+  background: #06B794;
+  border-radius: 4px;
+  border-radius: 4px;
+  border-style: none;
+
+  color: #FFFFFF;
+}
+.return_cardinfo{
+    margin-top: 30rpx;
+  margin-left: 32rpx;
+  margin-right: 32rpx;
+  background: #ffffff;
+  border-radius: 4px;
+  border-radius: 4px;
+  border-style: none;
+
+  color: #000000;
+
+}
+.button_hover{
+  background:#009C7D;
+}
