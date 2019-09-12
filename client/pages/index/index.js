@@ -20,7 +20,8 @@ Page({
     text_color4:"#18BB99",
     text_color5:"#18BB99",
     text_color6:"#18BB99",
-    amount:"0.00"
+    amount:"0.00",
+    canclick:false,
   },
   onLoad(options) {
     try {
@@ -43,6 +44,7 @@ Page({
     var buyId=app.userInfo.buyId;
     if(token!=""&&phonenumber!=""&&buyId!=""){
         app.log("已获取用户信息")
+        this.search_keyi();
       
     }else{
       this.getUserInfo();
@@ -51,6 +53,9 @@ Page({
     }
 
 
+  },
+  onShow(){
+    this.getPhoneInfo()
   },
   getUserInfo(){
     var that = this;
@@ -194,6 +199,8 @@ Page({
           app.userInfo.phone=resp.data.phone;
           app.userInfo.token=resp.data.note;
           app.userInfo.buyId=resp.data.buyId;
+          that.search_keyi();
+          
 
         }
         
@@ -320,8 +327,9 @@ Page({
         if(resp.data.resCode=="9000"){
           app.log("开卡接口成功");
           app.setCreatKeyi(3);
-          my.navigateTo({ url: '../creat_card/bind_card/bind_card' })
+          my.redirectTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
+          app.log(JSON.stringify(resp.data))
           app.log("开卡失败");
           my.alert({
             title: '提示',
@@ -354,6 +362,21 @@ Page({
   },
   go_bind(){
     var that=this
+     var device_model=app.getDeviceModel();
+     
+     if(device_model==null||device_model==undefined){
+       my.showToast({
+         content:'正在获取手机类型'
+       });
+       return;
+     }
+     if(that.data.canclick==false){
+      my.showToast({
+         content:'正在获取数据'
+       });
+       return;
+
+     }
     if(that.data.amount=="0.00"){
       my.showToast({
         content:'请选择开卡金额'
@@ -366,6 +389,123 @@ Page({
       app.log(order_url);
       this.getOrderData(order_url);
      
+  },
+  getPhoneInfo(){
+    var that=this;
+    var device_model=app.getDeviceModel();
+
+    if(device_model==null||device_model==undefined){
+      my.call(app.plugin,
+        {
+          method: 'getDeviceInfo'
+        },
+        function (result) {
+
+          if(result!=null&&result.resultCode==0){
+            var data=JSON.parse(result.data);
+            var model=data.deviceModel;
+
+            app.setDeviceModel(model);
+            app.devicemodel=model;
+
+          }else if(result.resultCode==-9000){
+            that.getPhoneInfo();
+          }
+
+        });
+
+
+    }else{
+      app.devicemodel=device_model;
+    }
+
+
+  },
+  search_keyi(){
+    var that=this;
+    my.showLoading({
+        content: '查询中',
+      });
+    var url=app.getKeyiList();
+    app.log(url);
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => { 
+        that.data.canclick=true;
+        my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });       
+          app.log('resp data:'+resp.data);
+        
+        if(resp.data.return_code=="success"){
+          app.log("可疑查询成功");
+          var return_msg=resp.data.return_msg;
+
+          app.log(return_msg);
+          var msg=JSON.parse(return_msg);
+          app.log("msg.TotNum----" + msg.TotNum);
+
+          if(msg.TotNum==0){
+
+          }else{
+
+            var data=msg.data;
+         
+
+            app.log("datalength"+data.length);
+
+            for(var i=0;i< data.length;i++){
+              app.log("data---"+data[i]);
+              
+              if(data[i].TransType=='00000012'){
+                 my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
+                 return;
+
+
+              }
+            }
+
+
+          }
+         
+        }else{
+          app.log("查询失败");
+          var return_msg=resp.data.return_msg;
+          app.log(return_msg);
+          if(return_msg=='交易未处理'){
+
+          }
+        }
+        
+      },
+      fail: (err) => {
+        
+        app.log('error:'+err);
+          my.hideLoading({
+            page: that,  
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.search_keyi();    
+                return;
+              }else{
+                that.data.canclick=true;
+                return;
+              }
+            },
+          });
+
+      },
+
+    });
+
   }
 
 });

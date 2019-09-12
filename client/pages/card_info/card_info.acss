@@ -93,6 +93,7 @@ page {
   justify-content: center;
   padding-bottom: 20rpx;
   align-content: center;
+
   
 }
 .rechange_button{
@@ -210,11 +211,19 @@ text-align: right;
  margin-right: 20rpx
 }
 .keyi{
+  display: flex;
+  flex-direction: row;
   margin-bottom: 28rpx;
 
   font-size: 14px;
   color: #FF3B30;
   letter-spacing: 0;
+  align-items: baseline;
+  align-content: center;
+  justify-content: center;
+  
+
+  
   
 }
 .button_hover{

@@ -219,7 +219,7 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {        
-        app.log('resp data:'+ resp.data);
+        app.log('resp data:'+ JSON.stringify(resp.data));
         my.hideLoading({
             page: that,  
           });
@@ -232,7 +232,9 @@ Page({
 
         }else{
           app.setChargeKeyi(2);
-          app.log("充值失败");
+          app.log(resp.data.resCode);
+          app.log(resp.data.resDesc);
+          app.log("复旦充值失败");
           my.alert({
             title: '提示',
             content:'充值失败' 
@@ -282,13 +284,13 @@ Page({
     {
       method: 'rechargeCard',
       param:params
-  },
-  function (result) {
+    },
+    function (result) {
       my.hideLoading({
         page:that,
       });  
-    app.log(result);
-     if(result.resultCode==0){
+      app.log(result);
+      if(result.resultCode==0){
         app.setChargeKeyi(5);
         my.redirectTo({
           url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
@@ -307,11 +309,44 @@ Page({
           content: '充值失败', 
           });
         my.redirectTo({
-          url: '../card_info/card_info', 
+          url: '../record_list/keyi_list/keyi_list'
 
         });
       }
   });
+    /*my.seNFCServiceIsv({
+      method: 'rechargeCard',
+      param:params, 
+      success:(result) => {
+        my.hideLoading({
+          page:that,
+        });  
+        app.log(result);
+        if(result.resultCode==0){
+          app.setChargeKeyi(5);
+          my.redirectTo({
+            url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+
+          });
+
+
+        }else if(result.resultCode==-9000){
+          that.recharge_card();
+
+        }else{
+          app.setChargeKeyi(4);
+          my.alert({
+            title: '提示',
+            content: '充值失败', 
+          });
+          my.redirectTo({
+            url: '../card_info/card_info', 
+
+          });
+        }
+      }
+
+    });*/
 
   },     
   recharge(){

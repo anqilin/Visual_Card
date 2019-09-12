@@ -8,6 +8,7 @@ Page({
     cardInfo:{},
     card_staus:false,
     error_message:"手机不支持开卡",
+    canclick:false,
 
 
   },
@@ -37,17 +38,9 @@ Page({
  
   },
   onShow(){
-    var keyiflag=app.getCreatKeyi();
-    if(keyiflag==null||keyiflag==undefined){
-      this.get_cplc();
-    }else if(keyiflag==3||keyiflag==4){
-      app.log("存在未完成开卡任务");
-      my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
+    
+    this.get_cplc();
 
-    }else{
-      this.get_cplc();
-
-    }
 
   },
 
@@ -66,6 +59,9 @@ Page({
   },
   agree_on(){
     var that=this;
+    if(that.data.canclick==false){
+      return;
+    }
 
     if(that.data.card_staus==true){
       my.navigateTo({
@@ -83,12 +79,22 @@ Page({
 
     var that=this;
     var cplc=app.getCplc();
+    app.log('cplc:'+cplc);
+    app.log('确认信息');
+
+
     if(cplc==null||cplc==undefined){
+      my.showLoading({
+        content: '查询中',
+      });
       my.call(app.plugin,
       {
         method: 'getCplc'
       },
       function (result) {
+          my.hideLoading({
+            page: that,
+          });
         
         app.log(result);
 
@@ -99,8 +105,24 @@ Page({
 
         }else if(result.resultCode==-9000){
           that.get_cplc();
+        }else{
+          that.data.canclick=true;
         }
       });
+      /*my.seNFCServiceIsv({
+        method: 'getCplc',
+        success:(result) => {
+          app.log(result);
+          if(result.resultCode==0){
+            app.setCplc(result.data.cplc);
+            that.read_cardInfo();
+
+          }else if(result.resultCode==-9000){
+            that.get_cplc();
+          }
+          
+        }
+      });*/
     }else{
       that.read_cardInfo();
 
@@ -116,6 +138,9 @@ Page({
     }
     var params= JSON.stringify(pa);
     app.log(params);
+      my.showLoading({
+        content: '查询中',
+      });
     my.call(app.plugin,
     {
       method: 'readCardInfo',
@@ -123,19 +148,21 @@ Page({
     },
     function (result) {
       app.log(result);
-              
+        my.hideLoading({
+            page: that,
+          });              
 
       if(result.resultCode==0){
         app.cardInfo=result.data;
         app.cardno=result.data.cardNo;
+        var inid=app.OuterIdToInnerId(app.cardno);
+        app.log("innerId:"+inid);
+        app.innerId=inid;
         app.logiccardno=result.data.logicCardNo;
         app.balance=result.data.balance; 
         app.isHasCard=true;
         my.navigateTo({ url: '../card_info/card_info' });
-        /*my.redirectTo({
-          url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
 
-        });*/
 
       }else if(result.resultCode==-9000){
           that.read_cardInfo();
@@ -143,6 +170,28 @@ Page({
         that.get_creat_status();
       }
     });
+    /*my.seNFCServiceIsv({
+      method: 'readCardInfo',
+      param:params, 
+      success:(result) => {
+        app.log(result);              
+
+        if(result.resultCode==0){
+          app.cardInfo=result.data;
+          app.cardno=result.data.cardNo;
+          app.logiccardno=result.data.logicCardNo;
+          app.balance=result.data.balance; 
+          app.isHasCard=true;
+          my.navigateTo({ url: '../card_info/card_info' });
+
+
+        }else if(result.resultCode==-9000){
+            that.read_cardInfo();
+        }else{
+          that.get_creat_status();
+        }
+      }
+    });*/
 
   },
   get_creat_status(){
@@ -153,12 +202,36 @@ Page({
     }
     var params= JSON.stringify(pa);
     app.log(params);
+      my.showLoading({
+        content: '查询中',
+      });
     my.call(app.plugin,
       {
         method: 'checkIssueCondition',
         param:params
       },
       function (result) {
+        app.log(result);
+         my.hideLoading({
+            page: that,
+          });
+
+        
+        if(result.resultCode==0){
+            that.get_charge_status();
+            app.log("虚拟卡开卡状态正常")
+
+          }else if(result.resultCode==-9000){
+            that.get_creat_status();
+          }else{
+            that.data.error_message="开卡服务不支持"
+            that.data.canclick=true;
+          }
+    });
+    /*my.seNFCServiceIsv({
+      method: 'checkIssueCondition',
+      param:params, 
+      success:(result) => {
         app.log(result);
 
         
@@ -171,7 +244,8 @@ Page({
           }else{
             that.data.error_message="开卡服务不支持"
           }
-      });
+      }
+    });*/
   },
   get_charge_status(){
     var that=this;
@@ -181,25 +255,51 @@ Page({
     }
     var params= JSON.stringify(pa);
     app.log(params);
+      my.showLoading({
+        content: '查询中',
+      });
     my.call(app.plugin,
     {
       method: 'checkRechargeCondition',
       param:params
     },
     function (result) {
+        my.hideLoading({
+            page: that,
+          });
       app.log(result);
 
       if(result.resultCode==0){
         that.data.card_staus=true;
         app.log("虚拟卡充值状态正常")
+        that.data.canclick=true;
 
       }else if(result.resultCode==-9000){
         that.get_charge_status();
 
       }else{
         that.data.error_message="充值服务不支持"
+        that.data.canclick=true;
       }
     });
+    /*my.seNFCServiceIsv({
+      method: 'checkRechargeCondition',
+      param:params, 
+      success:(result) => {
+        app.log(result);
+
+        if(result.resultCode==0){
+          that.data.card_staus=true;
+          app.log("虚拟卡充值状态正常")
+
+        }else if(result.resultCode==-9000){
+          that.get_charge_status();
+
+        }else{
+          that.data.error_message="充值服务不支持"
+        }
+      }
+    });*/
 
   },
   go_message(){

@@ -59,8 +59,11 @@ App({
   spId:'APP-SH-SPTC',
   isDefault:false,
   systemInfo: {} ,// 手机基础信息
-  plugin:'virtualServiceH5Plugin',
+  plugin:'virtualServiceH5PluginIsv',
   isHasCard:false,
+  innerId:"",
+  devicemodel:"",
+  hasf0:false,
   
 
   onLaunch(options) {
@@ -163,7 +166,7 @@ App({
 			url=url+"&phone="+this.userInfo.phone;
 
 			url=url+"&SEID=" +this.seid;
-      url=url+"&Model="+"FRD-AL10";
+      url=url+"&Model="+this.devicemodel;
       
 
       return url;
@@ -188,7 +191,7 @@ App({
 			url=url+"&appNo=" + this.logiccardno;//逻辑卡号
 			url=url+"&accountHash=" + "01700001";//03000007:华为 03000004:小米
 			url=url+"&phone="+this.userInfo.phone;
-      url=url+"&Model="+"FRD-AL10";
+      url=url+"&Model="+this.devicemodel;
       return url;
 
 
@@ -318,8 +321,8 @@ App({
   getKeyiList(){
     var url = this.SERVER_URL
 					+ "handapp_app/AccountSuspiciousServlet?";
-    url=url+"cardNo=" + this.cardno;
-    url=url+"&note=" + "";
+    
+    url=url+"note=" + "";
     url=url+"&startNo=1";
     url=url+"&commToken=" + this.userInfo.token;
     url=url+"&phone="+this.userInfo.phone;
@@ -349,11 +352,33 @@ App({
 
   },
   log(data){
+    console.log(data);
     if (this.SERVER_URL.includes("8445")) {
-				console.log(data);
+				
 			}
 
-  }
+  },
+  OuterIdToInnerId(OuterId) {
+		var InnerId = null;
+
+		if (OuterId.length==11) {
+			try {
+
+				InnerId = OuterId.substring(9, 11);
+				InnerId += OuterId.substring(7, 9);
+				InnerId += OuterId.substring(5, 7);
+				InnerId += OuterId.substring(3, 5);
+				InnerId += OuterId.substring(1, 3);
+
+			} catch (e) {
+				console.log(e);
+			}
+
+			return InnerId;
+		}else{
+      return OuterId;
+    } 
+	},
 
 
 

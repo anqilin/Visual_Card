@@ -35,6 +35,7 @@ Page({
     var buyId=app.userInfo.buyId;
     if(token!=""&&phonenumber!=""&&buyId!=""){
         app.log("已获取用户信息")
+        this.search_keyi()
       
     }else{
       this.getUserInfo();
@@ -81,6 +82,13 @@ Page({
         cannext:false
       })
     }
+    if(app.hasf0==true){
+      that.setData({
+        keyi:true
+
+      })
+
+    }
 
   },
   read_cardInfo(){
@@ -104,10 +112,6 @@ Page({
 
       if(result.resultCode==0){
         app.cardInfo=result.data;
-        /*my.alert({
-          title: '提示',
-          content:result.data 
-        });*/
 
         var cardno=result.data.cardNo
         app.cardno=cardno;
@@ -163,6 +167,71 @@ Page({
         
       }
     });
+    /*my.seNFCServiceIsv({
+      method: 'readCardInfo',
+      param:params, 
+      success:(result) => {
+        app.log(result);
+
+
+        if(result.resultCode==0){
+          app.cardInfo=result.data;
+
+          var cardno=result.data.cardNo
+          app.cardno=cardno;
+          var logicno=result.data.logicCardNo;
+          var balance=result.data.balance;
+          var isDefault=result.data.isDefault;
+
+          app.logiccardno=logicno;
+          app.balance=balance;
+          app.isDefault=isDefault;
+          app.isHasCard=true;
+        
+
+          that.setData({
+            balance:balance,
+            validity:result.data.validateDate,
+            isDefault:isDefault,
+            cardno: cardno,
+
+          })
+          if(that.data.isDefault){
+            that.setData({
+              cardstatus:"正常使用中"
+            })
+            if(parseFloat(result.data.balance)<0){
+
+              that.setData({
+                cardstatus:"无法使用",
+                cardstatuscolor:'#FFFFFF',
+                cardstatusback:'#F24724',
+                balance_color:'#F24724'
+              })
+
+
+            }
+          }else{
+
+            that.setData({
+              cardstatus:"设置默认卡片"
+            })
+            var flag=app.getDefaultFlag();
+            if(flag==null||flag==undefined){
+              app.setDefaultFlag(true);
+              that.show_confirm();
+
+            }
+          }
+        
+
+        }else if(result.resultCode==-9000){
+          that.read_cardInfo();
+        }else{
+        
+        }
+      }
+    });*/
 
   },
   go_record(){
@@ -333,18 +402,38 @@ Page({
             var model=data.deviceModel;
 
             app.setDeviceModel(model);
+            app.devicemodel=model;
             that.setData({
               deviceModel:model
             })
 
 
-          }else if(result.resultCode==0){
+          }else if(result.resultCode==-9000){
             that.getPhoneInfo();
           }
 
         });
+        /*my.seNFCServiceIsv({
+          method: 'getDeviceInfo',
+          success:(result) => {
+            if(result!=null&&result.resultCode==0){
+              var data=JSON.parse(result.data);
+              var model=data.deviceModel;
+
+              app.setDeviceModel(model);
+              that.setData({
+                deviceModel:model
+              })
+
+
+            }else if(result.resultCode==-9000){
+              that.getPhoneInfo();
+            }
+          }
+        });*/
 
     }else{
+      app.devicemodel=device_model;
           that.setData({
               deviceModel:device_model
             })
@@ -393,6 +482,27 @@ Page({
         }
 
       });
+      /*my.seNFCServiceIsv({
+        method: 'startDefault',
+        param:params, 
+        success:(result) => {
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });  
+          if(result.resultCode==0){
+            that.read_cardInfo()
+
+          }else if(result.resultCode==-9000){
+            that.setDefaulfCard();
+          }else{
+            my.alert({
+              title: '提示',
+              content:'设置默认卡失败'
+            });
+
+          }
+        }
+      });*/
 
   },
   go_method(){
@@ -401,6 +511,7 @@ Page({
   change_flag(){
     app.setCreatKeyi(0);
     app.setChargeKeyi(0);
+    app.hasf0=false;
   },
   search_keyi(){
     var that=this;
@@ -440,26 +551,55 @@ Page({
          
 
             app.log("datalength"+data.length);
+            var haskeyi=false;
+            var hasf0=false;
+            that.change_flag();
 
             for(var i=0;i< data.length;i++){
               app.log("data---"+data[i]);
               
-              if(data[i].TransType=='00000012'||data[i].TransType=='00000013'){
-                that.setData({
-                  keyi:true,
-                  cannext:false
-                })
-                return;
+              
+              if(data[i].TransType=='00000013'){
+                  var note=data[i].Note.split(",");
+                  var inid=note[0].substring(10,20);
+                  app.log('inid:'+inid);
+                  if(inid==app.innerId){
+                    app.log('找到了')
+                    app.setChargeKeyi(4);
+
+                    haskeyi=true;
+
+                  }                  
+
               }else if(data[i].TransType=='00000015'){
-                that.setData({
-                  keyi:true,
-                  cannext:true
-                })
+
+                hasf0=true;
+                app.hasf0=true;
               
 
               }
             }
+            if(hasf0){
+              that.setData({
+                  keyi:true,
+                  cannext:true
+              })
+            }
+            if(haskeyi){
+              that.setData({
+                keyi:true,
+                cannext:false
+              })
 
+            }
+            if(haskeyi==false&&hasf0==false){
+                that.setData({
+                  keyi:false,
+                  cannext:true
+                });
+                that.change_flag();
+
+            }
 
           }
          
