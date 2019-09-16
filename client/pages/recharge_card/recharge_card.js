@@ -37,13 +37,15 @@ Page({
     }
 
     my.hideFavoriteMenu();
+    this.data.mybalance=app.balance;
+    this.data.afterbalance=app.balance;
 
 
 
   },
   onShow(){
-    this.data.mybalance=app.balance;
-    this.data.afterbalance=app.balance;
+    //this.data.mybalance=app.balance;
+    //this.data.afterbalance=app.balance;
 
   },
 
@@ -66,6 +68,7 @@ Page({
       num=num.toFixed(2); 
 
       this.setData({
+        mybalance:app.balance,
         afterbalance:num
       })
 
@@ -226,6 +229,8 @@ Page({
 
         
         if(resp.data.resCode=="9000"){
+          app.bussiness_id=resp.data.taskId;
+          app.log("busiid:"+app.bussiness_id);
           app.log("充值成功");
           app.setChargeKeyi(3);
           this.recharge_card();
@@ -237,7 +242,13 @@ Page({
           app.log("复旦充值失败");
           my.alert({
             title: '提示',
-            content:'充值失败' 
+            content:'充值失败,请稍后再次尝试' ,
+            success: () => {
+              my.redirectTo({
+                url: '../card_info/card_info', 
+
+              });
+            }
           });
 
         }
@@ -253,10 +264,12 @@ Page({
           });
         my.alert({
           title: '提示' ,
-          content:'申请开卡失败',
+          content:'申请充值失败',
           success: () => {
-            my.navigateBack();
+            my.redirectTo({
+                url: '../card_info/card_info', 
 
+            });
           }
         });
 

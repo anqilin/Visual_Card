@@ -15,7 +15,9 @@
     <view class="view1">     
       <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
       <view class="imageview1">
-        <button style="background:{{cardstatusback}};color:{{cardstatuscolor}}" onTap="setDefault" class="use_state" size="mini" type="primary">{{cardstatus}}</button>
+        <button style="background:{{cardstatusback}};color:{{cardstatuscolor}}" onTap="setDefault" class="use_state" size="mini" >
+          {{cardstatus}}
+        </button>
       </view>
 
     </view>

@@ -1,4 +1,4 @@
-<view a:if="{{show_warn}}" class="warn_message">
+<view a:if="{{false}}" class="warn_message">
   <image mode="scaleToFill" src="/resource/info_circle.png" style="width:29rpx;height:29rpx"/>
   <view class="text1">数据存在延误，部分数据需要隔天显示</view>
 

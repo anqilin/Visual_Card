@@ -29,16 +29,21 @@ Page({
       });
     }
     my.hideFavoriteMenu();
+    var that=this;
 
     var token=app.userInfo.token;
     var phonenumber=app.userInfo.phone;
     var buyId=app.userInfo.buyId;
     if(token!=""&&phonenumber!=""&&buyId!=""){
         app.log("已获取用户信息")
-        this.search_keyi()
+        setTimeout(function(){
+          that.search_keyi();
+
+        },4000);
+        
       
     }else{
-      this.getUserInfo();
+      that.getUserInfo();
     
 
     }

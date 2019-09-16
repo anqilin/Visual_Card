@@ -293,12 +293,22 @@ Page({
           app.setCreatKeyi(1);
           this.goCreatCard(url);
 
+        }else{
+          my.alert({
+            title: '提示',
+            content:'支付失败' 
+          });
+
         }
 
 
       },
       fail: (res) => {
         app.log("付款失败"+res.resultCode);
+        my.alert({
+          title: '提示',
+          content:'支付失败' 
+        });
 
 
 
@@ -325,6 +335,8 @@ Page({
           content: resp.data.resDesc, 
         });*/
         if(resp.data.resCode=="9000"){
+          app.bussiness_id=resp.data.taskId;
+          app.log("busiid:"+app.bussiness_id);
           app.log("开卡接口成功");
           app.setCreatKeyi(3);
           my.redirectTo({ url: '../creat_card/bind_card/bind_card' })
@@ -333,7 +345,13 @@ Page({
           app.log("开卡失败");
           my.alert({
             title: '提示',
-            content:'开卡失败' 
+            content:'开卡失败,请稍后尝试' ,
+            success: () => {
+              my.redirectTo({
+                url: '../agreement/agreement', 
+
+              });
+            }
           });
 
           app.setCreatKeyi(2);
@@ -350,8 +368,14 @@ Page({
         my.alert({
             title: '提示',
             content:'开卡失败',
+            success: () => {
+              my.redirectTo({
+                url: '../agreement/agreement', 
 
-          });
+              });
+            }
+
+        });
 
 
       },

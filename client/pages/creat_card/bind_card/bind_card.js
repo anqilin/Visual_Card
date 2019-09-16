@@ -85,7 +85,7 @@ Page({
     var pa={
       issuerID:app.issuer_Id,
       spID:app.spId,
-      orderNo:'111'
+      orderNo:app.bussiness_id
     }
     var params= JSON.stringify(pa);
     app.log(params);
@@ -153,7 +153,11 @@ Page({
         }
       });*/
 
-    }catch(e){
+    }catch(err){
+      my.alert({
+        title: '提示',
+        content: '程序发生错误'+err.message, 
+      });
 
     }
 

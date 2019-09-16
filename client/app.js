@@ -64,6 +64,7 @@ App({
   innerId:"",
   devicemodel:"",
   hasf0:false,
+  bussiness_id:"",
   
 
   onLaunch(options) {
@@ -99,7 +100,7 @@ App({
 			// double temp = Double.parseDouble(mAmount);
 			// int nn = (int) (temp * 100);
 			// orderReq.setTotal_fee(nn);// 调试阶段默认支付1分钱
-			this.orderReq.Paytype="0002";
+			this.orderReq.Paytype="0011";
 			this.orderReq.phone=this.userInfo.phone;
 			this.orderReq.PAYFLAG=mPayFlag;
 			// orderReq.setTOTAMT(Double.parseDouble(mAmount));
@@ -176,7 +177,7 @@ App({
     			var url = this.SERVER_URL
 					+ "handapp_app/RechargeServlet_Android?";
 
-			url=url+"cardType=" + "4";
+			url=url+"cardType=" + "1";
 			url=url+"&Order=" + this.orderResq.orderId;
 			url=url+"&orderId=" + this.orderResq.qorderId;
 

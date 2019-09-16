@@ -71,11 +71,22 @@ page {
  font-size: 13px;
  color: #108EE9;
  letter-spacing: 0.58px;
- padding-top: 3rpx;
+
+ display: flex;
+ flex-direction: row;
  text-align: center;
+ align-content: center;
+ align-items: center;
+ justify-content: center;
+  padding-top: 5rpx;
+
  border-style: none;
+ 
+
+ 
 
 }
+
 .info{
   margin-top: 40rpx;
   padding-left: 80rpx;
