@@ -568,6 +568,8 @@ Page({
                   var note=data[i].Note.split(",");
                   var inid=note[0].substring(10,20);
                   app.log('inid:'+inid);
+                  app.log('appinid:'+app.innerId);
+
                   if(inid==app.innerId){
                     app.log('找到了')
                     app.setChargeKeyi(4);

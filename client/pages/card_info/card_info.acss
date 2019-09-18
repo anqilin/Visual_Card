@@ -78,9 +78,10 @@ page {
  align-content: center;
  align-items: center;
  justify-content: center;
-  padding-top: 5rpx;
 
  border-style: none;
+ padding-top: 6rpx;
+ padding-bottom: 0rpx;
  
 
  
