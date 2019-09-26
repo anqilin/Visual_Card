@@ -1,3 +1,4 @@
+import {monitor} from '/util/monitor';
 const app= getApp();
 Page({
   data: {
@@ -39,6 +40,10 @@ Page({
           app.log('resp data:'+resp.data);
         
         if(resp.data.return_code=="success"){
+          monitor.report({
+            info:"可疑交易查询成功",
+            phone_number:app.userInfo.phone   
+          });
           app.log("可疑查询成功");
           var return_msg=resp.data.return_msg;
 
@@ -186,6 +191,11 @@ Page({
           }
          
         }else{
+          monitor.report({
+            info:"可疑交易查询失败",
+            code:resp.data.return_code,
+            msg:resp.data.return_msg
+          });
           app.log("查询失败");
           var return_msg=resp.data.return_msg;
           if(return_msg=='交易未处理'){
@@ -282,10 +292,19 @@ Page({
         app.log(resp.data);
          that.data.is_search=true;
         if(resp.data.return_code="success"){
+          monitor.report({
+            info:"退款成功",
+            phone_number:app.userInfo.phone   
+          });
           
           that.get_keyi();
 
         }else{
+          monitor.report({
+            info:"退款发生失败",
+            code:resp.data.return_code,
+            msg:resp.data.return_msg
+          });
           my.alert({
             title: '提示' ,
             content:'退款发生错误'+resp.data.return_msg
@@ -342,6 +361,10 @@ Page({
         that.data.is_search=true;
         
         if(resp.data!=null&&resp.data.resCode=="9000"){
+          monitor.report({
+            info:"可疑交易处理成功",
+            phone_number:app.userInfo.phone   
+          });
 
           if(resp.data.taskStatus){
             app.log(resp.data);
@@ -425,6 +448,11 @@ Page({
           app.log("查询成功");
          
         }else{
+           monitor.report({
+            info:"可疑交易处理失败",
+            code:resp.data.return_code,
+            msg:resp.data.return_msg
+          });
 
           my.alert({
             title: '提示',
@@ -469,11 +497,15 @@ Page({
   },
   creat_card(){
     var that = this;
+    var bussiness_id=app.getBussinessId();
+    if(bussiness_id==null||bussiness_id==undefined){
+      bussiness_id="111"
+    }
 
     var pa={
       issuerID:app.issuer_Id,
       spID:app.spId,
-      orderNo:'111'
+      orderNo:bussiness_id
     }
     var params= JSON.stringify(pa);
     my.showLoading({
@@ -493,6 +525,10 @@ Page({
           });
           app.log(result.resultMsg);
         if(result.resultCode==0){
+          monitor.report({
+            info:"重新开卡成功",
+            phone_number:app.userInfo.phone   
+          });
           app.setCreatKeyi(5);
           app.log('开卡成功');
 
@@ -508,6 +544,11 @@ Page({
 
 
         }else{
+          monitor.report({
+            info:"重新开卡失败",
+            code:result.resultCode,
+            msg:result.resultMsg
+          });
           app.setCreatKeyi(4);
           my.alert({
             title: '提示',
@@ -586,6 +627,11 @@ Page({
       app.log(result.resultMsg);
   
      if(result.resultCode==0){
+        monitor.report({
+            info:"重新充值成功",
+            phone_number:app.userInfo.phone   
+        });
+        
         app.setChargeKeyi(5);
         that.get_keyi();
         if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
@@ -598,6 +644,11 @@ Page({
         that.recharge_card();
 
       }else{
+          monitor.report({
+            info:"重新充值失败",
+            code:result.resultCode,
+            msg:result.resultMsg
+          });
         app.setChargeKeyi(4);
         my.alert({
           title: '提示',

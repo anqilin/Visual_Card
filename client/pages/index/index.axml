@@ -25,11 +25,14 @@
 </view>
 <view class="balance">
   <view class="change_before">
+    <view class="change_text">
       <view style="font-size: 14px">充值金额：</view>
       <view style="margin-left:10rpx;font-size:19px;color:#FA883C">{{amount}}</view>
-      <view class="info1" style="margin-left:20rpx">余额上限1000.00元</view>
+
+    </view>
+    <view class="info1" style="margin-left:20rpx">余额上限1000.00元</view>
   </view>
-  <view class="change_before" style="margin-top:12rpx;color: #999999;font-size:14px">
+  <view class="change_after" style="margin-top:12rpx;color: #999999;font-size:14px">
       <view>可退服务费</view>
       <view >20.00</view>
       
@@ -52,7 +55,7 @@
     <button style="background-color: {{color6}};color:{{text_color6}}" data-money="500" class="button1" size="mini" type="primary" onTap="onsetmoney">500元</button>
     
 </view>
-<button onTap="go_bind" class="sure_button" size="default" type="primary">确认</button>
+<button onTap="go_bind" style="opacity:{{touming}}" class="sure_button" hover-class="button_hover" size="default" type="primary">确认</button>
 
 
 

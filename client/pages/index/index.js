@@ -1,4 +1,4 @@
-import util from '/util/huawei';
+import {monitor} from '/util/monitor';
 const app= getApp();
 Page({
   data: {
@@ -7,7 +7,6 @@ Page({
     userLogin:false,
     ueerNotLogin:true,
     cardInfo:{},
-    SERVER_URL : "https://online.sptcc.com:8445/",
     color1:"#ffffff",
     color2:"#ffffff",
     color3:"#ffffff",
@@ -22,6 +21,7 @@ Page({
     text_color6:"#18BB99",
     amount:"0.00",
     canclick:false,
+    touming:0.6
   },
   onLoad(options) {
     try {
@@ -67,6 +67,9 @@ Page({
       scopes: 'auth_user',
       success: (res) => {
         if(res.authCode){
+          monitor.report({
+            info:"获取authCode成功"      
+          });
           app.log(res.authCode);
           var code=res.authCode;         
           this.getHttpUserInfo(code);
@@ -77,6 +80,9 @@ Page({
       },
       fail: (res) => {
           app.log('getAuth--failed:' +  JSON.stringify(res));
+          monitor.report({
+            info:"获取Authcode失败"       
+          });  
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -116,6 +122,9 @@ Page({
       var amount=parseFloat(money).toFixed(2);
       this.setData({
         amount:amount
+      })
+      this.setData({
+         touming:1.0
       })
 
       this.setData({
@@ -192,13 +201,19 @@ Page({
       method: 'GET',
       dataType: 'json',
       success: (resp) => {
+        
         my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
         if(resp.data.result_code=="success"){
+
           app.userInfo.phone=resp.data.phone;
           app.userInfo.token=resp.data.note;
           app.userInfo.buyId=resp.data.buyId;
+           monitor.report({
+            info:"获取用户信息成功",
+            phone_number:app.userInfo.phone   
+          });
           that.search_keyi();
           
 
@@ -211,6 +226,10 @@ Page({
       },
       fail: (res) => {
           app.log('HttpUserInfo--failed:' +  JSON.stringify(res));
+          monitor.report({
+
+            info:"获取用户信息失败"       
+          });  
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -253,6 +272,10 @@ Page({
         app.log('resp data:'+resp.data);
 
         if(resp.data.return_code=="success"){
+          monitor.report({
+            info:"获取订单信息成功",
+            phone_number:app.userInfo.phone   
+          });
           app.orderResq.orderId=resp.data.return_msg.orderId;
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
           app.orderResq.partnerid=resp.data.return_msg.partnerid;
@@ -262,7 +285,18 @@ Page({
           
           this.goPay();
 
-        } 
+        }else{
+          monitor.report({
+            info:"获取订单信息失败",
+            msg: resp.data.return_msg 
+          });
+          
+          my.alert({
+            title: '提示',
+            content:resp.data.return_msg
+
+          });
+        }  
         
       },
       fail: (err) => {
@@ -287,6 +321,10 @@ Page({
       success: (res) => {
         app.log("付款返回"+res.resultCode);
         if(res.resultCode=="9000"){
+          monitor.report({
+            info:"支付宝支付成功",
+            phone_number:app.userInfo.phone   
+          });
           var url=app.getCreatCardRequest();
           //var url=app.getRechargeCardOrder();
           app.log(url);
@@ -294,6 +332,10 @@ Page({
           this.goCreatCard(url);
 
         }else{
+          monitor.report({
+            info:"支付宝支付失败",
+            code:res.resultCode
+          });
           my.alert({
             title: '提示',
             content:'支付失败' 
@@ -335,6 +377,10 @@ Page({
           content: resp.data.resDesc, 
         });*/
         if(resp.data.resCode=="9000"){
+          monitor.report({
+            info:"复旦开卡接口返回成功",
+            phone_number:app.userInfo.phone   
+          });
           app.bussiness_id=resp.data.taskId;
           app.log("busiid:"+app.bussiness_id);
           app.log("开卡接口成功");
@@ -342,6 +388,12 @@ Page({
           my.redirectTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
           app.log(JSON.stringify(resp.data))
+          monitor.report({
+            info:"复旦微接口返回失败",
+            code:resp.data.resCode,
+            msg:resp.data.resDesc
+          });
+          
           app.log("开卡失败");
           my.alert({
             title: '提示',
@@ -426,6 +478,9 @@ Page({
         function (result) {
 
           if(result!=null&&result.resultCode==0){
+            monitor.report({
+              info:"获取手机信息成功",
+            });
             var data=JSON.parse(result.data);
             var model=data.deviceModel;
 
@@ -464,6 +519,10 @@ Page({
           app.log('resp data:'+resp.data);
         
         if(resp.data.return_code=="success"){
+          monitor.report({
+            info:"可疑交易查询成功",
+            code:resp.data.return_code
+          });
           app.log("可疑查询成功");
           var return_msg=resp.data.return_msg;
 
@@ -495,6 +554,11 @@ Page({
           }
          
         }else{
+          monitor.report({
+            info:"可疑交易查询失败",
+            code:resp.data.return_code,
+            msg:resp.data.return_msg
+          });
           app.log("查询失败");
           var return_msg=resp.data.return_msg;
           app.log(return_msg);

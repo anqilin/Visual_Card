@@ -1,4 +1,4 @@
-//import absolute from '/util/huawei';
+import {monitor} from '/util/monitor';
 const app= getApp();
 Page({
   data: {
@@ -28,7 +28,7 @@ Page({
         content: 'onLoad 执行异常'
       });
     }
-    my.hideFavoriteMenu();
+    //my.hideFavoriteMenu();
     var that=this;
 
     var token=app.userInfo.token;
@@ -116,6 +116,9 @@ Page({
 
 
       if(result.resultCode==0){
+          monitor.report({
+            info:"读取卡信息成功"  
+          });
         app.cardInfo=result.data;
 
         var cardno=result.data.cardNo
@@ -169,6 +172,11 @@ Page({
       }else if(result.resultCode==-9000){
           that.read_cardInfo();
       }else{
+        monitor.report({
+          info:"读取卡信息失败",
+          code:result.resultCode,
+          msg:result.resultMsg,
+        });
         
       }
     });
@@ -260,7 +268,9 @@ Page({
       scopes: 'auth_user',
       success: (res) => {
         if(res.authCode){
-         // console.log(res.authCode);
+          monitor.report({
+            info:"获取authcode成功"             
+          });
          app.log(res.authCode);
           var code=res.authCode;         
           this.getHttpUserInfo(code);
@@ -271,6 +281,9 @@ Page({
       },
       fail: (res) => {
           app.log('getAuth--failed:' +  JSON.stringify(res));
+          monitor.report({
+            info:"获取authcode失败"             
+          });
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -311,6 +324,10 @@ Page({
           app.userInfo.phone=resp.data.phone;
           app.userInfo.token=resp.data.note;
           app.userInfo.buyId=resp.data.buyId;
+          monitor.report({
+            info:"获取用户信息成功",
+            phone_number:app.userInfo.phone   
+          });
 
           that.search_keyi()
 
@@ -324,6 +341,9 @@ Page({
       },
       fail: (res) => {
           app.log('HttpUserInfo--failed:' +  JSON.stringify(res));
+          monitor.report({
+            info:"获取用户信息失败"             
+          });
           my.hideLoading({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
@@ -403,6 +423,9 @@ Page({
         function (result) {
 
           if(result!=null&&result.resultCode==0){
+            monitor.report({
+              info:"读取手机信息成功" 
+            });
             var data=JSON.parse(result.data);
             var model=data.deviceModel;
 
@@ -415,6 +438,12 @@ Page({
 
           }else if(result.resultCode==-9000){
             that.getPhoneInfo();
+          }else{
+            monitor.report({
+              info:"获取手机信息失败",
+              code:result.resultCode,
+              msg:result.resultMsg,
+            });
           }
 
         });
@@ -462,7 +491,7 @@ Page({
     var params= JSON.stringify(pa);
     app.log(params);
     my.showLoading({
-        content: '正在设置',
+        content: '正在跳转设置',
     });
     my.call(app.plugin,
       {
@@ -474,11 +503,19 @@ Page({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
         });  
         if(result.resultCode==0){
+          monitor.report({
+            info:"设置默认卡片成功"  
+          });
            that.read_cardInfo()
 
         }else if(result.resultCode==-9000){
           that.setDefaulfCard();
         }else{
+          monitor.report({
+            info:"设置默认卡片失败",
+            code:result.resultCode,
+            msg:result.resultMsg,
+          });
           my.alert({
             title: '提示',
             content:'设置默认卡失败'
@@ -536,6 +573,10 @@ Page({
           app.log('resp data:'+resp.data);
         
         if(resp.data.return_code=="success"){
+          monitor.report({
+            info:"可疑交易查询成功",
+            phone_number:app.userInfo.phone   
+          });
           app.log("可疑查询成功");
           var return_msg=resp.data.return_msg;
 
@@ -611,6 +652,11 @@ Page({
           }
          
         }else{
+          monitor.report({
+            info:"可疑交易查询失败",
+            code:resp.data.return_code,
+            msg:resp.data.return_msg
+          });
           app.log("查询失败");
           var return_msg=resp.data.return_msg;
           app.log(return_msg);

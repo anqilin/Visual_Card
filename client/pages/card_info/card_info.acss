@@ -65,7 +65,7 @@ page {
  background: #FDFDFD;
  margin-top: 20rpx;
  margin-right: 30rpx;
-  box-shadow: 4px 4px 4px 0 rgba(217,217,217,0.29);
+
   border-radius: 2px;
 
  font-size: 13px;
@@ -128,6 +128,17 @@ page {
   justify-content: center;
   
 }
+.info_ketui{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+
+  justify-content: center;
+  height: 30rpx;
+
+
+}
 .info3{
 
   font-size: 14px;
@@ -140,8 +151,11 @@ page {
 }
 .info5{
 
-  font-size: 14px;
+  margin-top: 5rpx;
+  font-size: 14px;  
   color: #999999;
+  
+
 }
 .bar{
   width: 100%;
@@ -241,4 +255,5 @@ text-align: right;
 .button_hover{
   background:#009C7D;
 }
+
 

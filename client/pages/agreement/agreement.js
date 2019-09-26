@@ -1,3 +1,4 @@
+import {monitor} from '/util/monitor';
 const app= getApp();
 Page({
   data: {
@@ -34,11 +35,15 @@ Page({
         url: '../index/index'
       });
     }*/
-
+    monitor.report({
+      info:"进入小程序",        
+    });
  
   },
   onShow(){
-    
+
+    this.data.card_staus=false;
+    this.data.canclick=false;
     this.get_cplc();
 
 
@@ -80,6 +85,9 @@ Page({
     var that=this;
     var cplc=app.getCplc();
     app.log('cplc:'+cplc);
+    monitor.report({
+      info:cplc      
+    });
     app.log('确认信息');
 
 
@@ -100,12 +108,20 @@ Page({
 
 
         if(result.resultCode==0){
+          monitor.report({
+            info:"获取cplc成功",        
+          });
           app.setCplc(result.data.cplc);
           that.read_cardInfo();
 
         }else if(result.resultCode==-9000){
           that.get_cplc();
         }else{
+          monitor.report({
+            code:result.resultCode,
+            msg:result.resultMsg,
+            info:"获取cplc失败"       
+          });
           that.data.canclick=true;
         }
       });
@@ -153,6 +169,10 @@ Page({
           });              
 
       if(result.resultCode==0){
+        monitor.report({
+          info:"读取卡信息成功",
+          code:result.resultCode        
+        });
         app.cardInfo=result.data;
         app.cardno=result.data.cardNo;
         var inid=app.OuterIdToInnerId(app.cardno);
@@ -161,12 +181,17 @@ Page({
         app.logiccardno=result.data.logicCardNo;
         app.balance=result.data.balance; 
         app.isHasCard=true;
-        my.navigateTo({ url: '../card_info/card_info' });
+        my.redirectTo({ url: '../card_info/card_info' });
 
 
       }else if(result.resultCode==-9000){
           that.read_cardInfo();
       }else{
+          monitor.report({
+            code:result.resultCode,
+            msg:result.resultMsg,
+            info:"获取卡信息失败"       
+          });
         that.get_creat_status();
       }
     });
@@ -218,12 +243,21 @@ Page({
 
         
         if(result.resultCode==0){
+          monitor.report({
+            info:"虚拟卡开卡状态正常",
+            code:result.resultCode        
+          });
             that.get_charge_status();
             app.log("虚拟卡开卡状态正常")
 
           }else if(result.resultCode==-9000){
             that.get_creat_status();
           }else{
+            monitor.report({
+              code:result.resultCode,
+              msg:result.resultMsg,
+              info:"开卡服务不支持"       
+            });
             that.data.error_message="开卡服务不支持"
             that.data.canclick=true;
           }
@@ -270,6 +304,10 @@ Page({
       app.log(result);
 
       if(result.resultCode==0){
+        monitor.report({
+            info:"虚拟卡充值状态正常",
+            code:result.resultCode        
+        });
         that.data.card_staus=true;
         app.log("虚拟卡充值状态正常")
         that.data.canclick=true;
@@ -278,6 +316,11 @@ Page({
         that.get_charge_status();
 
       }else{
+        monitor.report({
+          code:result.resultCode,
+          msg:result.resultMsg,
+          info:"充值服务不支持"       
+        });        
         that.data.error_message="充值服务不支持"
         that.data.canclick=true;
       }

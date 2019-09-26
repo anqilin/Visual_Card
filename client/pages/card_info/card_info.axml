@@ -34,12 +34,12 @@
       <view class="info2">
         <view class="info3">交通卡余额：</view>
         <view style="color:{{balance_color}}" class="info4">{{balance}}</view>
-        <view class="info4">元</view>
+        <view class="info3">元</view>
       </view>
-      <view onTap="show_fee" class="info2" style="margin-top:9rpx">
+      <view onTap="show_fee" class="info_ketui" style="margin-top:9rpx">
         <view class="info5" >可退服务费</view>
         <view class="info5" >20.00</view>
-        <image mode="scaleToFill" src="/resource/question.png" style="width:23rpx;height:23rpx;margin-left:10rpx;margin-top:2rpx"/>
+        <image mode="scaleToFill" src="/resource/question.png" style="width:30rpx;height:30rpx;margin-left:10rpx"/>
 
       </view>
     </view>

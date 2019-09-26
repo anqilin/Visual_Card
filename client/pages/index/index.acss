@@ -63,6 +63,7 @@ page {
 .balance{
   margin-top: 60rpx;
   padding-left: 80rpx;
+  padding-right: 80rpx;
   flex-direction: row;
 
   font-size: 17px;
@@ -73,15 +74,27 @@ page {
   display: flex;
   flex-direction:row;
   align-items: baseline;
+  justify-content: space-between;
+}
+.change_text{
+  display: flex;
+  flex-direction:row;
+  align-items: baseline;
+
+}
+.change_after{
+  display: flex;
+  flex-direction:row;
+  align-items: baseline;
+
 }
 .info1{
   padding-left: 10rpx;
   padding-right: 10rpx;
   padding-top: 3rpx;
   padding-bottom: 2rpx;
-
-  background: #FDFBEA;
-  border: 1px solid #F7E594;
+  background-image: url("/resource/juxing.png");
+  background-size: 100% 100%;
 
   font-size: 13px;
   color: #FA883C;
@@ -118,9 +131,9 @@ page {
 
 }
 .button1{
-  padding-top: 5rpx;
+  padding-top: 8rpx;
   width: 180rpx;
-  height: 65rpx;
+  height: 75rpx;
   border: 2px solid #18BB99;
   background-color: #ffffff;
   color: #18BB99 ;
@@ -137,6 +150,9 @@ page {
 
   color: #FFFFFF;
 
+}
+.button_hover{
+  background:#009C7D;
 }
 
 

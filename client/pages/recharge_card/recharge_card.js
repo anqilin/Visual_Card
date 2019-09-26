@@ -1,3 +1,4 @@
+import {monitor} from '/util/monitor';
 const app= getApp();
 Page({
   data: {
@@ -144,6 +145,10 @@ Page({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
         if(resp.data.return_code=="success"){
+          monitor.report({
+            info:"申请订单成功",
+            phone_number:app.userInfo.phone   
+          });
           app.orderResq.orderId=resp.data.return_msg.orderId;
           app.orderResq.qorderId=resp.data.return_msg.QorderId;
           app.orderResq.partnerid=resp.data.return_msg.partnerid;
@@ -154,6 +159,11 @@ Page({
           that.goPay();
 
         }else{
+          monitor.report({
+            info:"获取authcode成功",
+            msg:resp.data.return_msg,
+            code:resp.data.return_code             
+          });
           my.alert({
             title: '提示',
             content:resp.data.return_msg
@@ -184,6 +194,10 @@ Page({
       success: (res) => {
         app.log(res.resultCode);
         if(res.resultCode=="9000"){
+          monitor.report({
+            info:"支付成功",
+            phone_number:app.userInfo.phone   
+          });
           //var url=app.getCreatCardRequest();
           var url=app.getRechargeCardOrder();
           app.log(url);
@@ -191,6 +205,10 @@ Page({
           this.goChargeCard(url);
 
         }else{
+          monitor.report({
+            info:"获取authcode成功",
+            code:res.resultCode            
+          });
           my.alert({
           title: '提示' ,
           content:'支付失败'
@@ -229,6 +247,10 @@ Page({
 
         
         if(resp.data.resCode=="9000"){
+          monitor.report({
+            info:"复旦微充值接口返回成功",
+            phone_number:app.userInfo.phone   
+          });
           app.bussiness_id=resp.data.taskId;
           app.log("busiid:"+app.bussiness_id);
           app.log("充值成功");
@@ -236,6 +258,11 @@ Page({
           this.recharge_card();
 
         }else{
+          monitor.report({
+            info:"复旦充值失败",
+            code:resp.data.resCode,
+            msg:resp.data.resDescs           
+          });
           app.setChargeKeyi(2);
           app.log(resp.data.resCode);
           app.log(resp.data.resDesc);
@@ -306,6 +333,10 @@ Page({
       });  
       app.log(result);
       if(result.resultCode==0){
+          monitor.report({
+            info:"虚拟卡充值成功",
+            phone_number:app.userInfo.phone   
+          });
         app.setChargeKeyi(5);
        /* my.redirectTo({
           url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
@@ -321,6 +352,11 @@ Page({
         that.recharge_card();
 
       }else{
+        monitor.report({
+          info:"充值失败",
+          code:result.resultCode,
+          msg:result.resultMsg           
+        });
         app.setChargeKeyi(4);
         my.alert({
           title: '提示',

@@ -1,3 +1,4 @@
+import {monitor} from '/util/monitor';
 const app= getApp();
 Page({
   data: {
@@ -98,6 +99,10 @@ Page({
       function (result) {
         app.log(result)
         if(result.resultCode==0){
+          monitor.report({
+            info:"开卡成功",
+            phone_number:app.userInfo.phone   
+          });
           app.setCreatKeyi(5);
 
 
@@ -109,7 +114,13 @@ Page({
 
 
         }else{
+          monitor.report({
+            info:"开卡失败",
+            code:result.resultCode,
+            msg:result.resultMsg,
+          });
           app.setCreatKeyi(4);
+          app.setBussinessId(app.bussiness_id);
            clearInterval(that.data.interval);
            //app.setCreatCardFlag(false);
             my.alert({
