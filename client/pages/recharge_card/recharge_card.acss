@@ -78,9 +78,9 @@ page {
 .info1{
   padding-left: 10rpx;
   padding-right: 10rpx;
-  padding-top: 3rpx;
-  padding-bottom: 2rpx;
-
+  padding-top: 5rpx;
+  padding-bottom: 1rpx;
+  align-self: center;
   background-image: url("/resource/juxing.png");
   background-size: 100% 100%;
   

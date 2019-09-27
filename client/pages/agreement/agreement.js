@@ -106,7 +106,6 @@ Page({
         
         app.log(result);
 
-
         if(result.resultCode==0){
           monitor.report({
             info:"获取cplc成功",        
@@ -183,7 +182,7 @@ Page({
         app.isHasCard=true;
         my.redirectTo({ url: '../card_info/card_info' });
 
-
+        
       }else if(result.resultCode==-9000){
           that.read_cardInfo();
       }else{
