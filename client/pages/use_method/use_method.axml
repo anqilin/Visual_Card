@@ -1,5 +1,6 @@
 <view style="width:100%;height:16rpx;background:#f5f5f5"></view>
-<view class="creat_method">
+<scroll-view class="scroll" scroll-y="{{true}}" scroll-into-view="{{toView}}">
+<view id="item1"  class="creat_method">
   <view class="title">
     <view>开卡指导</view>
     <view class="bar1"></view>
@@ -53,7 +54,7 @@
 
 </view>
 <view style="width:100%;height:16rpx;background:#f5f5f5"></view>
-<view style="margin-left:40rpx;margin-right:40rpx" class="creat_method">
+<view id="item2" style="margin-left:40rpx;margin-right:40rpx" class="creat_method">
   <view class="title">
     <view>卡面介绍</view>
     <view class="bar1"></view>
@@ -63,14 +64,28 @@
     
   </view>
   
-  <view style="margin-top:20rpx" class="text_title">刷卡优惠：</view>
-  <view class="text_info">地铁：当月累计消费满70元后，即可享受9折优惠</view>
-  <view class="text_info">公交：120分钟内换乘第2辆优惠范围内的空调车可优惠1元</view>
+  <view style="margin-top:20rpx" class="text_title">用卡优惠：</view>
+  <view class="text_info">乘坐公交可获优惠</view>
+  <view class="text_info">乘客持交通卡在开通优惠范围线路内的公交空调车内支付车费，在120分钟内换乘第2辆优惠范围内的
+空调车可优惠1元。</view>
 
-    <view class="text_show" style="margin-top:20rpx">
-    <view class="text_title">换乘优惠：120分钟内乘客由公交换乘地铁或者由地铁换乘公交均可优惠1元</view>
-    
+  <view style="margin-top:20rpx" class="text_info">地铁换乘公交可获优惠</view>
+  <view class="text_info">在开通优惠范围的公交车和地铁之间，乘客持交通卡支付车费，在120分钟内乘客由公交换乘地铁或者由地铁换乘公交均可优惠1元。（如使用的公共交通卡为特种卡片，并已经享受了特殊的优惠票价，如保通卡等除外）
   </view>
+
+  <view style="margin-top:20rpx" class="text_info">乘坐地铁可获优惠</view>
+  <view class="text_info">一个自然月内乘客使用同一张交通卡乘坐地铁，当月累计消费满70元后，即可享受9折优惠，直至本自然月结束为止，下个月将重新进行计算。
+  </view>
+
+  <view style="margin-top:20rpx" class="text_info">乘坐轮渡可获优惠</view>
+  <view class="text_info">一个自然月内乘客使用同一张交通卡乘坐轮渡满20次后，可享受8折优惠；消费满40次后恢复原票价；消费满60次后可再次享受8折优惠；一个自然月内每张交通卡最多的优惠次数不超过60次。
+  </view>
+
+  <view style="margin-top:20rpx" class="text_info">乘坐磁悬浮可获优惠</view>
+  <view class="text_info">乘客持公共交通卡乘坐磁悬浮可享受8折优惠，即单程40元。
+  </view>
+
+
   
   <view style="margin-top:20rpx" class="info1">*可用范围与实体卡一致，并享受实体卡一样的刷卡优惠。</view>
 
@@ -99,8 +114,9 @@
     <view class="bar1"></view>
   </view>
 
-  <view style="margin-top:27rpx" class="text_info">更换新手机前请在钱包内将卡片迁出，在新的华为手机中，使用原来的手机账号将原卡片移入。</view>
-  <view style="margin-top:20rpx" class="text_info">您在钱包迁出卡片会导致卡片被挂云端，在钱包内迁入卡片即可。迁出卡片并非退卡，完成操作后不会退款。</view>
+  <view style="margin-top:27rpx" class="text_info">更换新手机前请在钱包内将卡片迁出，在新的华为手机中，登录同一华为账号从云端下载卡片后继续使用。</view>
+  <view style="margin-top:20rpx" class="text_info">您在钱包迁出卡片会导致卡片被挂云端，在钱包内迁入卡片即可。迁出卡片并非退卡，完成操作后不会退款。
+</view>
 
 
 </view>
@@ -112,14 +128,14 @@
     <view class="bar1"></view>
   </view>
   <view class="text_show" style="margin-top:20rpx">
-    <view class="text_title">华为：华为P30 系列、Mate20 系列、P20 系列、P10 系列、Mate RS、Mate10 系列、Mate9 系列、nova 2s、nova5 PRO</view>
+    <view class="text_title">华为：华为P30 系列、Mate20 系列、Mate30 系列、Mate X、nova5 PRO</view>
     <view class="text_info"></view>
   </view>
   <view class="text_info"></view>
 
 
   <view class="text_show" style="margin-top:20rpx">
-    <view class="text_title">荣耀：荣耀 V20、荣耀 Magic2、荣耀 Note 10、荣耀 10/荣耀 9/荣耀 8（均不含青春版）、荣耀 V10、荣耀 V9、荣耀 V8全网通版</view>
+    <view class="text_title">荣耀：荣耀V20、荣耀20 Pro、荣耀Magic 2</view>
     
     <view class="text_info"></view>
   </view>
@@ -128,3 +144,4 @@
   <view  class="info1">*请将手机系统升至最新版本，华为钱包升级至最新版本。</view>
 
 </view>
+</scroll-view>

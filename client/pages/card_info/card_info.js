@@ -106,7 +106,7 @@ Page({
     var params= JSON.stringify(pa);
     app.log(params);
 
-    my.call(app.plugin,
+    /*my.call(app.plugin,
     {
       method: 'readCardInfo',
       param:params
@@ -177,74 +177,88 @@ Page({
           code:result.resultCode,
           msg:result.resultMsg,
         });
+        my.redirectTo({
+          url:'../agreement/agreement'
+        });
         
       }
-    });
-    /*my.seNFCServiceIsv({
+    });*/
+    my.seNFCServiceIsv({
       method: 'readCardInfo',
       param:params, 
       success:(result) => {
         app.log(result);
+        app.log("新接口返回:"+result);
 
+      if(result.resultCode==0){
+          monitor.report({
+            info:"读取卡信息成功"  
+          });
+        app.cardInfo=result.data;
 
-        if(result.resultCode==0){
-          app.cardInfo=result.data;
+        var cardno=result.data.cardNo
+        app.cardno=cardno;
+        var logicno=result.data.logicCardNo;
+        var balance=result.data.balance;
+        var isDefault=result.data.isDefault;
 
-          var cardno=result.data.cardNo
-          app.cardno=cardno;
-          var logicno=result.data.logicCardNo;
-          var balance=result.data.balance;
-          var isDefault=result.data.isDefault;
-
-          app.logiccardno=logicno;
-          app.balance=balance;
-          app.isDefault=isDefault;
-          app.isHasCard=true;
+        app.logiccardno=logicno;
+        app.balance=balance;
+        app.isDefault=isDefault;
+        app.isHasCard=true;
         
+
+        that.setData({
+          balance:balance,
+          validity:result.data.validateDate,
+          isDefault:isDefault,
+          cardno: cardno,
+
+        })
+        if(that.data.isDefault){
+          that.setData({
+            cardstatus:"正常使用中"
+          })
+          if(parseFloat(result.data.balance)<0){
+
+            that.setData({
+              cardstatus:"无法使用",
+              cardstatuscolor:'#FFFFFF',
+              cardstatusback:'#F24724',
+              balance_color:'#F24724'
+            })
+
+
+          }
+        }else{
 
           that.setData({
-            balance:balance,
-            validity:result.data.validateDate,
-            isDefault:isDefault,
-            cardno: cardno,
-
+            cardstatus:"设置默认卡片"
           })
-          if(that.data.isDefault){
-            that.setData({
-              cardstatus:"正常使用中"
-            })
-            if(parseFloat(result.data.balance)<0){
+          var flag=app.getDefaultFlag();
+          if(flag==null||flag==undefined){
+            app.setDefaultFlag(true);
+            that.show_confirm();
 
-              that.setData({
-                cardstatus:"无法使用",
-                cardstatuscolor:'#FFFFFF',
-                cardstatusback:'#F24724',
-                balance_color:'#F24724'
-              })
-
-
-            }
-          }else{
-
-            that.setData({
-              cardstatus:"设置默认卡片"
-            })
-            var flag=app.getDefaultFlag();
-            if(flag==null||flag==undefined){
-              app.setDefaultFlag(true);
-              that.show_confirm();
-
-            }
           }
+        }
         
 
-        }else if(result.resultCode==-9000){
+      }else if(result.resultCode==-9000){
           that.read_cardInfo();
-        }else{
+      }else{
+        monitor.report({
+          info:"读取卡信息失败",
+          code:result.resultCode,
+          msg:result.resultMsg,
+        });
+        my.redirectTo({
+          url:'../agreement/agreement'
+        });
         
-        }
+      }
       }
-    });*/
+    });
 
   },
   go_record(){
@@ -271,7 +285,7 @@ Page({
           monitor.report({
             info:"获取authcode成功"             
           });
-         app.log(res.authCode);
+         app.log("res.authCode:"+res.authCode);
           var code=res.authCode;         
           this.getHttpUserInfo(code);
           
@@ -320,7 +334,7 @@ Page({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });
         if(resp.data.result_code=="success"){
-          app.log("data:"+resp.data);
+          app.log("userinfo data:"+resp.data);
           app.userInfo.phone=resp.data.phone;
           app.userInfo.token=resp.data.note;
           app.userInfo.buyId=resp.data.buyId;
@@ -332,9 +346,13 @@ Page({
           that.search_keyi()
 
 
+        }else{
+          my.alert({
+            title: '获取用户信息失败' 
+          });
         }
         
-        app.log('resp data:'+ resp.data); 
+        app.log('resp data:'+ resp.data.result_code); 
 
 
         
@@ -387,8 +405,9 @@ Page({
   show_fee(){
     my.alert({
       title: '可退服务费',
-      content: '20元可退服务费在退卡是一并退回',
+      content: '20元可退服务费在退卡时一并退回',
       buttonText: '确定',
+      
 
     });
   },
@@ -416,18 +435,20 @@ Page({
     var device_model=app.getDeviceModel();
 
     if(device_model==null||device_model==undefined){
-      my.call(app.plugin,
+      /*my.call(app.plugin,
         {
           method: 'getDeviceInfo'
         },
         function (result) {
 
           if(result!=null&&result.resultCode==0){
-            monitor.report({
-              info:"读取手机信息成功" 
-            });
+
             var data=JSON.parse(result.data);
             var model=data.deviceModel;
+            monitor.report({
+              info:"读取手机信息成功",
+              msg:"手机型号"+ model
+            });
 
             app.setDeviceModel(model);
             app.devicemodel=model;
@@ -446,15 +467,23 @@ Page({
             });
           }
 
-        });
-        /*my.seNFCServiceIsv({
+        });*/
+        my.seNFCServiceIsv({
           method: 'getDeviceInfo',
           success:(result) => {
+            app.log("新接口"+result);
             if(result!=null&&result.resultCode==0){
+
               var data=JSON.parse(result.data);
               var model=data.deviceModel;
+              app.log(model);
+              monitor.report({
+                info:"读取手机信息成功",
+                msg:"手机型号"+ model
+              });
 
               app.setDeviceModel(model);
+              app.devicemodel=model;
               that.setData({
                 deviceModel:model
               })
@@ -462,9 +491,15 @@ Page({
 
             }else if(result.resultCode==-9000){
               that.getPhoneInfo();
+            }else{
+              monitor.report({
+                info:"获取手机信息失败",
+                code:result.resultCode,
+                msg:result.resultMsg,
+              });
             }
           }
-        });*/
+        });
 
     }else{
       app.devicemodel=device_model;
@@ -493,7 +528,7 @@ Page({
     my.showLoading({
         content: '正在跳转设置',
     });
-    my.call(app.plugin,
+    /*my.call(app.plugin,
       {
         method: 'startDefault',
         param:params
@@ -523,8 +558,8 @@ Page({
 
         }
 
-      });
-      /*my.seNFCServiceIsv({
+      });*/
+      my.seNFCServiceIsv({
         method: 'startDefault',
         param:params, 
         success:(result) => {
@@ -532,11 +567,20 @@ Page({
             page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
           });  
           if(result.resultCode==0){
-            that.read_cardInfo()
+            monitor.report({
+              info:"设置默认卡片成功"  
+            });
+           that.read_cardInfo()
 
           }else if(result.resultCode==-9000){
             that.setDefaulfCard();
           }else{
+            app.log(result.resultCode+":"+result.resultMsg)
+            monitor.report({
+              info:"设置默认卡片失败",
+              code:result.resultCode,
+              msg:result.resultMsg,
+            });
             my.alert({
               title: '提示',
               content:'设置默认卡失败'
@@ -544,7 +588,7 @@ Page({
 
           }
         }
-      });*/
+      });
 
   },
   go_method(){
@@ -605,7 +649,7 @@ Page({
               app.log("data---"+data[i]);
               
               
-              if(data[i].TransType=='00000013'){
+              if(data[i].TransType=='10000013'){
                   var note=data[i].Note.split(",");
                   var inid=note[0].substring(10,20);
                   app.log('inid:'+inid);

@@ -26,7 +26,7 @@
 <view class="view2">
   <view class="item">
     <image class="image_item" mode="scaleToFill" src="/resource/yuan.png"/>
-    <view class="textbottom">先乘车后付</view>
+    <view class="textbottom">联乘优惠</view>
 
   </view>
   <view class="item">
@@ -45,7 +45,7 @@
   <image mode="scaleToFill" src="/resource/use_phone.png" style="width:138rpx;height:140rpx"/>
   <view class="text1">
     <view class="text2">手机就是交通卡</view>
-    <view class="text3">打开App 熄屏秒刷</view>
+    <view class="text3">熄屏秒刷</view>
 
   </view>
   <view onTap="go_method" class="go_info">
@@ -57,18 +57,24 @@
 </view>
 <view class="text_info">
   <view>使用范围：</view>
-  <view style="margin-top:8rpx">公交车、地铁、轮渡、磁浮列车</view>
-  <view style="margin-top:35rpx">优惠范围：</view>
-  <view style="margin-top:8rpx">当月累计消费满70后即可享受9折优惠，120分钟内享受换乘优惠。</view>
+  <view style="margin-top:8rpx">公交车、地铁、轮渡、磁浮列车等</view>
+  <view style="margin-top:20rpx">优惠范围：</view>
+  <view style="margin-top:8rpx">地铁当月累计消费满70元后，即可享受9折优惠，直至本自然月结束为止，下个月将重新进行计算。在120分钟内乘客由公交换乘地铁或者由地铁换乘公交均可优惠1元。</view>
+
 
 </view>
+  <view style="margin-top:8rpx;margin-left:60rpx" onTap="go_method2" class="go_info">
+    <view>优惠详情</view>
+    <image class="image_arrow" mode="scaleToFill" src="/resource/green_arrow.png" />
+
+  </view>
 <view class="bottom">
   <view class="text_show">
     <text>查看</text>
-    <text onTap="go_message" style="color: #06B794">《虚拟交通卡条款》</text>
-    <text>，授权上海公共交通卡公司</text>
+    <text onTap="go_message" style="color: #06B794">《华为设备上海交通卡用户服务协议》</text>
+    <text>，授权</text>
  
-    <text>获取你的姓名、手机号、证件类型、证件号用于实名领取交通卡。</text>
+    <text>上海公共交通卡公司获取你的姓名、手机号、证件类型、证件号用于实名领取交通卡。</text>
     
 
   </view>

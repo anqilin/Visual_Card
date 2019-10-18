@@ -322,7 +322,7 @@ Page({
     my.showLoading({
         content: '充值中',
     });
-    my.call(app.plugin,
+    /*my.call(app.plugin,
     {
       method: 'rechargeCard',
       param:params
@@ -338,10 +338,7 @@ Page({
             phone_number:app.userInfo.phone   
           });
         app.setChargeKeyi(5);
-       /* my.redirectTo({
-          url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
 
-        });*/
         my.navigateBack({
           
         });
@@ -367,8 +364,8 @@ Page({
 
         });
       }
-  });
-    /*my.seNFCServiceIsv({
+  });*/
+    my.seNFCServiceIsv({
       method: 'rechargeCard',
       param:params, 
       success:(result) => {
@@ -377,30 +374,43 @@ Page({
         });  
         app.log(result);
         if(result.resultCode==0){
-          app.setChargeKeyi(5);
-          my.redirectTo({
-            url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
-
+          monitor.report({
+            info:"虚拟卡充值成功",
+            phone_number:app.userInfo.phone   
           });
+          app.setChargeKeyi(5);
+       /* my.redirectTo({
+          url: '../card_info/card_info', // 需要跳转的应用内非 tabBar 的目标页面路径 ,路径后可以带参数。参数规则如下：路径与参数之间使用
+
+        });*/
+          my.navigateBack({
+          
+          });
+
 
 
         }else if(result.resultCode==-9000){
           that.recharge_card();
 
         }else{
+          monitor.report({
+            info:"充值失败",
+            code:result.resultCode,
+            msg:result.resultMsg           
+          });
           app.setChargeKeyi(4);
           my.alert({
             title: '提示',
             content: '充值失败', 
           });
           my.redirectTo({
-            url: '../card_info/card_info', 
+            url: '../record_list/keyi_list/keyi_list'
 
           });
         }
       }
 
-    });*/
+    });
 
   },     
   recharge(){

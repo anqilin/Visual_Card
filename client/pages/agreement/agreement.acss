@@ -62,7 +62,7 @@ page {
  
 }
 .view2{
-  margin-top: 50rpx;
+  margin-top: 30rpx;
   margin-left: 80rpx;
   margin-right: 80rpx;
   display: flex;
@@ -86,7 +86,7 @@ color: #333333;
 }
 .strategy{
   padding-right: 30rpx;
-  margin-top: 45rpx;  
+  margin-top: 30rpx;  
   margin-left: 60rpx;
   margin-right: 60rpx;
   background: #FFFFFF;
@@ -133,9 +133,9 @@ color: #999999;
   width: 13rpx;
 }
 .text_info{
-  margin-top: 50rpx;
-  margin-left: 80rpx;
-  margin-right: 80rpx;
+  margin-top: 30rpx;
+  margin-left: 60rpx;
+  margin-right: 60rpx;
   
   font-size: 15px;
   color: #999999;
@@ -143,7 +143,7 @@ color: #999999;
   flex-direction: column;
 }
 .bottom{
-  margin-top: 65rpx;
+  margin-top: 40rpx;
   background: #FFFFFF;
   box-shadow: 5px -10px 10px 0 rgba(6,183,148,0.10);
   
@@ -153,7 +153,7 @@ color: #999999;
   flex-direction: column;
   padding-left: 26rpx;
   padding-right: 26rpx;
-  padding-top: 35rpx;
+  padding-top: 30rpx;
 }
 .text_show{
   display: flex;
@@ -162,7 +162,7 @@ color: #999999;
   margin-left: 10rpx;
 }
 .sure_button{
-  margin-top: 35rpx;
+  margin-top: 30rpx;
 
   background: #06B794;
   border-radius: 4px;

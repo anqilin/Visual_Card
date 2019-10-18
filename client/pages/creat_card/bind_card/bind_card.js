@@ -71,7 +71,7 @@ Page({
           text3:"你的上海NFC交通卡已开通成功！",
           percent: "100"
         });
-        my.redirectTo({
+        my.redirectTo({          
           url:'../../card_info/card_info'
         });
 
@@ -91,7 +91,7 @@ Page({
     var params= JSON.stringify(pa);
     app.log(params);
     try{
-      my.call(app.plugin,
+      /*my.call(app.plugin,
       {
         method: 'issueCard',
         param:params
@@ -132,13 +132,17 @@ Page({
         }
   
   
-      });
-      /*my.seNFCServiceIsv({
+      });*/
+      my.seNFCServiceIsv({
         method: 'issueCard',
         param:params, 
         success:(result) => {
           app.log(result)
           if(result.resultCode==0){
+            monitor.report({
+              info:"开卡成功",
+              phone_number:app.userInfo.phone   
+            });
             app.setCreatKeyi(5);
 
 
@@ -150,19 +154,25 @@ Page({
 
 
           }else{
+            monitor.report({
+              info:"开卡失败",
+              code:result.resultCode,
+              msg:result.resultMsg,
+            });
             app.setCreatKeyi(4);
+            app.setBussinessId(app.bussiness_id);
             clearInterval(that.data.interval);
            //app.setCreatCardFlag(false);
             my.alert({
               title: '提示',
               content: '开卡失败', 
             });
-           my.navigateTo({ url: '../../record_list/keyi_list/keyi_list' });
+           my.redirectTo({ url: '../../record_list/keyi_list/keyi_list' });
 
           }
           
         }
-      });*/
+      });
 
     }catch(err){
       my.alert({

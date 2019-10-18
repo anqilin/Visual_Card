@@ -1,9 +1,9 @@
-import util from '/util/huawei';
+
 App({
   name: "my name is",
-  SERVER_URL: "https://online.sptcc.com:8445/",
+//  SERVER_URL: "https://online.sptcc.com:8445/",
 
-//  SERVER_URL : "https://online.sptcc.com:8443/",
+  SERVER_URL : "https://online.sptcc.com:8443/",
   orderReq: {
     detail: "",// 商品详情：
     body: "",// 商品描述：

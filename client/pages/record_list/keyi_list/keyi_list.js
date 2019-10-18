@@ -69,19 +69,22 @@ Page({
             for(var i=0;i< data.length;i++){
               app.log("data---"+data[i]);
               
-              if(data[i].TransType=='00000012'||data[i].TransType=='00000013'||data[i].TransType=='00000015'){
+              if(data[i].TransType=='10000012'||data[i].TransType=='10000013'||data[i].TransType=='00000015'){
                 if(app.isHasCard){
-                  if(data[i].TransType=='00000012'){
+                  app.log("hascard"+app.isHasCard);
+
+                  if(data[i].TransType=='10000012'){
                     continue;
                   }
 
                 }else{
-                  if(data[i].TransType=='00000013'){
+                  app.log("hascard"+app.isHasCard);
+                  if(data[i].TransType=='10000013'){
                     continue;
                   }
 
                 }
-                if(data[i].TransType=='00000013'){
+                if(data[i].TransType=='10000013'){
                   var note=data[i].Note.split(",");
                   var inid=note[0].substring(10,20);
                   app.log('inid:'+inid);
@@ -90,10 +93,10 @@ Page({
 
                   }  
                 }
-                if(data[i].TransType=='00000012'){
+                if(data[i].TransType=='10000012'){
                   app.setCreatKeyi(4);
 
-                }else if(data[i].TransType=='00000013'){
+                }else if(data[i].TransType=='10000013'){
                    app.setChargeKeyi(4);
 
                 }else if(data[i].TransType=='00000015'){
@@ -121,16 +124,17 @@ Page({
                 json.fen=fen;
 
 
-                if(data[i].TransType=='00000013'){
+                if(data[i].TransType=='10000013'){
+
 
                   json.TransType="充值可疑"
-                  json.type='00000013';
+                  json.type='10000013';
                   json.text="去验证"
 
-                }else if(data[i].TransType=='00000012'){
+                }else if(data[i].TransType=='10000012'){
                   
                   json.TransType="开卡可疑"
-                  json.type='00000012';
+                  json.type='10000012';
                   json.text="去验证"
 
                 }else if(data[i].TransType=='00000015'){
@@ -148,12 +152,12 @@ Page({
 
               if(that.data.is_search){
 
-                if(this.data.type=="00000012"){
+                if(this.data.type=="10000012"){
                   my.redirectTo({
                     url:'../../success_result/success_result?from=0'
                   });
 
-                }else if(this.data.type=="00000013"){
+                }else if(this.data.type=="10000013"){
                   my.redirectTo({
                     url: '../../success_result/success_result?from=1', 
 
@@ -207,12 +211,12 @@ Page({
 
             if(that.data.is_search){
 
-              if(this.data.type=="00000012"){
+              if(this.data.type=="10000012"){
                   my.redirectTo({
                     url:'../../success_result/success_result?from=0'
                   });
 
-              }else if(this.data.type=="00000013"){
+              }else if(this.data.type=="10000013"){
                 my.redirectTo({
                   url: '../../success_result/success_result?from=1', 
 
@@ -295,8 +299,7 @@ Page({
           monitor.report({
             info:"退款成功",
             phone_number:app.userInfo.phone   
-          });
-          
+          });          
           that.get_keyi();
 
         }else{
@@ -481,9 +484,9 @@ Page({
   },
   doRetry(){
     var that=this;
-    if(that.data.type="00000013"){
+    if(that.data.type=="10000013"){
       that.recharge_card();
-    }else if(that.data.type="00000012"){
+    }else if(that.data.type=="10000012"){
       that.creat_card();
 
     }
@@ -514,7 +517,7 @@ Page({
     app.log(params);
 
     try{
-    my.call(app.plugin,
+    /*my.call(app.plugin,
       {
         method: 'issueCard',
         param:params
@@ -533,9 +536,7 @@ Page({
           app.log('开卡成功');
 
            that.get_keyi();
-           if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-            that.show_fail();
-          }  
+
 
 
         }else if(result.resultCode==-9000){
@@ -561,30 +562,45 @@ Page({
 
         }
    
-      });
-      /*my.seNFCServiceIsv({
+      });*/
+      my.seNFCServiceIsv({
         method: 'issueCard',
         param:params, 
         success:(result) => {
           my.hideLoading({
             page:that,
           });
+          app.log(result.resultMsg);
           if(result.resultCode==0){
+            monitor.report({
+              info:"重新开卡成功",
+              phone_number:app.userInfo.phone   
+            });
             app.setCreatKeyi(5);
             app.log('开卡成功');
 
             that.get_keyi();
-            if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-              that.show_fail();
-            }  
+          /* if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+            that.show_fail();
+          }*/  
 
 
           }else if(result.resultCode==-9000){
 
             that.creat_card();
 
+
           }else{
+            monitor.report({
+              info:"重新开卡失败",
+              code:result.resultCode,
+              msg:result.resultMsg
+            });
             app.setCreatKeyi(4);
+            my.alert({
+              title: '提示',
+              content: '开卡失败', 
+            });
 
             if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
               that.show_fail();
@@ -592,7 +608,7 @@ Page({
 
           }
         }
-      });*/
+      });
 
     }catch(e){
        my.hideLoading({
@@ -615,7 +631,7 @@ Page({
     my.showLoading({
         content: '充值中',
     });
-    my.call(app.plugin,
+    /*my.call(app.plugin,
     {
       method: 'rechargeCard',
       param:params
@@ -634,10 +650,7 @@ Page({
         
         app.setChargeKeyi(5);
         that.get_keyi();
-        if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-           that.show_fail();
 
-        }
 
 
       }else if(result.resultCode==-9000){
@@ -659,52 +672,63 @@ Page({
 
         }
       }
-  });
-    /*my.seNFCServiceIsv({
+  });*/
+    my.seNFCServiceIsv({
       method: 'rechargeCard',
       param:params, 
       success:(result) => {
         my.hideLoading({
           page:that,
         });
+        app.log(result.resultMsg);
   
         if(result.resultCode==0){
+          monitor.report({
+              info:"重新充值成功",
+              phone_number:app.userInfo.phone   
+          });
+        
           app.setChargeKeyi(5);
           that.get_keyi();
-          if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-            that.show_fail();
+        /*if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+           that.show_fail();
 
-          }
+        }*/
 
 
         }else if(result.resultCode==-9000){
           that.recharge_card();
 
         }else{
+          monitor.report({
+            info:"重新充值失败",
+            code:result.resultCode,
+            msg:result.resultMsg
+          });
           app.setChargeKeyi(4);
           my.alert({
             title: '提示',
             content: '充值失败', 
-            });
+          });
           if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-            that.show_fail();
+           that.show_fail();
 
           }
         }
         
       }
 
-    });*/
+    });
 
   }, 
   show_fail(){
-    if(this.data.type=="00000012"){
+    if(this.data.type=="10000012"){
       my.navigateTo({
         url: '../../fail_result/fail_result?from=0', 
       });
 
 
-    }else if(this.data.type=="00000013"){
+    }else if(this.data.type=="10000013"){
       my.navigateTo({
         url: '../../fail_result/fail_result?from=1', 
       });

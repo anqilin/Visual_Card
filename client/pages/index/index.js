@@ -471,7 +471,7 @@ Page({
     var device_model=app.getDeviceModel();
 
     if(device_model==null||device_model==undefined){
-      my.call(app.plugin,
+      /*my.call(app.plugin,
         {
           method: 'getDeviceInfo'
         },
@@ -491,6 +491,24 @@ Page({
             that.getPhoneInfo();
           }
 
+        });*/
+        my.seNFCServiceIsv({
+          method: 'getDeviceInfo',
+          success:(result) => {
+            if(result!=null&&result.resultCode==0){
+              monitor.report({
+                info:"获取手机信息成功",
+              });
+              var data=JSON.parse(result.data);
+              var model=data.deviceModel;
+
+              app.setDeviceModel(model);
+              app.devicemodel=model;
+
+            }else if(result.resultCode==-9000){
+              that.getPhoneInfo();
+            }
+          }
         });
 
 
@@ -541,8 +559,11 @@ Page({
 
             for(var i=0;i< data.length;i++){
               app.log("data---"+data[i]);
+              app.log(data[i].TransType);
               
-              if(data[i].TransType=='00000012'){
+              if(data[i].TransType=='10000012'){
+                app.log("发现开卡可疑")
+
                  my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
                  return;
 
