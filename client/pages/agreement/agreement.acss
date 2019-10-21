@@ -156,8 +156,8 @@ color: #999999;
   padding-top: 30rpx;
 }
 .text_show{
-  display: flex;
-  flex-direction: row;
+  /*display: flex;
+  flex-direction: row;*/
   flex-wrap: wrap;
   margin-left: 10rpx;
 }
