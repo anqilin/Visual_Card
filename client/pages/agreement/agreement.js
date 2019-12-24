@@ -41,10 +41,18 @@ Page({
  
   },
   onShow(){
+    var phone_system=this.data.systemInfo.platform;
+    app.log("手机型号："+this.data.systemInfo.model);
+    app.log("手机系统："+phone_system);
+    if(phone_system=="iOS"||phone_system=="iPhone OS"){
+      this.data.canclick=true;
 
-    this.data.card_staus=false;
-    this.data.canclick=false;
-    this.get_cplc();
+    }else if(phone_system=="Android"){
+      this.data.card_staus=false;
+      this.data.canclick=false;
+      this.get_cplc();
+    }
+
 
 
   },
@@ -67,14 +75,18 @@ Page({
   },
   agree_on(){
     var that=this;
+    //that.getUserInfo();
     if(that.data.canclick==false){
       return;
     }
 
     if(that.data.card_staus==true){
-      my.navigateTo({
+
+      //that.go_zhifubao();
+      /*my.navigateTo({
         url: '../index/index'
-      });
+      });*/
+      that.getUserInfo();
     }else{
       my.showToast({
           content:that.data.error_message
@@ -97,35 +109,7 @@ Page({
       my.showLoading({
         content: '查询中',
       });
-      /*my.call(app.plugin,
-      {
-        method: 'getCplc'
-      },
-      function (result) {
-          my.hideLoading({
-            page: that,
-          });
-        
-        app.log(result);
 
-        if(result.resultCode==0){
-          monitor.report({
-            info:"获取cplc成功",        
-          });
-          app.setCplc(result.data.cplc);
-          that.read_cardInfo();
-
-        }else if(result.resultCode==-9000){
-          that.get_cplc();
-        }else{
-          monitor.report({
-            code:result.resultCode,
-            msg:result.resultMsg,
-            info:"获取cplc失败"       
-          });
-          that.data.canclick=true;
-        }
-      });*/
       my.seNFCServiceIsv({
         method: 'getCplc',
         success:(result) => {
@@ -235,8 +219,7 @@ Page({
           app.balance=result.data.balance; 
           app.isHasCard=true;
           my.redirectTo({ url: '../card_info/card_info' });
-
-        
+                  
         }else if(result.resultCode==-9000){
           that.read_cardInfo();
         }else{
@@ -356,39 +339,7 @@ Page({
       my.showLoading({
         content: '查询中',
       });
-    /*my.call(app.plugin,
-    {
-      method: 'checkRechargeCondition',
-      param:params
-    },
-    function (result) {
-        my.hideLoading({
-            page: that,
-          });
-      app.log(result);
 
-      if(result.resultCode==0){
-        monitor.report({
-            info:"虚拟卡充值状态正常",
-            code:result.resultCode        
-        });
-        that.data.card_staus=true;
-        app.log("虚拟卡充值状态正常")
-        that.data.canclick=true;
-
-      }else if(result.resultCode==-9000){
-        that.get_charge_status();
-
-      }else{
-        monitor.report({
-          code:result.resultCode,
-          msg:result.resultMsg,
-          info:"充值服务不支持"       
-        });        
-        that.data.error_message="充值服务不支持"
-        that.data.canclick=true;
-      }
-    });*/
     my.seNFCServiceIsv({
       method: 'checkRechargeCondition',
       param:params, 
@@ -423,13 +374,138 @@ Page({
     });
 
   },
+
+
   go_message(){
     my.navigateTo({
       url:'../contract/contract'
     });
+  },
+  go_zhifubao(){
+    
+    var path='alipays://platformapi/startapp?appId=68687011&appClearTop=false&startMultApp=YES&bizPage=apply&'+
+    'sign_params=biz_content%3D%257B%2522card_sign_mode%2522%253A%2522DIRECT%2522%252C%2522card_type%2522%253A%'+
+    '2522N1310100%2522%252C%2522disabled%2522%253A%2522false%2522%257D%26method%3Dalipay.user.virtualcard.page.sign%26version%3D1.0'+
+    '&cplc='+app.getCplc();
+    app.log("zhifubao path:"+path);
+    my.ap.navigateToAlipayPage({
+      path:path
+    });
+
+  },
+  getUserInfo(){
+    var that = this;
+    app.log('getAuth--start');
+      my.showLoading({
+        content: '查询中',
+      });
+    my.getAuthCode({
+      scopes: 'auth_user',
+      success: (res) => {
+        if(res.authCode){
+          monitor.report({
+            info:"获取authCode成功"      
+          });
+          app.log(res.authCode);
+          var code=res.authCode;         
+          this.getHttpUserInfo(code);
+          
+
+        }
+
+      },
+      fail: (res) => {
+          app.log('getAuth--failed:' +  JSON.stringify(res));
+          monitor.report({
+            info:"获取Authcode失败"       
+          });  
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.getUserInfo();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
+      },
+    });
+  },
+
+  getHttpUserInfo(code){
+    var that = this;
+
+    var url = app.SERVER_URL
+					+ "handapp_app/AlipayCommRegisterServlet?";
+    url=url+"code="+code;
+    app.log(url);
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => {
+        
+        my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+        if(resp.data.result_code=="success"){
+
+          app.userInfo.phone=resp.data.phone;
+          app.userInfo.token=resp.data.note.substring(0,16);
+          app.userInfo.buyId=resp.data.buyId;
+          app.setGlobalUserInfo(app.userInfo);
+          monitor.report({
+            info:"获取用户信息成功",
+            phone_number:app.userInfo.phone   
+          });
+          that.go_zhifubao();
+                   
+        }
+        
+        app.log('resp data'+resp.data); 
+
+
+        
+      },
+      fail: (res) => {
+          app.log('HttpUserInfo--failed:' +  JSON.stringify(res));
+          monitor.report({
+
+            info:"获取用户信息失败"       
+          });  
+          my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          });
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.getUserInfo();    
+                return;
+              }else{
+                //my.navigateBack({ delta: 1});
+                return;
+              }
+            },
+          });
+      },
+
+    });
+
+
   }
-
-
 
   
 });

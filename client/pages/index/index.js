@@ -38,10 +38,12 @@ Page({
         content: 'onLoad 执行异常'
       });
     }
-
+    var userInfo=app.getGlobalUserInfo();
+    app.userInfo=userInfo;
     var token=app.userInfo.token;
     var phonenumber=app.userInfo.phone;
     var buyId=app.userInfo.buyId;
+
     if(token!=""&&phonenumber!=""&&buyId!=""){
         app.log("已获取用户信息")
         this.search_keyi();
