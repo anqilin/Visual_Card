@@ -14,7 +14,7 @@
   <view class="top" >
     <view class="view1">     
       <!--<image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>-->
-      <view class="imageview1">
+      <view class="imageview1" style="background-image:{{image_path}}">
         <button style="background:{{cardstatusback}};color:{{cardstatuscolor}}" onTap="setDefault" class="use_state" size="mini" >
           {{cardstatus}}
         </button>
@@ -27,7 +27,7 @@
 <view class="info">
   <view class="info1">
     <view>
-      <view onTap="go_keyi" a:if="{{keyi}}" class="keyi">
+      <view onTap="go_keyi" a:if="{{false}}" class="keyi">
         你有可疑充值记录
         <image mode="scaleToFill" src="/resource/red_arrow.png" style="width:15rpx;height:24rpx;margin-left:10rpx"/>
       </view>
@@ -36,7 +36,7 @@
         <view style="color:{{balance_color}}" class="info4">{{balance}}</view>
         <view class="info3">元</view>
       </view>
-      <view onTap="show_fee" class="info_ketui" style="margin-top:9rpx">
+      <view onTap="show_fee" a:if="{{false}}" class="info_ketui" style="margin-top:9rpx">
         <view class="info5" >可退服务费</view>
         <view class="info5" >20.00</view>
         <image mode="scaleToFill" src="/resource/question.png" style="width:30rpx;height:30rpx;margin-left:10rpx"/>
@@ -77,7 +77,7 @@
 
   </view>
 
-  <view class="info_message" >
+  <view a:if="{{keyi}}" class="info_message" >
     <view>
       <view class="info_left">
         可疑记录
@@ -91,7 +91,7 @@
 
   </view>
 
-  <view class="info_message">
+  <view a:if="{{false}}" class="info_message">
     <view>
       <view class="info_left">
         已绑定设备
@@ -103,7 +103,7 @@
 
   </view>
 
-  <view class="info_message" >
+  <view a:if="{{false}}" class="info_message" >
     <view>
       <view class="info_left">
         有效期
@@ -114,7 +114,21 @@
     <view class="info_right" >{{validity}}</view>
 
   </view>
-  <view class="info_message" style="border-style: none">
+
+  <view onTap="show_fee"  class="info_message" >
+    <view>
+      <view class="info_left">
+        可退服务费
+      </view>
+
+    </view>
+
+    <view  class="info_right"  >{{deposit}}
+      <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
+    </view>
+
+  </view>
+  <view class="info_message" >
     <view>
       <view class="info_left">
         使用攻略
@@ -123,6 +137,32 @@
     </view>
 
     <view onTap="go_method" class="info_right"  >查看
+      <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
+    </view>
+
+  </view>
+
+  <view class="info_message" >
+    <view>
+      <view class="info_left">
+        客服电话
+      </view>
+
+    </view>
+
+    <view class="info_right" >12319</view>
+
+  </view>
+
+  <view class="info_message" style="border-style: none">
+    <view>
+      <view class="info_left">
+        蚂蚁森林能量卡
+      </view>
+
+    </view>
+
+    <view  class="info_right"  >{{bind_text}}
       <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
     </view>
 
@@ -144,3 +184,14 @@
     <button a:if="{{false}}" class="button_down"  size="mini" type="primary">下载App</button>
   </view>
 </view>
+<modal
+		show="{{modalOpened}}"
+		onModalClick="onModalClick"
+		onModalClose="onModalClose"
+		topImage="/resource/warn.png"
+		topImageSize="sm"
+	>
+		<view slot="header">{{deposit_title}}</view>
+		{{deposit_msg}}
+		<view slot="footer">确定</view>
+</modal>

@@ -4,6 +4,7 @@
   "main": "",
   "license": "MIT",
   "dependencies": {
-    "@ant-basement/miniprogram-sdk": "^2.2.23"
+    "@ant-basement/miniprogram-sdk": "^2.2.23",
+    "mini-antui": "^0.4.34"
   }
 }

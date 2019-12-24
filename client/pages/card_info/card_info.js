@@ -13,7 +13,14 @@ Page({
     cardstatus:'设置默认卡片',
     cardstatuscolor:'#108EE9',
     cardstatusback:'#FDFDFD',
-    balance_color:'#333333'
+    balance_color:'#333333',
+    image_path:'url(/resource/card.png)',
+    deposit:"20.00",
+    deposit_num:0,
+    deposit_title:'通过APP提前返还服务费',
+    deposit_msg:'实名认证后，在卡片详情页面进行返还申请（每个账户提前返还服务费仅能享受一次）',
+    modalOpened: false,
+    bind_text:'升级',
   },
     onLoad(options) {
     try {
@@ -36,6 +43,7 @@ Page({
     var buyId=app.userInfo.buyId;
     if(token!=""&&phonenumber!=""&&buyId!=""){
         app.log("已获取用户信息")
+        that.get_mydeposit();
         setTimeout(function(){
           that.search_keyi();
 
@@ -48,6 +56,7 @@ Page({
 
     }
     //this.read_cardInfo();
+    
 
 
   },
@@ -62,6 +71,7 @@ Page({
     setTimeout(function(){
 
       that.read_cardInfo();
+      //that.change_card_show();
 
     },5000);
     that.getPhoneInfo();
@@ -106,83 +116,6 @@ Page({
     var params= JSON.stringify(pa);
     app.log(params);
 
-    /*my.call(app.plugin,
-    {
-      method: 'readCardInfo',
-      param:params
-    },
-    function (result) {
-      app.log(result);
-
-
-      if(result.resultCode==0){
-          monitor.report({
-            info:"读取卡信息成功"  
-          });
-        app.cardInfo=result.data;
-
-        var cardno=result.data.cardNo
-        app.cardno=cardno;
-        var logicno=result.data.logicCardNo;
-        var balance=result.data.balance;
-        var isDefault=result.data.isDefault;
-
-        app.logiccardno=logicno;
-        app.balance=balance;
-        app.isDefault=isDefault;
-        app.isHasCard=true;
-        
-
-        that.setData({
-          balance:balance,
-          validity:result.data.validateDate,
-          isDefault:isDefault,
-          cardno: cardno,
-
-        })
-        if(that.data.isDefault){
-          that.setData({
-            cardstatus:"正常使用中"
-          })
-          if(parseFloat(result.data.balance)<0){
-
-            that.setData({
-              cardstatus:"无法使用",
-              cardstatuscolor:'#FFFFFF',
-              cardstatusback:'#F24724',
-              balance_color:'#F24724'
-            })
-
-
-          }
-        }else{
-
-          that.setData({
-            cardstatus:"设置默认卡片"
-          })
-          var flag=app.getDefaultFlag();
-          if(flag==null||flag==undefined){
-            app.setDefaultFlag(true);
-            that.show_confirm();
-
-          }
-        }
-        
-
-      }else if(result.resultCode==-9000){
-          that.read_cardInfo();
-      }else{
-        monitor.report({
-          info:"读取卡信息失败",
-          code:result.resultCode,
-          msg:result.resultMsg,
-        });
-        my.redirectTo({
-          url:'../agreement/agreement'
-        });
-        
-      }
-    });*/
     my.seNFCServiceIsv({
       method: 'readCardInfo',
       param:params, 
@@ -336,14 +269,18 @@ Page({
         if(resp.data.result_code=="success"){
           app.log("userinfo data:"+resp.data);
           app.userInfo.phone=resp.data.phone;
-          app.userInfo.token=resp.data.note;
+          app.userInfo.token=resp.data.note.substring(0,16);
           app.userInfo.buyId=resp.data.buyId;
+          app.log(app.userInfo.token);
           monitor.report({
             info:"获取用户信息成功",
             phone_number:app.userInfo.phone   
           });
 
-          that.search_keyi()
+          that.search_keyi();
+          that.get_mydeposit();
+          that.Ant_Search();
+          //that.Ant_BindOrUnbind('01');
 
 
         }else{
@@ -403,13 +340,9 @@ Page({
 
   },
   show_fee(){
-    my.alert({
-      title: '可退服务费',
-      content: '20元可退服务费在退卡时一并退回',
-      buttonText: '确定',
-      
+    var that=this;
+    that.openModal() 
 
-    });
   },
   show_confirm(){
     var that=this;
@@ -743,5 +676,188 @@ Page({
 
     });
 
-  }
+  },
+  change_card_show(){
+    var that=this;
+    that.setData({
+        image_path:'url(/resource/card_unbind.png)'
+    });
+  },
+  Ant_Search(){
+    var that=this;
+
+    var url=app.AntSearch(app.cardno);
+    app.log(url);
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => { 
+      
+        app.log('antsearch resp data:'+JSON.stringify(resp.data));
+
+        var msg=JSON.parse(resp.data.result_msg);
+        
+        if(resp.data.return_code=="success"&&resp.data.result_code=="success"){
+          app.log("ResponseCode:"+msg.responseCode);
+          app.log(msg);
+          if(msg.responseCode=="00"){
+            app.log("该卡已绑定蚂蚁森林能量");
+            that.setData({
+              bind_text:"解绑"
+            })
+            monitor.report({
+              info:"该卡已绑定蚂蚁森林能量",
+              code:resp.data.result_code
+            });
+          }else{
+            pp.log("该卡没有绑定蚂蚁森林能量");
+            monitor.report({
+              info:"该卡没有绑定蚂蚁森林能量",
+
+            });
+
+          }
+
+        }else{
+          app.log("该卡没有绑定蚂蚁森林能量");
+            monitor.report({
+              info:"该卡没有绑定蚂蚁森林能量",
+
+            });
+
+        }
+  
+      },
+      fail: (err) => {
+          app.log(err)
+          my.confirm({
+            title: '提示',
+            content: '网络不流畅，获取卡能量信息失败，请稍后重试！',
+            confirmButtonText: '重试',
+            cancelButtonText: '取消',
+            complete: (e) => {
+              if(e.confirm){
+                that.Ant_Search();    
+                return;
+              }else{
+                
+                return;
+              }
+            },
+          });
+
+      },
+
+    });
+
+  },
+  Ant_BindOrUnbind(falg){
+    var that=this;
+
+    var url=app.AntBind(app.cardno,falg);
+    app.log(url);
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => { 
+      
+        app.log('antbind resp data:'+JSON.stringify(resp.data));
+
+        var msg=JSON.parse(resp.data.result_msg);
+        
+        if(resp.data.return_code=="success"&&resp.data.result_code=="success"){
+          app.log("ResponseCode:"+msg);
+          app.log("操作成功")
+
+        }else{
+
+        }
+  
+      },
+      fail: (err) => {
+          app.log(err);
+
+
+      },
+
+    });
+
+  },
+  get_mydeposit(){
+    var that=this;
+    var url=app.get_deposit(app.cardno);
+    app.log("获取押金:"+url);
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => { 
+ 
+        app.log('deposit data:'+JSON.stringify(resp.data));
+        app.log(resp.data.return_code);
+        
+                
+        if(resp.data.return_code=="success"){
+          var msg=JSON.parse(resp.data.return_msg);
+          app.log("ResponseCode:"+msg);
+          var deposit=msg.deposit;
+          //app.log("押金:"+deposit);
+          app.log("押金:"+parseInt(deposit));
+          var num=parseFloat(parseInt(deposit)/100).toFixed(2);
+          app.log("押金:"+num);
+          that.setData({
+            deposit:num,
+            deposit_num:parseInt(deposit)
+
+          });
+          if(parseInt(deposit)>0){
+            app.log("押金不为0");
+          }
+          var notes=msg.note.split(";");
+          if(notes[0]=="2"){
+            var phone=notes[2];
+            var year=notes[1].substring(0,4);
+            var month=notes[1].substring(4,8);
+            var day=notes[1].substring(8,10);
+            var title="无可退服务费";
+            var content="该卡开卡服务费已于"+year+"年"+month+"月"+day+"日退至"+phone.substring(0,3)+
+            "****"+phone.substring(7,11);
+            that.setData({
+              deposit_title:title,
+              deposit_msg:content
+            })
+          }
+
+
+        }else{
+
+        }
+  
+      },
+      fail: (err) => {
+
+      },
+
+    });
+
+
+  },
+  openModal() {
+    this.setData({
+      modalOpened: true,
+    });
+  },
+  onModalClick() {
+    this.setData({
+      modalOpened: false,
+    });
+  },
+  onModalClose() {
+    this.setData({
+      modalOpened: false,
+    });
+  },
+
 });

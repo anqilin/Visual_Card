@@ -22,6 +22,7 @@ Page({
     text_color6:"#18BB99",
     mybalance:0,
     afterbalance:0,
+    image_path:'/resource/card.png'
   },
   onLoad(options) {
     try {

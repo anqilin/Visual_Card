@@ -14,7 +14,7 @@
   <view class="top" >
     <view class="cardview">
       <view class="view1">     
-        <image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>
+        <image mode="scaleToFill" src={{image_path}} class="imageview1"/>
 
 
       </view>

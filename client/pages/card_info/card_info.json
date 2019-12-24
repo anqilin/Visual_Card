@@ -1,6 +1,9 @@
 {
   
   "defaultTitle": "上海NFC交通卡",
-  "titleBarColor": "#ffffff"
+  "titleBarColor": "#ffffff",
+  "usingComponents":{
+    "modal": "mini-antui/es/modal/index"
+  }
 
 }

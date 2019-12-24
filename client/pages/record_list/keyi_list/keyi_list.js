@@ -462,6 +462,7 @@ Page({
             content:'可疑交易处理失败' 
           });
           app.log("查询失败");
+          that.get_keyi();
         }
 
 
@@ -601,10 +602,11 @@ Page({
               title: '提示',
               content: '开卡失败', 
             });
+            that.get_keyi();
 
-            if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-              that.show_fail();
-            } 
+            /*if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+              //that.show_fail();
+            } */
 
           }
         }
@@ -710,10 +712,12 @@ Page({
             title: '提示',
             content: '充值失败', 
           });
-          if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-           that.show_fail();
+          that.get_keyi();
+          /*if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
+           //that.show_fail();
+           
 
-          }
+          }*/
         }
         
       }

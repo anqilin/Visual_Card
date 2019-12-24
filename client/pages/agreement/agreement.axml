@@ -75,7 +75,7 @@
     <text>，授权</text>
  
     <text>上海公共交通卡公司获取你的姓名、手机号、证件类型、证件号用于实名领取交通卡。</text>
-    
+    <text>成功领卡后，您还可在NFC交通卡小程序当中查看本卡片。同时，如果您已开通蚂蚁森林，则您使用交通卡的低碳行为将为您产生绿色能量。</text>    
 
   </view>
   <button onTap="agree_on"  class="sure_button" hover-class="button_hover" size="default" type="primary">授权并开通NFC交通卡</button>

@@ -1,9 +1,9 @@
 
 App({
   name: "my name is",
-//  SERVER_URL: "https://online.sptcc.com:8445/",
+  SERVER_URL: "https://online.sptcc.com:8445/",
 
-  SERVER_URL : "https://online.sptcc.com:8443/",
+//  SERVER_URL : "https://online.sptcc.com:8443/",
   orderReq: {
     detail: "",// 商品详情：
     body: "",// 商品描述：
@@ -328,6 +328,21 @@ App({
       data: flag, // 要缓存的数据
     });
   },
+  getCardTypeFlag(){
+    var data = my.getStorageSync({
+      key: 'cardtypeflag', // 缓存数据的key
+    }).data;
+    return data;
+
+  },
+ setCardTypeFlag(typefalg){
+    my.setStorageSync({
+      key: 'cardtypeflag', // 缓存数据的key
+      data: typefalg, // 要缓存的数据
+    });
+
+  },
+
   getCreatKeyi() {
     var data = my.getStorageSync({
       key: 'creatkeyi', // 缓存数据的key
@@ -360,8 +375,52 @@ App({
       + "handapp_app/CancelCreditOrder?";
 
     url = url + "orderId=" + orderid;
-    url = url + "paytype=" + "0011";
-    url = url + "money=" + money;
+    url = url + "&paytype=" + "0011";
+    url = url + "&money=" + money;
+    url = url + "&commToken=" + this.userInfo.token;
+    url = url + "&phone=" + this.userInfo.phone;
+    return url;
+
+  },
+  revokeAirCard(){
+    var url = this.SERVER_URL
+      + "handapp_app/RevokeAirCardServlet_Android?";
+    url=url+"cardType=1";
+    url = url + "&orderId=" + this.orderResq.orderId;
+    url = url +"&accountHash=03000007";
+    url = url + "&commToken=" + this.userInfo.token;
+    url = url + "&phone=" + this.userInfo.phone;
+    return url;
+
+
+  },
+  AntSearch(cardno){
+    var url = this.SERVER_URL
+      + "handapp_app/AntSearch?";
+    url=url+"flag=0002";
+    url=url+"&UID="+this.userInfo.buyId;
+    url=url+"&cardNo="+cardno;
+    url = url + "&commToken=" + this.userInfo.token;
+    url = url + "&phone=" + this.userInfo.phone;
+    return url;
+
+  },
+  AntBind(cardno,flag){
+    var url = this.SERVER_URL
+      + "handapp_app/AntBinding?";
+    url=url+"flag=0002";
+    url=url+"&UID="+this.userInfo.buyId;
+    url=url+"&cardNo="+cardno;
+    url=url+"&bindingFlag="+flag
+    url = url + "&commToken=" + this.userInfo.token;
+    url = url + "&phone=" + this.userInfo.phone;
+    return url;
+
+  },
+  get_deposit(cardno){
+    var url = this.SERVER_URL
+      + "handapp_app/VerificationHubbleCardServlet?";
+    url=url+"cardNo="+cardno;
     url = url + "&commToken=" + this.userInfo.token;
     url = url + "&phone=" + this.userInfo.phone;
     return url;

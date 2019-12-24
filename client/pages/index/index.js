@@ -38,12 +38,10 @@ Page({
         content: 'onLoad 执行异常'
       });
     }
-    var userInfo=app.getGlobalUserInfo();
-    app.userInfo=userInfo;
+
     var token=app.userInfo.token;
     var phonenumber=app.userInfo.phone;
     var buyId=app.userInfo.buyId;
-
     if(token!=""&&phonenumber!=""&&buyId!=""){
         app.log("已获取用户信息")
         this.search_keyi();
@@ -210,7 +208,7 @@ Page({
         if(resp.data.result_code=="success"){
 
           app.userInfo.phone=resp.data.phone;
-          app.userInfo.token=resp.data.note;
+          app.userInfo.token=resp.data.note.substring(0,16);
           app.userInfo.buyId=resp.data.buyId;
            monitor.report({
             info:"获取用户信息成功",
@@ -389,12 +387,13 @@ Page({
           app.setCreatKeyi(3);
           my.redirectTo({ url: '../creat_card/bind_card/bind_card' })
         }else{
-          app.log(JSON.stringify(resp.data))
+          app.log(JSON.stringify(resp.data))          
           monitor.report({
             info:"复旦微接口返回失败",
             code:resp.data.resCode,
             msg:resp.data.resDesc
           });
+          that.revokeOrder();
           
           app.log("开卡失败");
           my.alert({
@@ -563,7 +562,7 @@ Page({
               app.log("data---"+data[i]);
               app.log(data[i].TransType);
               
-              if(data[i].TransType=='10000012'){
+              if(data[i].TransType=='10000012'||data[i].TransType=='00000015'){
                 app.log("发现开卡可疑")
 
                  my.navigateTo({ url: '../record_list/keyi_list/keyi_list' });
@@ -614,6 +613,38 @@ Page({
           });
 
       },
+
+    });
+
+  },
+  revokeOrder(){
+    //var that=this;
+    var url=app.revokeAirCard();
+    /*my.showLoading({
+      content: '订单申请中',
+    });*/
+
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => { 
+          /*my.hideLoading({
+            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+          }); */      
+        app.log('resp data:'+resp.data);
+
+        if(resp.data.resCode=="9000"){
+          monitor.report({
+            info:"订单业务取消成功",
+            phone_number:app.userInfo.phone   
+          });
+
+
+        }
+        
+      },
+
 
     });
 

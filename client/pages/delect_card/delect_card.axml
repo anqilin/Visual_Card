@@ -11,7 +11,7 @@
   </view>
   <view class="top" >
     <view class="view1">     
-      <image mode="scaleToFill" src="/resource/qianbao.png" class="imageview1"/>
+      <!--<image mode="scaleToFill" src="/resource/qianbao.png" class="imageview1"/>-->
 
     </view>
     <view class="text1">退卡成功后，卡内余额连同可退服务费</view>
