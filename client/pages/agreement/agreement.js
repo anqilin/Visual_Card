@@ -93,7 +93,6 @@ Page({
     });
     app.log('确认信息');
 
-
     if(cplc==null||cplc==undefined){
       my.showLoading({
         content: '查询中',
@@ -140,12 +139,13 @@ Page({
             monitor.report({
               info:"获取cplc成功",        
             });
+            app.log("获取cplc成功:"+result.data.cplc);
             app.setCplc(result.data.cplc);
             that.read_cardInfo();
 
           }else if(result.resultCode==-9000){
             that.get_cplc();
-          }else{
+          }else{            
             monitor.report({
               code:result.resultCode,
               msg:result.resultMsg,
