@@ -9,14 +9,28 @@ Page({
       }
     ],
     show_warn:true,
+    card_type:1
   },
-  onLoad() {},
+  onLoad(options) {
+    var that=this;
+    if(options.card_type==1){
+
+      that.data.card_type=1;
+    }else if(options.card_type==2){
+
+      that.data.card_type=2;
+    }
+  },
   onShow(){
     this.setData({
       show_warn:true
     })
-
-    this.data.record_list=app.cardInfo.transRecords;    
+    if(this.data.card_type==1){
+      this.data.record_list=app.cardInfo.transRecords; 
+    }else if(this.data.card_type==2){
+      this.data.record_list=app.moc_cardInfo.transRecords; 
+    }
+   
     
     app.log(this.data.record_list);
     for(var i=0;i<this.data.record_list.length;i++){

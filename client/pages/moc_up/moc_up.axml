@@ -1,0 +1,6 @@
+<scroll-view class="scroll" scroll-y="{{true}}">
+  <view class="image1"  />
+  <view class="image2"  />
+  <view class="image3"  />
+  <view class="image4"  />
+</scroll-view>

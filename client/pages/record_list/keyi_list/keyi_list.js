@@ -69,7 +69,7 @@ Page({
             for(var i=0;i< data.length;i++){
               app.log("data---"+data[i]);
               
-              if(data[i].TransType=='10000012'||data[i].TransType=='10000013'||data[i].TransType=='00000015'){
+              if(data[i].TransType=='10000012'||data[i].TransType=='10000013'||data[i].TransType=='00000013'||data[i].TransType=='00000015'){
                 if(app.isHasCard){
                   app.log("hascard"+app.isHasCard);
 
@@ -84,11 +84,27 @@ Page({
                   }
 
                 }
+                if(!app.isHasmocCard){
+                  app.log("hasmoccard"+app.isHasmocCard);
+                  if(data[i].TransType=='00000013'){
+                    continue;
+                  }
+
+                }
                 if(data[i].TransType=='10000013'){
                   var note=data[i].Note.split(",");
                   var inid=note[0].substring(10,20);
                   app.log('inid:'+inid);
                   if(inid!=app.innerId){
+                    continue;
+
+                  }  
+                }
+                if(data[i].TransType=='00000013'){
+                  var note=data[i].Note.split(",");
+                  var inid=note[0].substring(10,20);
+                  app.log('inid:'+inid);
+                  if(inid!=app.moc_innerId){
                     continue;
 
                   }  
@@ -99,6 +115,8 @@ Page({
                 }else if(data[i].TransType=='10000013'){
                    app.setChargeKeyi(4);
 
+                }else if(data[i].TransType=='00000013'){
+                  app.setMocChargeKeyi(4);
                 }else if(data[i].TransType=='00000015'){
                   app.hasf0=true;
 
@@ -131,6 +149,11 @@ Page({
                   json.type='10000013';
                   json.text="去验证"
 
+                }else if(data[i].TransType=='00000013'){
+                  json.TransType="充值可疑"
+                  json.type='00000013';
+                  json.text="去验证"
+
                 }else if(data[i].TransType=='10000012'){
                   
                   json.TransType="开卡可疑"
@@ -160,6 +183,11 @@ Page({
                 }else if(this.data.type=="10000013"){
                   my.redirectTo({
                     url: '../../success_result/success_result?from=1', 
+                  });
+
+                }else if(this.data.type=="00000013"){
+                  my.redirectTo({
+                    url: '../../success_result/success_result?from=1', 
 
                   });
 
@@ -175,7 +203,8 @@ Page({
               }else{
                 if(app.isHasCard){
                   my.redirectTo({
-                    url:'../../card_info/card_info'
+                    //url:'../../card_info/card_info'
+                    url:'../../agreement/agreement'
                   });
 
                 }else{
@@ -222,7 +251,14 @@ Page({
 
                 });
 
-              }else if(this.data.type=="00000015"){
+              }else if(this.data.type=="00000013"){
+                my.redirectTo({
+                  url: '../../success_result/success_result?from=1', 
+
+                });
+
+              }
+              else if(this.data.type=="00000015"){
                 my.redirectTo({
                   url: '../../refund_result/refund_result', 
 
@@ -234,7 +270,8 @@ Page({
             }else{
               if(app.isHasCard){
                 my.redirectTo({
-                  url:'../../card_info/card_info'
+                  //url:'../../card_info/card_info'
+                  url:'../../agreement/agreement'
                 });
 
               }else{
@@ -486,7 +523,9 @@ Page({
   doRetry(){
     var that=this;
     if(that.data.type=="10000013"){
-      that.recharge_card();
+      that.recharge_card(1);
+    }else if(that.data.type=="00000013"){
+      that.recharge_card(2);
     }else if(that.data.type=="10000012"){
       that.creat_card();
 
@@ -497,6 +536,8 @@ Page({
   change_flag(){
     app.setCreatKeyi(0);
     app.setChargeKeyi(0);
+    app.setMocChargeKeyi(0);
+    app.setMocCreatKeyi(0);
     app.hasf0=false;
   },
   creat_card(){
@@ -518,52 +559,7 @@ Page({
     app.log(params);
 
     try{
-    /*my.call(app.plugin,
-      {
-        method: 'issueCard',
-        param:params
-      },
-      function (result) {
-          my.hideLoading({
-            page:that,
-          });
-          app.log(result.resultMsg);
-        if(result.resultCode==0){
-          monitor.report({
-            info:"重新开卡成功",
-            phone_number:app.userInfo.phone   
-          });
-          app.setCreatKeyi(5);
-          app.log('开卡成功');
 
-           that.get_keyi();
-
-
-
-        }else if(result.resultCode==-9000){
-
-          that.creat_card();
-
-
-        }else{
-          monitor.report({
-            info:"重新开卡失败",
-            code:result.resultCode,
-            msg:result.resultMsg
-          });
-          app.setCreatKeyi(4);
-          my.alert({
-            title: '提示',
-            content: '开卡失败', 
-          });
-
-          if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-            that.show_fail();
-          } 
-
-        }
-   
-      });*/
       my.seNFCServiceIsv({
         method: 'issueCard',
         param:params, 
@@ -592,6 +588,7 @@ Page({
 
 
           }else{
+            var msg=app.get_error_msg(result.resultCode) 
             monitor.report({
               info:"重新开卡失败",
               code:result.resultCode,
@@ -600,7 +597,7 @@ Page({
             app.setCreatKeyi(4);
             my.alert({
               title: '提示',
-              content: '开卡失败', 
+              content: msg, 
             });
             that.get_keyi();
 
@@ -620,11 +617,18 @@ Page({
     }
 
   },
-  recharge_card(){
+  recharge_card(type){
 
     var that=this;
+    var issuer_Id=""
+    if(type==1){
+      issuer_Id=app.issuer_Id;
+    }else if(type==2){
+      issuer_Id=app.moc_issuer_Id;
+    }
+
     var pa={
-      issuerID:app.issuer_Id,
+      issuerID:issuer_Id,
       spID:app.spId,
       orderNo:'111'
     }
@@ -633,48 +637,7 @@ Page({
     my.showLoading({
         content: '充值中',
     });
-    /*my.call(app.plugin,
-    {
-      method: 'rechargeCard',
-      param:params
-    },
-    function (result) {
-      my.hideLoading({
-        page:that,
-      });
-      app.log(result.resultMsg);
-  
-     if(result.resultCode==0){
-        monitor.report({
-            info:"重新充值成功",
-            phone_number:app.userInfo.phone   
-        });
-        
-        app.setChargeKeyi(5);
-        that.get_keyi();
 
-
-
-      }else if(result.resultCode==-9000){
-        that.recharge_card();
-
-      }else{
-          monitor.report({
-            info:"重新充值失败",
-            code:result.resultCode,
-            msg:result.resultMsg
-          });
-        app.setChargeKeyi(4);
-        my.alert({
-          title: '提示',
-          content: '充值失败', 
-          });
-        if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){
-           that.show_fail();
-
-        }
-      }
-  });*/
     my.seNFCServiceIsv({
       method: 'rechargeCard',
       param:params, 
@@ -702,6 +665,7 @@ Page({
           that.recharge_card();
 
         }else{
+          var msg=app.get_error_msg(result.resultCode) 
           monitor.report({
             info:"重新充值失败",
             code:result.resultCode,
@@ -710,7 +674,7 @@ Page({
           app.setChargeKeyi(4);
           my.alert({
             title: '提示',
-            content: '充值失败', 
+            content: msg, 
           });
           that.get_keyi();
           /*if(that.data.flag=="00"||that.data.flag=="01"||that.data.flag=="02"){

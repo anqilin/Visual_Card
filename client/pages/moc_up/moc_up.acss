@@ -1,0 +1,35 @@
+.scroll{
+  height:1500rpx;
+
+}
+.image1{
+  width: 100%;
+  height: 1108rpx;
+  background-image: url(https://online.sptcc.com:8443/zfb_pic/moc_up01.jpg);
+  background-size: 100% 100%;
+  
+}
+.image2{
+  margin-top: 0rpx;
+  width: 100%;
+  height: 1108rpx;
+   background-image: url(https://online.sptcc.com:8443/zfb_pic/moc_up02.jpg);
+  background-size: 100% 100%;
+  
+}
+.image3{
+  margin-top: 0rpx;
+  width: 100%;
+  height: 851rpx;
+   background-image: url(https://online.sptcc.com:8443/zfb_pic/moc_up03.jpg);
+  background-size: 100% 100%;
+  
+}
+.image4{
+  margin-top: 0rpx;
+  width: 100%;
+  height: 1743rpx;
+   background-image: url(https://online.sptcc.com:8443/zfb_pic/moc_up04.jpg);
+  background-size: 100% 100%;
+  
+}

@@ -157,12 +157,12 @@
   <view class="info_message" style="border-style: none">
     <view>
       <view class="info_left">
-        蚂蚁森林能量卡
+        蚂蚁森林能量
       </view>
 
     </view>
 
-    <view  class="info_right"  >{{bind_text}}
+    <view onTap="bindorout"  class="info_right"  >{{bind_text}}
       <image mode="scaleToFill" src="/resource/white_arrow.png" style="width:15rpx;height:24rpx;margin-left:5rpx"/>
     </view>
 

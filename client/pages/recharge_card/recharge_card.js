@@ -22,7 +22,10 @@ Page({
     text_color6:"#18BB99",
     mybalance:0,
     afterbalance:0,
-    image_path:'/resource/card.png'
+    image_path:'/resource/card.png',
+    issuer_Id:app.issuer_Id,
+    card_type:1,
+    cardno:""
   },
   onLoad(options) {
     try {
@@ -39,8 +42,24 @@ Page({
     }
 
     my.hideFavoriteMenu();
-    this.data.mybalance=app.balance;
-    this.data.afterbalance=app.balance;
+    var that=this;
+    if(options.card_type==1){
+      that.data.mybalance=app.balance;
+      that.data.afterbalance=app.balance;
+      that.data.card_type=1;
+      that.data.cardno=app.cardno;
+      that.data.issuer_Id=app.issuer_Id;
+      that.setData({
+        image_path:'url(/resource/mot_card.png)'
+      })
+    }else if(options.card_type==2){
+      that.data.mybalance=app.moc_balance;
+      that.data.afterbalance=app.moc_balance;
+      that.data.card_type=2;
+      that.data.cardno=app.moc_cardno;
+      that.data.issuer_Id=app.moc_issuer_Id;
+    }
+
 
 
 
@@ -62,15 +81,22 @@ Page({
     });*/
   },
   onsetmoney(e){
+      var that=this;
+      var balance=0;
+      if(that.data.card_type==1){
+        balance=app.balance;
+      }else if(that.data.card_type==2){
+        balance=app.moc_balance;
+      }
       app.log(e.target.dataset.money);
       var money=e.target.dataset.money;
       app.orderReq.total_fee=money*100;
       app.orderReq.TOTAMT=money*100;
-      var num= parseFloat(app.balance)  +parseInt(money);
+      var num= parseFloat(balance)  +parseInt(money);
       num=num.toFixed(2); 
 
       this.setData({
-        mybalance:app.balance,
+        mybalance:balance,
         afterbalance:num
       })
 
@@ -189,6 +215,7 @@ Page({
 
   },
   goPay(){
+    var that=this;
     my.tradePay({
   
       tradeNO: app.orderResq.content,
@@ -200,7 +227,8 @@ Page({
             phone_number:app.userInfo.phone   
           });
           //var url=app.getCreatCardRequest();
-          var url=app.getRechargeCardOrder();
+          
+          var url=app.getRechargeCardOrder(that.data.card_type);
           app.log(url);
           app.setChargeKeyi(1);
           this.goChargeCard(url);
@@ -242,11 +270,7 @@ Page({
       dataType: 'json',
       success: (resp) => {        
         app.log('resp data:'+ JSON.stringify(resp.data));
-        my.hideLoading({
-            page: that,  
-          });
-
-        
+      
         if(resp.data.resCode=="9000"){
           monitor.report({
             info:"复旦微充值接口返回成功",
@@ -256,9 +280,17 @@ Page({
           app.log("busiid:"+app.bussiness_id);
           app.log("充值成功");
           app.setChargeKeyi(3);
-          this.recharge_card();
+          setTimeout(function(){
+            that.recharge_card(); 
+            that.hide_load();    
+
+          },3000);
+          
 
         }else{
+           my.hideLoading({
+            page: that,  
+          });
           monitor.report({
             info:"复旦充值失败",
             code:resp.data.resCode,
@@ -314,7 +346,7 @@ Page({
 
     var that=this;
     var pa={
-      issuerID:app.issuer_Id,
+      issuerID:that.data.issuer_Id,
       spID:app.spId,
       orderNo:'111'
     }
@@ -323,49 +355,7 @@ Page({
     my.showLoading({
         content: '充值中',
     });
-    /*my.call(app.plugin,
-    {
-      method: 'rechargeCard',
-      param:params
-    },
-    function (result) {
-      my.hideLoading({
-        page:that,
-      });  
-      app.log(result);
-      if(result.resultCode==0){
-          monitor.report({
-            info:"虚拟卡充值成功",
-            phone_number:app.userInfo.phone   
-          });
-        app.setChargeKeyi(5);
 
-        my.navigateBack({
-          
-        });
-
-
-
-      }else if(result.resultCode==-9000){
-        that.recharge_card();
-
-      }else{
-        monitor.report({
-          info:"充值失败",
-          code:result.resultCode,
-          msg:result.resultMsg           
-        });
-        app.setChargeKeyi(4);
-        my.alert({
-          title: '提示',
-          content: '充值失败', 
-          });
-        my.redirectTo({
-          url: '../record_list/keyi_list/keyi_list'
-
-        });
-      }
-  });*/
     my.seNFCServiceIsv({
       method: 'rechargeCard',
       param:params, 
@@ -394,15 +384,21 @@ Page({
           that.recharge_card();
 
         }else{
+          var msg=app.get_error_msg(result.resultCode) 
           monitor.report({
             info:"充值失败",
             code:result.resultCode,
             msg:result.resultMsg           
           });
-          app.setChargeKeyi(4);
+          if(that.data.card_type==1){
+            app.setChargeKeyi(4);
+          }else if(that.data.card_type==2){
+            app.setMocChargeKeyi(4);
+          }
+          
           my.alert({
             title: '提示',
-            content: '充值失败', 
+            content: msg, 
           });
           my.redirectTo({
             url: '../record_list/keyi_list/keyi_list'
@@ -431,10 +427,80 @@ Page({
       return;
 
     }
-     var order_url=app.getOrder(app.cardno,"0009");
+    var device_model=app.getDeviceModel();
+
+    if(device_model==null||device_model==undefined){
+        that.getPhoneInfo();
+        return;
+    }
+     var order_url=app.getOrder(that.data.cardno,"0009");
       
       app.log(order_url);
       this.getOrderData(order_url);
+
+  },
+  hide_load(){
+    my.hideLoading({
+      page:that,
+    }); 
+  },
+  getPhoneInfo(){
+    var that=this;
+    var device_model=app.getDeviceModel();
+
+    if(device_model==null||device_model==undefined){
+        my.showLoading({
+          content: '查询设备信息',
+        });
+
+        my.seNFCServiceIsv({
+          method: 'getDeviceInfo',
+          success:(result) => {
+            app.log("新接口"+result);
+            my.hideLoading({
+              page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
+            });
+            if(result!=null&&result.resultCode==0){
+
+              var data=JSON.parse(result.data);
+              var model=data.deviceModel;
+              app.log(model);
+              monitor.report({
+                info:"读取手机信息成功",
+                msg:"手机型号"+ model
+              });
+
+              app.setDeviceModel(model);
+              app.devicemodel=model;
+              that.setData({
+                deviceModel:model
+              })
+              that.recharge();
+
+
+            }else if(result.resultCode==-9000){
+              that.getPhoneInfo();
+            }else{
+              var msg=app.get_error_msg(result.resultCode) 
+              monitor.report({
+                info:"获取手机信息失败",
+                code:result.resultCode,
+                msg:result.resultMsg,
+              });
+              my.alert({
+                title: '提示' ,
+                content:msg
+              });
+            }
+          }
+        });
+
+    }else{
+      app.devicemodel=device_model;
+      app.log("device:"+device_model);
+
+    }
+
 
   },
 

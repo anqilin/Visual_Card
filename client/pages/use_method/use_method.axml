@@ -7,7 +7,7 @@
   </view>
   <view class="image_show1">
     <view class="image_item">
-       <image class="image1" mode="scaleToFill" src="/resource/01image.png"/>
+       <image class="image1" mode="scaleToFill" src="https://online.sptcc.com:8443/zfb_pic/01image.png"/>
        <view class="item_botom">
          <image class="image2" mode="scaleToFill" src="/resource/01.png"/>
          <view style="margin-left:8rpx;align-self:center">授权领卡</view>         
@@ -15,7 +15,7 @@
     </view>
 
     <view class="image_item">
-      <image class="image1" mode="scaleToFill" src="/resource/02image.png"/>
+      <image class="image1" mode="scaleToFill" src="https://online.sptcc.com:8443/zfb_pic/02image.png"/>
       <view class="item_botom">
          <image class="image2" mode="scaleToFill" src="/resource/02.png"/>
          <view style="margin-left:8rpx;align-self:center">充值开卡</view>         
@@ -26,7 +26,7 @@
 
   <view class="image_show1">
     <view class="image_item">
-       <image class="image1" mode="scaleToFill" src="/resource/03image.png"/>
+       <image class="image1" mode="scaleToFill" src="https://online.sptcc.com:8443/zfb_pic/03image.png"/>
        <view class="item_botom">
          <image class="image2" mode="scaleToFill" src="/resource/03.png"/>
          <view style="margin-left:8rpx;align-self:center">
@@ -38,7 +38,7 @@
     </view>
 
     <view class="image_item">
-      <image class="image1" mode="scaleToFill" src="/resource/04image.png"/>
+      <image class="image1" mode="scaleToFill" src="https://online.sptcc.com:8443/zfb_pic/04image.png"/>
       <view class="item_botom">
          <image  class="image2" mode="scaleToFill" src="/resource/04.png"/>
          <view style="margin-left:8rpx;align-self:center">
@@ -98,7 +98,7 @@
     <view class="bar1"></view>
   </view>
   <view class="card_out">
-    <image class="image_card" mode="scaleToFill" src="/resource/show_card.png"/>
+    <image class="image_card" mode="scaleToFill" src="https://online.sptcc.com:8443/zfb_pic/show_card.png"/>
 
   </view>
   <view style="margin-top:27rpx" class="text_info">刷卡时，请将手机NFC感应区（背面摄像头附近位置）触碰交通卡

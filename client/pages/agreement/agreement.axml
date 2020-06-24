@@ -1,83 +1,163 @@
 <view class="atd-config-transparent-header">
-  <view class="content-top">
-    <!-- 手机状态栏,无法触发onTap -->
-    <view class="statusBar" style="height: {{systemInfo.statusBarHeight}}"></view>
+  <view class="top">
+    <view onTap="agree_on" a:if="{{add_mot_show}}" class="view1">
+      <view class="imageview1" style="background-image:{{image_path}}">
+        <view class="add_icon">
+        </view>
+        <view class="add_text">添加上海公共卡互联互通版</view>
+      </view>
+    </view>
+    <view onTap="go_cardinfo_mot" a:if="{{mot_big_show}}" class="view1">
+      <view class="imageview2" style="background-image:{{image_path_mot_big}}">
+        <view class="pic_view1">
+          <view class="view_moc1">
+            <view a:if="{{mot_bind_ant}}" class="pic1"></view>
+            <view class="pic2"></view>
+          </view>
+          <view class="view_moc2">
+            <view a:if="{{mot_bind_ant}}" class="pic3"></view>
+          </view>
+        </view>
+        <view class="text_view1">
+          <view class="view_text1">
+            <view >卡号</view>
+            <view style="margin-left:5rpx">{{mot_card_no}}</view>
+          </view>
+          <view >
+            <view class="text3">余额：{{mot_card_balance}}</view>
+          </view>
+        </view>
+        <view class="text_view2">
 
-    <!-- 手机标题栏,在json中设置"titlePenetrate": "YES"即可触发onTap -->
-   <view onTap="onTitleBar" class="titleBar" style="height: {{systemInfo.titleBarHeight}}">
-    <!-- <image mode="aspectFit" src="/resource/go.png" style="width:55rpx;height:55rpx"/>
-     <view style="font-size:17px">开通NFC交通卡</view>
-     -->
+        <!--  <view class="re_btn"></view>
+          <view class="re_text">充值</view>-->
+          <view catchTap="go_recharge_mot" class="text_view3">
+            <view class="re_btn"></view>
+            <view class="re_text">充值</view>
+          </view>
+          <view catchTap="bind_card_mot" a:if="{{!mot_bind_ant}}" class="text_view5">
+            <view class="re_btn2"></view>
+            <view class="re_text">绑定蚂蚁森林</view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+    <view onTap="go_cardinfo_mot" a:if="{{mot_show}}" class="view1">
+      <view class="imageview3" style="background-image:{{image_path_mot}}">
+        <view class="pic_view2">
+          <view class="view_moc1">
+            <view a:if="{{mot_bind_ant}}" class="pic1"></view>
+            <view class="pic2"></view>
+          </view>
+          <view class="view_moc2">
+            <view a:if="{{mot_bind_ant}}" class="pic3"></view>
+          </view>
+        </view>
+        <view class="text_view1">
+          <view class="view_text1">
+            <view >卡号</view>
+            <view style="margin-left:5rpx">{{mot_card_no}}</view>
+          </view>
+          <view >
+            <view class="text3">余额：{{mot_card_balance}}</view>
+          </view>
+        </view>
+        <view class="view_line"></view>
+        <view class="text_view4">
+          <view catchTap="go_recharge_mot" class="text_view3">
+            <view class="re_btn"></view>
+            <view class="re_text">充值</view>
+          </view>
+          <view catchTap="bind_card_mot" a:if="{{!mot_bind_ant}}" class="text_view5">
+            <view class="re_btn2"></view>
+            <view class="re_text">绑定蚂蚁森林</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view onTap="go_cardinfo_moc" a:if="{{moc_show}}" class="view1_moc">
+      <view class="imageview3" style="background-image:{{image_path_moc}}">
+        <view class="pic_view2">
+          <view class="view_moc1">
+            <view a:if="{{moc_bind_ant}}" class="pic1"></view>
+            <view class="pic2"></view>
+          </view>
+        </view>
+        <view class="text_view1">
+          <view class="view_text1">
+            <view >卡号</view>
+            <view style="margin-left:5rpx">{{moc_card_no}}</view>
+          </view>
+          <view >
+            <view class="text3">余额：{{moc_card_balance}}</view>
+          </view>
+        </view>
+        <view class="view_line"></view>
+        <view class="text_view4">
+          <view catchTap="go_recharge_moc" class="text_view3">
+            <view class="re_btn"></view>
+            <view class="re_text">充值</view>
+          </view>
+          <view catchTap="bind_card_moc" a:if="{{!moc_bind_ant}}" class="text_view5">
+            <view class="re_btn2"></view>
+            <view class="re_text">绑定蚂蚁森林</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view onTap="moc_old_upgrade" a:if="{{moc_old_show}}" class="view1_moc">
+      <view class="imageview3" style="background-image:{{image_path_moc}}">
+        <view class="pic_view2">
+          <view class="view_moc1">
+            <view a:if="{{moc_old_bind_ant}}" class="pic1"></view>
+            <view class="pic2"></view>
+          </view>
+        </view>
+        <view class="text_view1">
+          <view class="view_text1">
+            <view >卡号</view>
+            <view style="margin-left:5rpx">{{moc_old_card_no}}</view>
+          </view>
+          <view >
+            <view class="text3">余额：{{moc_old_card_balance}}</view>
+          </view>
+        </view>
+        <view class="view_line"></view>
+        <view class="text_view4">
+          <view class="text_view3">
+            <view class="re_btn"></view>
+            <view class="re_text">充值</view>
+          </view>
+          <view a:if="{{moc_old_bind_ant}}" class="text_view5">
+            <view class="re_btn2"></view>
+            <view class="re_text">绑定蚂蚁森林</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="strategy">
+      <view onTap="go_method2"  class="bottom2">
+        <view class="img_bottom1"></view>
+        <view class="bottom_1">
+          <view class="text_bottom1">卡片介绍</view>
+          <view class="text_bottom2">使用与优惠范围</view>
+        </view>
+
+      </view>
+
+      <view onTap="go_method" class="bottom2">
+        <view class="img_bottom2"></view>
+        <view class="bottom_1">
+          <view class="text_bottom1">使用攻略</view>
+          <view class="text_bottom2">开卡、刷卡、迁移</view>
+        </view>
+
+      </view>
+
+
     </view>
   </view>
-    <view class="top" >
-  </view>
-
-</view>
-
-<view class="cardview">
-    <view class="view1">     
-      <image mode="scaleToFill" src="/resource/card.png" class="imageview1"/>
-
-
-    </view>
-
-</view>
-<view class="view2">
-  <view class="item">
-    <image class="image_item" mode="scaleToFill" src="/resource/yuan.png"/>
-    <view class="textbottom">联乘优惠</view>
-
-  </view>
-  <view class="item">
-     <image class="image_item" mode="scaleToFill" src="/resource/green_tree.png"/>
-    <view class="textbottom">获得绿色能量</view> 
-
-  </view>
-  <view class="item">
-     <image class="image_item" mode="scaleToFill" src="/resource/screen.png"/>
-     <view class="textbottom">熄屏秒刷</view>
-
-  </view>
-
-</view>
-<view class="strategy">
-  <image mode="scaleToFill" src="/resource/use_phone.png" style="width:138rpx;height:140rpx"/>
-  <view class="text1">
-    <view class="text2">手机就是交通卡</view>
-    <view class="text3">熄屏秒刷</view>
-
-  </view>
-  <view onTap="go_method" class="go_info">
-    <view>使用攻略</view>
-    <image class="image_arrow" mode="scaleToFill" src="/resource/green_arrow.png" />
-
-  </view>
-
-</view>
-<view class="text_info">
-  <view>使用范围：</view>
-  <view style="margin-top:8rpx">公交车、地铁、轮渡、磁浮列车等</view>
-  <view style="margin-top:20rpx">优惠范围：</view>
-  <view style="margin-top:8rpx">地铁当月累计消费满70元后，即可享受9折优惠，直至本自然月结束为止，下个月将重新进行计算。在120分钟内乘客由公交换乘地铁或者由地铁换乘公交均可优惠1元。</view>
-
-
-</view>
-  <view style="margin-top:8rpx;margin-left:60rpx" onTap="go_method2" class="go_info">
-    <view>优惠详情</view>
-    <image class="image_arrow" mode="scaleToFill" src="/resource/green_arrow.png" />
-
-  </view>
-<view class="bottom">
-  <view class="text_show">
-    <text>查看</text>
-    <text onTap="go_message" style="color: #06B794">《华为设备上海交通卡用户服务协议》</text>
-    <text>，授权</text>
- 
-    <text>上海公共交通卡公司获取你的姓名、手机号、证件类型、证件号用于实名领取交通卡。</text>
-    <text>成功领卡后，您还可在NFC交通卡小程序当中查看本卡片。同时，如果您已开通蚂蚁森林，则您使用交通卡的低碳行为将为您产生绿色能量。</text>    
-
-  </view>
-  <button onTap="agree_on"  class="sure_button" hover-class="button_hover" size="default" type="primary">授权并开通NFC交通卡</button>
-  
 </view>

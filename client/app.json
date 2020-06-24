@@ -1,26 +1,24 @@
 {
-  "pages": [
+  "pages": [    
     "pages/agreement/agreement",
     "pages/index/index",
     "pages/recharge_card/recharge_card",
     "pages/card_info/card_info",
-    
     "pages/record_list/keyi_list/keyi_list",
     "pages/fail_result/fail_result",
-    
     "pages/record_list/records_list/records_list",
     "pages/creat_card/bind_card/bind_card",
-    
     "pages/use_method/use_method",
     "pages/creat_card/bind_fail/bind_fail",
     "pages/card_not_use/card_not_use",
     "pages/success_result/success_result",
     "pages/fail_result/fail_result",
-    
     "pages/delect_card/delect_card",
     "pages/test/test",
     "pages/contract/contract",
-    "pages/refund_result/refund_result"
+    "pages/refund_result/refund_result",
+
+    "pages/moc_up/moc_up"
   ],
   "window": {
     "titleBarColor": "#ffffff"

@@ -1,7 +1,4 @@
 {
-    "transparentTitle": "auto",
-  "allowsBounceVertical": "NO",
-  "pullRefresh": false,
-  "titlePenetrate": "YES",
-  "defaultTitle": "上海NFC交通卡"
+  "defaultTitle": "上海公共交通卡",
+  "titleBarColor": "#ffffff"
 }

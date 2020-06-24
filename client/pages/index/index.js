@@ -119,6 +119,8 @@ Page({
       var money=e.target.dataset.money;            
       app.orderReq.total_fee=money*100+2000;
       app.orderReq.TOTAMT=money*100+2000;
+      //app.orderReq.total_fee=money*100;
+      //app.orderReq.TOTAMT=money*100;
       var amount=parseFloat(money).toFixed(2);
       this.setData({
         amount:amount
@@ -472,27 +474,7 @@ Page({
     var device_model=app.getDeviceModel();
 
     if(device_model==null||device_model==undefined){
-      /*my.call(app.plugin,
-        {
-          method: 'getDeviceInfo'
-        },
-        function (result) {
 
-          if(result!=null&&result.resultCode==0){
-            monitor.report({
-              info:"获取手机信息成功",
-            });
-            var data=JSON.parse(result.data);
-            var model=data.deviceModel;
-
-            app.setDeviceModel(model);
-            app.devicemodel=model;
-
-          }else if(result.resultCode==-9000){
-            that.getPhoneInfo();
-          }
-
-        });*/
         my.seNFCServiceIsv({
           method: 'getDeviceInfo',
           success:(result) => {
@@ -508,6 +490,12 @@ Page({
 
             }else if(result.resultCode==-9000){
               that.getPhoneInfo();
+            }else{
+              var msg=app.get_error_msg(result.resultCode) 
+              my.alert({
+                title: '提示',
+                content:msg 
+              });
             }
           }
         });

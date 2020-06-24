@@ -14,15 +14,17 @@ Page({
     cardstatuscolor:'#108EE9',
     cardstatusback:'#FDFDFD',
     balance_color:'#333333',
-    image_path:'url(/resource/card.png)',
+    image_path:'url(/resource/card.png)',  
     deposit:"20.00",
     deposit_num:0,
     deposit_title:'通过APP提前返还服务费',
     deposit_msg:'实名认证后，在卡片详情页面进行返还申请（每个账户提前返还服务费仅能享受一次）',
     modalOpened: false,
     bind_text:'升级',
+    issuer_Id:app.issuer_Id,
+    card_type:1,    
   },
-    onLoad(options) {
+  onLoad(options) {
     try {
       // 获取手机基础信息(头状态栏和标题栏高度)
       //let systemInfo = my.getSystemInfoSync();
@@ -37,6 +39,18 @@ Page({
     }
     //my.hideFavoriteMenu();
     var that=this;
+    if(options.card_type==1){
+      that.data.issuer_Id=app.issuer_Id;
+      that.data.cardno=app.cardno;
+      that.data.card_type=1;
+      that.setData({
+        image_path:'url(/resource/mot_card.png)'
+      })
+    }else if(options.card_type==2){
+      that.data.issuer_Id=app.moc_issuer_Id;
+      that.data.cardno=app.moc_cardno;
+      that.data.card_type=2;
+    }
 
     var token=app.userInfo.token;
     var phonenumber=app.userInfo.phone;
@@ -55,7 +69,22 @@ Page({
     
 
     }
-    //this.read_cardInfo();
+    if(options.create_flag==0){
+        setTimeout(function(){
+          var token=app.userInfo.token;
+          var phonenumber=app.userInfo.phone;
+          var buyId=app.userInfo.buyId;
+          if(token!=""&&phonenumber!=""&&buyId!=""){
+        
+            that.Ant_Search();
+      
+          }else{
+            that.getUserInfo();
+
+          }
+        },3000);
+
+    }
     
 
 
@@ -75,7 +104,14 @@ Page({
 
     },5000);
     that.getPhoneInfo();
-    var keyiflag=app.getChargeKeyi();
+    var keyiflag=0;
+    if(that.data.card_type==1){
+      keyiflag=app.getChargeKeyi();
+    }else if(that.data.card_type==2){
+      keyiflag=app.getMocChargeKeyi();
+    }
+    
+    
     app.log("keyi"+keyiflag);
     if(keyiflag==null||keyiflag==undefined){
 
@@ -104,13 +140,25 @@ Page({
       })
 
     }
+    var token=app.userInfo.token;
+    var phonenumber=app.userInfo.phone;
+    var buyId=app.userInfo.buyId;
+    if(token!=""&&phonenumber!=""&&buyId!=""){
+        app.log("已获取用户信息")
+        that.Ant_Search();
+     
+    }else{
+      that.getUserInfo();
+    
+
+    }
 
   },
   read_cardInfo(){
 
     var that=this;
     var pa={
-      issuerID:app.issuer_Id,
+      issuerID:that.data.issuer_Id,
       dataItems:15
     }
     var params= JSON.stringify(pa);
@@ -127,18 +175,29 @@ Page({
           monitor.report({
             info:"读取卡信息成功"  
           });
-        app.cardInfo=result.data;
-
-        var cardno=result.data.cardNo
-        app.cardno=cardno;
+        
         var logicno=result.data.logicCardNo;
         var balance=result.data.balance;
         var isDefault=result.data.isDefault;
+        var cardno=result.data.cardNo
+        if(that.data.card_type==1){
+          app.cardInfo=result.data;
+          app.cardno=cardno;
 
-        app.logiccardno=logicno;
-        app.balance=balance;
-        app.isDefault=isDefault;
-        app.isHasCard=true;
+          app.logiccardno=logicno;
+          app.balance=balance;
+          app.isDefault=isDefault;
+          app.isHasCard=true;
+        }else if(that.data.card_type==2){
+          app.moc_cardInfo=result.data;
+          app.moc_cardno=cardno;
+          
+          app.moc_logiccardno=logicno;
+          app.moc_balance=balance;
+          app.moc_isDefault=isDefault;
+          app.moc_isHasCard=true;
+
+        }
         
 
         that.setData({
@@ -195,15 +254,15 @@ Page({
 
   },
   go_record(){
+    var that=this;
     my.navigateTo({
-      url:'../record_list/records_list/records_list'
+      url:'../record_list/records_list/records_list?card_type='+that.data.card_type
     });
   },
   go_keyi(){
     my.navigateTo({
       url:'../record_list/keyi_list/keyi_list'
     });
-
   },
   getUserInfo(){
     var that = this;
@@ -333,9 +392,9 @@ Page({
         content: '请处理可疑交易'
       });
       return;
-    }
+    }    
     my.navigateTo({
-      url:'../recharge_card/recharge_card'
+      url:'../recharge_card/recharge_card?card_type='+that.data.card_type
     });
 
   },
@@ -368,39 +427,7 @@ Page({
     var device_model=app.getDeviceModel();
 
     if(device_model==null||device_model==undefined){
-      /*my.call(app.plugin,
-        {
-          method: 'getDeviceInfo'
-        },
-        function (result) {
 
-          if(result!=null&&result.resultCode==0){
-
-            var data=JSON.parse(result.data);
-            var model=data.deviceModel;
-            monitor.report({
-              info:"读取手机信息成功",
-              msg:"手机型号"+ model
-            });
-
-            app.setDeviceModel(model);
-            app.devicemodel=model;
-            that.setData({
-              deviceModel:model
-            })
-
-
-          }else if(result.resultCode==-9000){
-            that.getPhoneInfo();
-          }else{
-            monitor.report({
-              info:"获取手机信息失败",
-              code:result.resultCode,
-              msg:result.resultMsg,
-            });
-          }
-
-        });*/
         my.seNFCServiceIsv({
           method: 'getDeviceInfo',
           success:(result) => {
@@ -425,10 +452,15 @@ Page({
             }else if(result.resultCode==-9000){
               that.getPhoneInfo();
             }else{
+              var msg=app.get_error_msg(result.resultCode) 
               monitor.report({
                 info:"获取手机信息失败",
                 code:result.resultCode,
                 msg:result.resultMsg,
+              });
+              my.alert({
+                title: '提示' ,
+                content:msg
               });
             }
           }
@@ -436,6 +468,7 @@ Page({
 
     }else{
       app.devicemodel=device_model;
+      app.log("device:"+device_model);
           that.setData({
               deviceModel:device_model
             })
@@ -453,7 +486,7 @@ Page({
   setDefaulfCard(){
     var that=this;
     var pa={
-      issuerID:app.issuer_Id,
+      issuerID:that.data.issuer_Id,
       spID:app.spId
     }
     var params= JSON.stringify(pa);
@@ -461,37 +494,7 @@ Page({
     my.showLoading({
         content: '正在跳转设置',
     });
-    /*my.call(app.plugin,
-      {
-        method: 'startDefault',
-        param:params
-      },
-      function (result) {
-        my.hideLoading({
-            page: that,  // 防止执行时已经切换到其它页面，page 指向不准确
-        });  
-        if(result.resultCode==0){
-          monitor.report({
-            info:"设置默认卡片成功"  
-          });
-           that.read_cardInfo()
 
-        }else if(result.resultCode==-9000){
-          that.setDefaulfCard();
-        }else{
-          monitor.report({
-            info:"设置默认卡片失败",
-            code:result.resultCode,
-            msg:result.resultMsg,
-          });
-          my.alert({
-            title: '提示',
-            content:'设置默认卡失败'
-        });
-
-        }
-
-      });*/
       my.seNFCServiceIsv({
         method: 'startDefault',
         param:params, 
@@ -509,6 +512,7 @@ Page({
             that.setDefaulfCard();
           }else{
             app.log(result.resultCode+":"+result.resultMsg)
+            var msg=app.get_error_msg(result.resultCode) 
             monitor.report({
               info:"设置默认卡片失败",
               code:result.resultCode,
@@ -516,7 +520,7 @@ Page({
             });
             my.alert({
               title: '提示',
-              content:'设置默认卡失败'
+              content:msg
             });
 
           }
@@ -528,9 +532,17 @@ Page({
      my.navigateTo({ url: '../use_method/use_method' })
   },
   change_flag(){
-    app.setCreatKeyi(0);
-    app.setChargeKeyi(0);
-    app.hasf0=false;
+    var that=this;
+    if(that.data.card_type==1){
+      app.setCreatKeyi(0);
+      app.setChargeKeyi(0);
+      app.hasf0=false;
+    }else if(that.data.card_type==2){
+      app.setMocCreatKeyi(0);
+      app.setMocChargeKeyi(0);
+      app.hasf0=false;
+    }
+
   },
   search_keyi(){
     var that=this;
@@ -582,7 +594,7 @@ Page({
               app.log("data---"+data[i]);
               
               
-              if(data[i].TransType=='10000013'){
+              if(data[i].TransType=='10000013'&&that.data.card_type==1){
                   var note=data[i].Note.split(",");
                   var inid=note[0].substring(10,20);
                   app.log('inid:'+inid);
@@ -595,6 +607,20 @@ Page({
                     haskeyi=true;
 
                   }                  
+
+              }else if(data[i].TransType=='00000013'&&that.data.card_type==2){
+                  var note=data[i].Note.split(",");
+                  var inid=note[0].substring(10,20);
+                  app.log('inid:'+inid);
+                  app.log('appinid:'+app.moc_innerId);
+
+                  if(inid==app.moc_innerId){
+                    app.log('找到了')
+                    app.setMocChargeKeyi(4);
+
+                    haskeyi=true;
+
+                  }   
 
               }else if(data[i].TransType=='00000015'){
 
@@ -679,14 +705,21 @@ Page({
   },
   change_card_show(){
     var that=this;
-    that.setData({
+    if(that.data.card_type==1){
+      that.setData({
+        image_path:'url(/resource/mot_card_unbind.png)'
+      });
+    }else{
+      that.setData({
         image_path:'url(/resource/card_unbind.png)'
-    });
+      });
+    }
+
   },
   Ant_Search(){
     var that=this;
 
-    var url=app.AntSearch(app.cardno);
+    var url=app.AntSearch(that.data.cardno);
     app.log(url);
     my.request({
       url: url,
@@ -696,12 +729,22 @@ Page({
       
         app.log('antsearch resp data:'+JSON.stringify(resp.data));
 
-        var msg=JSON.parse(resp.data.result_msg);
-        
+        app.log("ant:"+resp.data.return_code+resp.data.result_code);
         if(resp.data.return_code=="success"&&resp.data.result_code=="success"){
+          var msg=JSON.parse(resp.data.result_msg);
           app.log("ResponseCode:"+msg.responseCode);
           app.log(msg);
           if(msg.responseCode=="00"){
+            if(that.data.card_type==1){
+              that.setData({
+                image_path:'url(/resource/mot_card.png)'
+              })
+            }else{
+              that.setData({
+                image_path:'url(/resource/card.png)'
+              })
+            }
+
             app.log("该卡已绑定蚂蚁森林能量");
             that.setData({
               bind_text:"解绑"
@@ -711,7 +754,20 @@ Page({
               code:resp.data.result_code
             });
           }else{
-            pp.log("该卡没有绑定蚂蚁森林能量");
+
+            if(that.data.card_type==1){
+              that.setData({
+                image_path:'url(/resource/mot_card_unbind.png)'
+              })
+            }else{
+              that.setData({
+                image_path:'url(/resource/card_unbind.png)'
+              })
+            }
+            that.setData({
+              bind_text:"升级"
+            })
+            app.log("该卡没有绑定蚂蚁森林能量");
             monitor.report({
               info:"该卡没有绑定蚂蚁森林能量",
 
@@ -720,7 +776,21 @@ Page({
           }
 
         }else{
-          app.log("该卡没有绑定蚂蚁森林能量");
+            app.log("该卡没有绑定蚂蚁森林能量");
+
+            if(that.data.card_type==1){
+              that.setData({
+                image_path:'url(/resource/mot_card_unbind.png)'
+              })
+            }else{
+              that.setData({
+                image_path:'url(/resource/card_unbind.png)'
+              })
+            }
+            that.setData({
+              bind_text:"升级"
+            })
+          
             monitor.report({
               info:"该卡没有绑定蚂蚁森林能量",
 
@@ -765,11 +835,12 @@ Page({
       
         app.log('antbind resp data:'+JSON.stringify(resp.data));
 
-        var msg=JSON.parse(resp.data.result_msg);
+        //var msg=JSON.parse(resp.data.result_msg);
         
         if(resp.data.return_code=="success"&&resp.data.result_code=="success"){
-          app.log("ResponseCode:"+msg);
+          app.log("ResponseCode:"+resp.data.result_msg);
           app.log("操作成功")
+          that.Ant_Search();
 
         }else{
 
@@ -785,9 +856,20 @@ Page({
     });
 
   },
+  bindorout(){
+    var that=this;
+    if(that.data.bind_text=='升级'){
+      //that.Ant_BindOrUnbind("01");
+      that.bind_card();
+    }else{
+      //that.Ant_BindOrUnbind("00");
+      that.unbind_card();
+    }
+
+  },
   get_mydeposit(){
     var that=this;
-    var url=app.get_deposit(app.cardno);
+    var url=app.get_deposit(that.data.cardno);
     app.log("获取押金:"+url);
     my.request({
       url: url,
@@ -859,5 +941,29 @@ Page({
       modalOpened: false,
     });
   },
+  bind_card(){
+    var that=this;
+    var url=app.ant_bind+that.data.cardno;
+    console.log("绑定url:"+url);
+    url=encodeURIComponent(url);
+    console.log("转码url:"+url);
+    my.ap.navigateToAlipayPage({
+      path:url
+    });
+
+  },
+  unbind_card(){
+    var that=this;
+    var url=app.ant_unbind+that.data.cardno;
+    console.log("解绑url:"+url);
+    url=encodeURIComponent(url);
+    console.log("转码url:"+url);
+
+
+    my.ap.navigateToAlipayPage({
+      path:url
+    });
+
+  }
 
 });

@@ -9,7 +9,7 @@ Page({
     cardInfo:{},
     text1:"设备绑定中",
     text2:"正在加载中",
-    text3:"请不要退出运用，且保持网络正常，否则会导致绑定失败",
+    text3:"请不要退出应用，且保持网络正常，否则会导致绑定失败",
     percent:"0",
     num:0,
     bind_card:false,
@@ -53,7 +53,7 @@ Page({
     var that = this;
     var num=that.data.percent;    
     var interval = setInterval(function () {
-    that.setData({
+      that.setData({
           percent: num
       })
       num++;
@@ -72,7 +72,7 @@ Page({
           percent: "100"
         });
         my.redirectTo({          
-          url:'../../card_info/card_info'
+          url:'../../card_info/card_info?create_flag=0&card_type=1'
         });
 
     }
@@ -91,48 +91,7 @@ Page({
     var params= JSON.stringify(pa);
     app.log(params);
     try{
-      /*my.call(app.plugin,
-      {
-        method: 'issueCard',
-        param:params
-      },
-      function (result) {
-        app.log(result)
-        if(result.resultCode==0){
-          monitor.report({
-            info:"开卡成功",
-            phone_number:app.userInfo.phone   
-          });
-          app.setCreatKeyi(5);
 
-
-          that.data.bind_card=true;
-
-        }else if(result.resultCode==-9000){
-          clearInterval(that.data.interval);
-          that.creat_card();
-
-
-        }else{
-          monitor.report({
-            info:"开卡失败",
-            code:result.resultCode,
-            msg:result.resultMsg,
-          });
-          app.setCreatKeyi(4);
-          app.setBussinessId(app.bussiness_id);
-           clearInterval(that.data.interval);
-           //app.setCreatCardFlag(false);
-            my.alert({
-              title: '提示',
-              content: '开卡失败', 
-           });
-           my.redirectTo({ url: '../../record_list/keyi_list/keyi_list' });
-
-        }
-  
-  
-      });*/
       my.seNFCServiceIsv({
         method: 'issueCard',
         param:params, 
@@ -154,6 +113,7 @@ Page({
 
 
           }else{
+            var msg=app.get_error_msg(result.resultCode) 
             monitor.report({
               info:"开卡失败",
               code:result.resultCode,
@@ -165,7 +125,7 @@ Page({
            //app.setCreatCardFlag(false);
             my.alert({
               title: '提示',
-              content: '开卡失败', 
+              content: msg, 
             });
            my.redirectTo({ url: '../../record_list/keyi_list/keyi_list' });
 
