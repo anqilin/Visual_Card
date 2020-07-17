@@ -9,155 +9,154 @@
     </view>
     <view onTap="go_cardinfo_mot" a:if="{{mot_big_show}}" class="view1">
       <view class="imageview2" style="background-image:{{image_path_mot_big}}">
-        <view class="pic_view1">
-          <view class="view_moc1">
-            <view a:if="{{mot_bind_ant}}" class="pic1"></view>
-            <view class="pic2"></view>
+        <view class="white_area_big">
+          <view class="pic_view1">
+            <view class="view_moc1">
+              <view a:if="{{mot_bind_ant}}" class="pic1"></view>
+              <view class="pic2"></view>
+            </view>
+            <view class="view_moc2">
+              <view a:if="{{mot_bind_ant}}" class="pic3"></view>
+            </view>
           </view>
-          <view class="view_moc2">
-            <view a:if="{{mot_bind_ant}}" class="pic3"></view>
+          <view class="text_view1">
+            <view class="view_text1">
+              <view >卡号</view>
+              <view style="margin-left:5rpx">{{mot_card_no}}</view>
+            </view>
+            <view >
+              <view class="text3">余额：{{mot_card_balance}}</view>
+            </view>
           </view>
         </view>
-        <view class="text_view1">
-          <view class="view_text1">
-            <view >卡号</view>
-            <view style="margin-left:5rpx">{{mot_card_no}}</view>
-          </view>
-          <view >
-            <view class="text3">余额：{{mot_card_balance}}</view>
-          </view>
+      </view>
+      <view class="view_line_big"></view>
+      <view class="text_view2_big">
+        <!--<view class="re_btn"></view><view class="re_text">充值</view>-->
+        <view catchTap="go_recharge_mot" class="text_view3">
+          <view class="re_btn"></view>
+          <view class="re_text">充值</view>
         </view>
-        <view class="text_view2">
-
-        <!--  <view class="re_btn"></view>
-          <view class="re_text">充值</view>-->
-          <view catchTap="go_recharge_mot" class="text_view3">
-            <view class="re_btn"></view>
-            <view class="re_text">充值</view>
-          </view>
-          <view catchTap="bind_card_mot" a:if="{{!mot_bind_ant}}" class="text_view5">
-            <view class="re_btn2"></view>
-            <view class="re_text">绑定蚂蚁森林</view>
-          </view>
-
+        <view catchTap="bind_card_mot" a:if="{{!mot_bind_ant}}" class="text_view5">
+          <view class="re_btn2"></view>
+          <view class="re_text">绑定蚂蚁森林</view>
         </view>
       </view>
     </view>
     <view onTap="go_cardinfo_mot" a:if="{{mot_show}}" class="view1">
       <view class="imageview3" style="background-image:{{image_path_mot}}">
-        <view class="pic_view2">
-          <view class="view_moc1">
-            <view a:if="{{mot_bind_ant}}" class="pic1"></view>
-            <view class="pic2"></view>
+        <view class="white_area">
+          <view class="pic_view2">
+            <view class="view_moc1">
+              <view a:if="{{mot_bind_ant}}" class="pic1"></view>
+              <view class="pic2"></view>
+            </view>
+            <view class="view_moc2">
+              <view a:if="{{mot_bind_ant}}" class="pic3"></view>
+            </view>
           </view>
-          <view class="view_moc2">
-            <view a:if="{{mot_bind_ant}}" class="pic3"></view>
+          <view class="text_view1">
+            <view class="view_text1">
+              <view >卡号</view>
+              <view style="margin-left:5rpx">{{mot_card_no}}</view>
+            </view>
+            <view >
+              <view class="text3">余额：{{mot_card_balance}}</view>
+            </view>
           </view>
-        </view>
-        <view class="text_view1">
-          <view class="view_text1">
-            <view >卡号</view>
-            <view style="margin-left:5rpx">{{mot_card_no}}</view>
-          </view>
-          <view >
-            <view class="text3">余额：{{mot_card_balance}}</view>
-          </view>
-        </view>
-        <view class="view_line"></view>
-        <view class="text_view4">
-          <view catchTap="go_recharge_mot" class="text_view3">
-            <view class="re_btn"></view>
-            <view class="re_text">充值</view>
-          </view>
-          <view catchTap="bind_card_mot" a:if="{{!mot_bind_ant}}" class="text_view5">
-            <view class="re_btn2"></view>
-            <view class="re_text">绑定蚂蚁森林</view>
+          <view class="view_line"></view>
+          <view class="text_view4">
+            <view catchTap="go_recharge_mot" class="text_view3">
+              <view class="re_btn"></view>
+              <view class="re_text">充值</view>
+            </view>
+            <view catchTap="bind_card_mot" a:if="{{!mot_bind_ant}}" class="text_view5">
+              <view class="re_btn2"></view>
+              <view class="re_text">绑定蚂蚁森林</view>
+            </view>
           </view>
         </view>
       </view>
     </view>
     <view onTap="go_cardinfo_moc" a:if="{{moc_show}}" class="view1_moc">
       <view class="imageview3" style="background-image:{{image_path_moc}}">
-        <view class="pic_view2">
-          <view class="view_moc1">
-            <view a:if="{{moc_bind_ant}}" class="pic1"></view>
-            <view class="pic2"></view>
+        <view class="white_area">
+          <view class="pic_view2">
+            <view class="view_moc1">
+              <view a:if="{{moc_bind_ant}}" class="pic1"></view>
+              <view class="pic2"></view>
+            </view>
           </view>
-        </view>
-        <view class="text_view1">
-          <view class="view_text1">
-            <view >卡号</view>
-            <view style="margin-left:5rpx">{{moc_card_no}}</view>
+          <view class="text_view1">
+            <view class="view_text1">
+              <view >卡号</view>
+              <view style="margin-left:5rpx">{{moc_card_no}}</view>
+            </view>
+            <view >
+              <view class="text3">余额：{{moc_card_balance}}</view>
+            </view>
           </view>
-          <view >
-            <view class="text3">余额：{{moc_card_balance}}</view>
-          </view>
-        </view>
-        <view class="view_line"></view>
-        <view class="text_view4">
-          <view catchTap="go_recharge_moc" class="text_view3">
-            <view class="re_btn"></view>
-            <view class="re_text">充值</view>
-          </view>
-          <view catchTap="bind_card_moc" a:if="{{!moc_bind_ant}}" class="text_view5">
-            <view class="re_btn2"></view>
-            <view class="re_text">绑定蚂蚁森林</view>
+          <view class="view_line"></view>
+          <view class="text_view4">
+            <view catchTap="go_recharge_moc" class="text_view3">
+              <view class="re_btn"></view>
+              <view class="re_text">充值</view>
+            </view>
+            <view catchTap="bind_card_moc" a:if="{{!moc_bind_ant}}" class="text_view5">
+              <view class="re_btn2"></view>
+              <view class="re_text">绑定蚂蚁森林</view>
+            </view>
           </view>
         </view>
       </view>
     </view>
-
     <view onTap="moc_old_upgrade" a:if="{{moc_old_show}}" class="view1_moc">
       <view class="imageview3" style="background-image:{{image_path_moc}}">
-        <view class="pic_view2">
-          <view class="view_moc1">
-            <view a:if="{{moc_old_bind_ant}}" class="pic1"></view>
-            <view class="pic2"></view>
+        <view class="white_area">
+          <view class="pic_view2">
+            <view class="view_moc1">
+              <view a:if="{{moc_old_bind_ant}}" class="pic1"></view>
+              <view class="pic2"></view>
+            </view>
           </view>
-        </view>
-        <view class="text_view1">
-          <view class="view_text1">
-            <view >卡号</view>
-            <view style="margin-left:5rpx">{{moc_old_card_no}}</view>
+          <view class="text_view1">
+            <view class="view_text1">
+              <view >卡号</view>
+              <view style="margin-left:5rpx">{{moc_old_card_no}}</view>
+            </view>
+            <view >
+              <view class="text3">余额：{{moc_old_card_balance}}</view>
+            </view>
           </view>
-          <view >
-            <view class="text3">余额：{{moc_old_card_balance}}</view>
-          </view>
-        </view>
-        <view class="view_line"></view>
-        <view class="text_view4">
-          <view class="text_view3">
-            <view class="re_btn"></view>
-            <view class="re_text">充值</view>
-          </view>
-          <view a:if="{{moc_old_bind_ant}}" class="text_view5">
-            <view class="re_btn2"></view>
-            <view class="re_text">绑定蚂蚁森林</view>
+          <view class="view_line"></view>
+          <view class="text_view4">
+            <view class="text_view3">
+              <view class="re_btn"></view>
+              <view class="re_text">充值</view>
+            </view>
+            <view a:if="{{moc_old_bind_ant}}" class="text_view5">
+              <view class="re_btn2"></view>
+              <view class="re_text">绑定蚂蚁森林</view>
+            </view>
           </view>
         </view>
       </view>
     </view>
-
     <view class="strategy">
-      <view onTap="go_method2"  class="bottom2">
+      <view onTap="go_method2" class="bottom2">
         <view class="img_bottom1"></view>
         <view class="bottom_1">
           <view class="text_bottom1">卡片介绍</view>
           <view class="text_bottom2">使用与优惠范围</view>
         </view>
-
       </view>
-
       <view onTap="go_method" class="bottom2">
         <view class="img_bottom2"></view>
         <view class="bottom_1">
           <view class="text_bottom1">使用攻略</view>
           <view class="text_bottom2">开卡、刷卡、迁移</view>
         </view>
-
       </view>
-
-
     </view>
   </view>
 </view>

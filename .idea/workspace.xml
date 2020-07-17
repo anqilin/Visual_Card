@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list id="82643418-9e58-4f4e-a015-727536740add" name="Revert &quot;12-2402版本&quot;" comment="Revert &quot;12-2402版本&quot;&#10;&#10;This reverts commit 39a776b" />
-    <list id="df9f7071-2d01-4270-964c-bbf86b1307a9" name="12-24版本" comment="12-24版本" />
+    <list id="fdf6513d-3541-47b5-8540-bdfefc076bab" name="Revert &quot;12-06版本&quot;-2" comment="Revert &quot;12-06版本&quot;&#10;&#10;This reverts commit a9d038c" />
     <list id="6cba55bf-2ac5-4783-ac62-6b208811099c" name="Revert &quot;12-06版本&quot;" comment="Revert &quot;12-06版本&quot;&#10;&#10;This reverts commit a9d038c" />
-    <list id="cf7b4de3-f37e-426d-9e2c-e4bf8e9bc80b" name="12-2402版本" comment="" />
     <list default="true" id="f57aa3a6-2c33-4c77-bf52-2be56d70d7c7" name="默认" comment="">
-      <change beforePath="$PROJECT_DIR$/client/pages/card_info/card_info.axml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/card_info/card_info.axml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pages/card_info/card_info.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/card_info/card_info.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/recharge_card/recharge_card.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/pages/recharge_card/recharge_card.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/debug.log" afterDir="false" />
     </list>
-    <list id="fdf6513d-3541-47b5-8540-bdfefc076bab" name="Revert &quot;12-06版本&quot;-2" comment="Revert &quot;12-06版本&quot;&#10;&#10;This reverts commit a9d038c" />
+    <list id="cf7b4de3-f37e-426d-9e2c-e4bf8e9bc80b" name="12-2402版本" comment="" />
+    <list id="df9f7071-2d01-4270-964c-bbf86b1307a9" name="12-24版本" comment="12-24版本" />
+    <list id="82643418-9e58-4f4e-a015-727536740add" name="Revert &quot;12-2402版本&quot;" comment="Revert &quot;12-2402版本&quot;&#10;&#10;This reverts commit 39a776b" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -29,17 +29,17 @@
       <file leaf-file-name="keyi_list.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/pages/record_list/keyi_list/keyi_list.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12255">
-              <caret line="645" column="2" selection-start-line="645" selection-start-column="2" selection-end-line="645" selection-end-column="2" />
+            <state relative-caret-position="12141">
+              <caret line="639" selection-start-line="639" selection-end-line="639" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="recharge_card.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/pages/recharge_card/recharge_card.js">
+      <file leaf-file-name="agreement.axml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/pages/agreement/agreement.axml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="431" lean-forward="true" selection-start-line="431" selection-end-line="431" />
+            <state relative-caret-position="209">
+              <caret line="11" column="32" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -82,7 +82,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-22" />
+    <option name="x" value="-8" />
+    <option name="y" value="16" />
     <option name="width" value="1346" />
     <option name="height" value="688" />
   </component>
@@ -92,7 +93,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -135,6 +135,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -203,6 +204,8 @@
       <workItem from="1577166726524" duration="1081000" />
       <workItem from="1577168204760" duration="433000" />
       <workItem from="1577929202869" duration="146000" />
+      <workItem from="1592964354305" duration="431000" />
+      <workItem from="1593746783457" duration="137000" />
     </task>
     <task id="LOCAL-00001" summary="0826版本">
       <created>1566806477286</created>
@@ -439,7 +442,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22601000" />
+    <option name="totallyTimeSpent" value="23169000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -453,13 +456,13 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4969325" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4969325" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32843137" />
       <window_info anchor="bottom" id="调试" order="7" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5037202" side_tool="true" weight="0.4591503" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="7" sideWeight="0.49627978" visible="true" weight="0.3137255" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49627978" visible="true" weight="0.3137255" />
       <window_info id="Structure" order="1" sideWeight="0.5030675" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.71949404" weight="0.47712418" />
       <window_info id="Favorites" order="2" sideWeight="0.50121653" side_tool="true" weight="0.25" />
@@ -544,9 +547,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="12-06" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/pages/agreement/agreement.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/pages/record_list/keyi_list/keyi_list.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="12217">
@@ -862,13 +862,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/pages/record_list/keyi_list/keyi_list.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12255">
-          <caret line="645" column="2" selection-start-line="645" selection-start-column="2" selection-end-line="645" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/pages/index/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4490" />
@@ -887,7 +880,21 @@
     <entry file="file://$PROJECT_DIR$/client/pages/recharge_card/recharge_card.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
-          <caret line="431" lean-forward="true" selection-start-line="431" selection-end-line="431" />
+          <caret line="430" selection-start-line="430" selection-end-line="430" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/pages/record_list/keyi_list/keyi_list.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12141">
+          <caret line="639" selection-start-line="639" selection-end-line="639" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/pages/agreement/agreement.axml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="32" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
         </state>
       </provider>
     </entry>

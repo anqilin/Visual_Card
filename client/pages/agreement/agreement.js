@@ -12,7 +12,7 @@ Page({
     error_message: "当前手机不支持开卡",
     canclick: false,
     image_path: 'url(/resource/add_card_pic.png)',
-    image_path_mot_big: 'url(/resource/mot_big.png)',
+    image_path_mot_big: 'url(/resource/mot.png)',
     image_path_mot: 'url(/resource/mot.png)',
     image_path_moc: 'url(/resource/moc.png)',
     add_mot_show: true,

@@ -76,7 +76,7 @@ page {
 }
 
 .info1{
-  padding-left: 10rpx;
+  padding-left: 20rpx;
   padding-right: 10rpx;
   padding-top: 5rpx;
   padding-bottom: 1rpx;

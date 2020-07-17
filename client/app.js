@@ -28,7 +28,7 @@ App({
 
     bluetoothRechFlag: "",// 00 蓝牙沪通卡充值
 
-    virtual: 2000,//20元虚拟卡押金
+    virtual: 0,//20元虚拟卡押金
   },
   orderResq: {
     payResult: "01",// 01: 成功; 02：失败
@@ -194,7 +194,7 @@ App({
     }
     url = url + "&Model=" + this.devicemodel;
     url = url + "&bizPortal=" + "APP-ALIPAY";
-
+    url = url + "&appver=130";
 
     return url;
 
@@ -227,6 +227,7 @@ App({
       this.devicemodel=this.getDeviceModel();
     }
     url = url + "&Model=" + this.devicemodel;
+    url = url + "&appver=130";
     return url;
 
 
@@ -483,6 +484,14 @@ App({
     url = url + "&phone=" + this.userInfo.phone;
     return url;
 
+  },
+  get_skin(cardno){
+    var url = this.SERVER_URL
+      + "handapp_app/SkinSearch?";
+    url=url+"cardNo="+cardno;
+    url = url + "&commToken=" + this.userInfo.token;
+    url = url + "&phone=" + this.userInfo.phone;
+    return url;
   },
   log(data) {
     console.log(data);

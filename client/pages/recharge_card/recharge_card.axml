@@ -28,13 +28,13 @@
 
 <view class="balance">
   <view class="change_before">
-      <view style="font-size: 14px">充值前余额：</view>
-      <view style="margin-left:10rpx;font-size:19px;color:#000000">{{mybalance}}</view>
+      <view style="font-size: 18px">充值前余额：</view>
+      <view style="margin-left:10rpx;font-size:22px;color:#E8A010">¥{{mybalance}}</view>
       
   </view>
   <view class="change_before" style="margin-top:12rpx;font-size:14px">
-      <view>充值后余额：</view>
-      <view style="margin-left:10rpx;font-size:19px;color:#000000">{{afterbalance}}</view>
+      <view style="opacity:0.8">充值后余额：</view>
+      <view style="margin-left:10rpx;font-size:14px;color:#000000;opacity:0.6">{{afterbalance}}元</view>
       <view class="info1" style="margin-left:20rpx">余额上限1000.00元</view>
       
   </view>

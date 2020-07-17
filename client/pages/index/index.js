@@ -117,8 +117,8 @@ Page({
   onsetmoney(e){
       app.log(e.target.dataset.money);
       var money=e.target.dataset.money;            
-      app.orderReq.total_fee=money*100+2000;
-      app.orderReq.TOTAMT=money*100+2000;
+      app.orderReq.total_fee=money*100;
+      app.orderReq.TOTAMT=money*100;
       //app.orderReq.total_fee=money*100;
       //app.orderReq.TOTAMT=money*100;
       var amount=parseFloat(money).toFixed(2);

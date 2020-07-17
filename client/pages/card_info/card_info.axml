@@ -115,7 +115,7 @@
 
   </view>
 
-  <view onTap="show_fee"  class="info_message" >
+  <view a:if="{{isdeposit}}" onTap="show_fee"  class="info_message" >
     <view>
       <view class="info_left">
         可退服务费

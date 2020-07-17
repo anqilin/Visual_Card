@@ -50,7 +50,7 @@ Page({
       that.data.cardno=app.cardno;
       that.data.issuer_Id=app.issuer_Id;
       that.setData({
-        image_path:'url(/resource/mot_card.png)'
+        image_path:'/resource/mot_card.png'
       })
     }else if(options.card_type==2){
       that.data.mybalance=app.moc_balance;
@@ -67,6 +67,7 @@ Page({
   onShow(){
     //this.data.mybalance=app.balance;
     //this.data.afterbalance=app.balance;
+    this.set_first();
 
   },
 
@@ -153,8 +154,47 @@ Page({
 
       }
 
+            
+  },
+  set_first(){
+    var that=this;
+      var balance=0;
+      if(that.data.card_type==1){
+        balance=app.balance;
+      }else if(that.data.card_type==2){
+        balance=app.moc_balance;
+      }
       
-      
+      var money="10";
+      app.orderReq.total_fee=money*100;
+      app.orderReq.TOTAMT=money*100;
+      var num= parseFloat(balance)  +parseInt(money);
+      num=num.toFixed(2); 
+
+      this.setData({
+        mybalance:balance,
+        afterbalance:num
+      })
+
+      this.setData({
+          color1:"#ffffff",
+          color2:"#ffffff",
+          color3:"#ffffff",
+          color4:"#ffffff",
+          color5:"#ffffff",
+          color6:"#ffffff",
+          text_color1:"#18BB99",
+          text_color2:"#18BB99",
+          text_color3:"#18BB99",
+          text_color4:"#18BB99",
+          text_color5:"#18BB99",
+          text_color6:"#18BB99",
+      });
+        that.setData({
+          color1:"#06B794",
+          text_color1:"#ffffff"
+        });
+
   },
   getOrderData(url){
     var that = this;

@@ -22,7 +22,8 @@ Page({
     modalOpened: false,
     bind_text:'升级',
     issuer_Id:app.issuer_Id,
-    card_type:1,    
+    card_type:1,  
+    isdeposit:false,  
   },
   onLoad(options) {
     try {
@@ -62,7 +63,7 @@ Page({
           that.search_keyi();
 
         },4000);
-        
+      that.get_card_skin();  
       
     }else{
       that.getUserInfo();
@@ -891,11 +892,18 @@ Page({
           app.log("押金:"+num);
           that.setData({
             deposit:num,
-            deposit_num:parseInt(deposit)
-
+            deposit_num:parseInt(deposit),
+            //isdeposit:true
           });
           if(parseInt(deposit)>0){
             app.log("押金不为0");
+            that.setData({
+              isdeposit:true
+            });
+          }else if(parseInt(deposit)==0){
+            that.setData({
+              isdeposit:false
+            });
           }
           var notes=msg.note.split(";");
           if(notes[0]=="2"){
@@ -924,6 +932,33 @@ Page({
 
     });
 
+
+  },
+  get_card_skin(){
+    var that=this;
+    var url=app.get_skin(that.data.cardno);
+    app.log("获取卡面:"+url);
+    my.request({
+      url: url,
+      method: 'GET',
+      dataType: 'json',
+      success: (resp) => {  
+        app.log('deposit data:'+JSON.stringify(resp.data));
+        app.log(resp.data.return_code);                        
+        if(resp.data.return_code=="success"){
+          var msg=JSON.parse(resp.data.return_msg);
+          app.log("ResponseCode:"+msg);
+
+        }else{
+
+        }
+  
+      },
+      fail: (err) => {
+
+      },
+
+    });
 
   },
   openModal() {
